@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CIR3 Project
 
 ## Getting Started
 
-First, run the development server:
+To set up and run this project, please follow the steps below:
+
+### Prerequisites
+
+- **Node.js**: Ensure that Node.js version 18.18 or later is installed on your system. You can download it from the [official Node.js website](https://nodejs.org/).
+
+### Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone [repository_url]
+   ```
+
+2. **Navigate to the project directory**:
+
+   ```bash
+   cd [project_directory]
+   ```
+
+3. **Install dependencies**:
+
+   For the first-time setup, install the necessary packages by running:
+
+   ```bash
+   npm install
+   ```
+
+### Running the Development Server
+
+To start the development server, execute:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Once the server is running, open your browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Additional Information
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Fonts**: This project utilizes [next/font](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) for automatic optimization and loading of [Geist](https://vercel.com/font), Vercel's new font family.
 
-## Learn More
+- **Color Palette**: The project's color scheme is based on the following palette:
 
-To learn more about Next.js, take a look at the following resources:
+  ![Color Palette](https://coolors.co/palette/111938-442656-59477a-6d3a8b-6340a2-803db0-672185-1f257d-181f5b-161a32)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  You can view and adjust the palette using [Coolors](https://coolors.co/palette/111938-442656-59477a-6d3a8b-6340a2-803db0-672185-1f257d-181f5b-161a32).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For more detailed information on setting up a Next.js project, refer to the [Next.js Installation Guide](https://nextjs.org/docs/getting-started/installation).
