@@ -1,9 +1,9 @@
 import mongoose, { Model, Schema } from 'mongoose';
 
 const OrganizerSchema = new Schema({
-  login: {
+  email: {
     type: String,
-    required: [true, 'Login is required'],
+    required: [true, 'Email is required'],
     unique: true,
     trim: true
   },
@@ -30,4 +30,4 @@ const OrganizerSchema = new Schema({
 
 export type OrganizerObject = mongoose.InferSchemaType<typeof OrganizerSchema>;
 
-export const Organizer = (mongoose.models.Organizer as Model<OrganizerObject>) || mongoose.model<OrganizerObject>('organizers', OrganizerSchema);
+export const Organizer: Model<typeof OrganizerSchema> = mongoose.models.Organizer || mongoose.model('Organizer', OrganizerSchema, 'organizers');

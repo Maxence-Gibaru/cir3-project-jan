@@ -4,7 +4,7 @@ if (!process.env.MONGODB_PASSWORD) {
     throw new Error('La variable d\'environnement MONGODB_PASSWORD n\'est pas définie');
 }
 
-const mongoURI = `mongodb+srv://projetcirinfo:${process.env.MONGODB_PASSWORD}@projetcir3.yp4fi.mongodb.net/?retryWrites=true&w=majority&appName=ProjetCIR3`;
+const mongoURI = `mongodb+srv://projetcirinfo:${process.env.MONGODB_PASSWORD}@projetcir3.yp4fi.mongodb.net/sample_mflix?retryWrites=true&w=majority&appName=ProjetCIR3`;
 
 console.log('mongoURI:', mongoURI);
 
@@ -23,9 +23,12 @@ async function dbConnect() {
     }
 
     try {
-        const db = mongoose.connect(mongoURI);
-        // isConnected = db.connection.readyState;
-        console.log('Connected to MongoDB');
+        await mongoose.connect(mongoURI);
+
+        const db = mongoose.connection.useDb('sample_mflix');
+
+        isConnected = mongoose.connection.readyState;
+        console.log('Connected to MongoDB', isConnected);
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
         throw new Error('MongoDB connection failed');

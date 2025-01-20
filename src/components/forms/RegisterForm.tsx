@@ -17,14 +17,14 @@ export default function RegisterForm() {
 
 
 
-    const options: FetchOptions = {
-        method: "POST",
-        body: signupData,
-    }
+
 
     const fetchSignup = async () => {
         try {
-            fetchApi('register', options)
+            fetchApi('auth/register', {
+                method: "POST",
+                body: signupData,
+            })
         }
         catch (error) {
             console.error("Error register", error);

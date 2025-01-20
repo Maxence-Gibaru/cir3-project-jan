@@ -9,15 +9,15 @@ import RegisterForm from "../forms/RegisterForm";
 
 
 
-export default function LandingPage() {
+export default function SignupPage() {
     return (
         <>
             <div className="w-full text-white">
 
 
 
-                <Content />
-                {/* <RegisterForm /> */}
+                {/* <Content /> */}
+                <RegisterForm />
 
 
 
