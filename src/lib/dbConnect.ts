@@ -6,8 +6,6 @@ if (!process.env.MONGODB_PASSWORD) {
 
 const mongoURI = `mongodb+srv://projetcirinfo:${process.env.MONGODB_PASSWORD}@projetcir3.yp4fi.mongodb.net/sample_mflix?retryWrites=true&w=majority&appName=ProjetCIR3`;
 
-console.log('mongoURI:', mongoURI);
-
 let isConnected = 0; // Pour suivre l'état de la connexion
 
 async function dbConnect() {
@@ -24,9 +22,7 @@ async function dbConnect() {
 
     try {
         await mongoose.connect(mongoURI);
-
-        const db = mongoose.connection.useDb('sample_mflix');
-
+        mongoose.connection.useDb('onepisen ');
         isConnected = mongoose.connection.readyState;
         console.log('Connected to MongoDB', isConnected);
     } catch (error) {
