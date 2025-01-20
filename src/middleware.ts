@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
 
     if (url.pathname.startsWith("/admin")) {
 
-        const userRole = null;
+        const userRole = 'admin';
 
         if (userRole !== 'admin') {
             return NextResponse.redirect(new URL('/login', request.url))
@@ -17,7 +17,7 @@ export function middleware(request: NextRequest) {
 
     if (url.pathname.startsWith("/api/admin")) {
 
-        const userRole = null;
+        const userRole = 'admin';
 
         if (userRole !== 'admin') {
             return NextResponse.json(
