@@ -30,4 +30,4 @@ const OrganizerSchema = new Schema({
 
 export type OrganizerObject = mongoose.InferSchemaType<typeof OrganizerSchema>;
 
-export const Organizer = (mongoose.models.Organizer as Model<OrganizerObject>) || mongoose.model<OrganizerObject>('Organizer', OrganizerSchema);
+export const Organizer = (mongoose.models.Organizer as Model<OrganizerObject>) || mongoose.model<OrganizerObject>('organizers', OrganizerSchema);

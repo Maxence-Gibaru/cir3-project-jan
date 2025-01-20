@@ -1,12 +1,12 @@
 import dbConnect from '@/lib/dbConnect';
-import { Organizer, OrganizerObject } from '@/models/Organizer';
+import { Organizer } from '@/models/Organizer';
 import { NextRequest, NextResponse } from 'next/server';
 
 // GET: Récupérer tous les organisateurs
 export async function GET() {
   try {
     await dbConnect();
-    const organizers: OrganizerObject[] = await Organizer.find(); // Récupère tous les documents
+    const organizers = await Organizer.find(); // Récupère tous les documents
     return NextResponse.json(organizers, { status: 200 });
   } catch (error) {
     console.error(error);
@@ -18,7 +18,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     await dbConnect();
-    const body: String = await req.json();
+    const body = await req.json();
     const newOrganizer = await Organizer.create(body);
     return NextResponse.json(newOrganizer, { status: 201 });
   } catch (error) {
