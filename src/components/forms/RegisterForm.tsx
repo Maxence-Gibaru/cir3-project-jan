@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 export default function RegisterForm() {
     const [signupData, setSignupData] = useState({
-        name: "",
+
         email: "",
         password: "",
     });
@@ -41,7 +41,7 @@ export default function RegisterForm() {
 
         // Réinitialise le formulaire après soumission
         setSignupData({
-            name: "",
+
             email: "",
             password: "",
         });
@@ -56,24 +56,7 @@ export default function RegisterForm() {
                     Créer un compte
                 </h1>
                 <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label
-                            htmlFor="name"
-                            className="block text-sm font-medium text-gray-700"
-                        >
-                            Nom complet
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            value={signupData.name}
-                            onChange={handleChange}
-                            className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md text-gray-700 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="John Doe"
-                            required
-                        />
-                    </div>
+
                     <div className="mb-4">
                         <label
                             htmlFor="email"
