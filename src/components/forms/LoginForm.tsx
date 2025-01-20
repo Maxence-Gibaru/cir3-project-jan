@@ -1,6 +1,8 @@
+"use client"
 import { fetchApi, FetchOptions } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
+import { signIn, useSession } from "next-auth/react";
 
 export default function LoginForm() {
     const [loginData, setLoginData] = useState({
@@ -8,6 +10,12 @@ export default function LoginForm() {
         password: "",
     });
 
+
+    const { data: session } = useSession();
+
+    if (session) {
+        console.log(session);
+    }
 
     const router = useRouter();
 
@@ -17,25 +25,34 @@ export default function LoginForm() {
         setLoginData({ ...loginData, [e.target.name]: e.target.value });
     };
 
-    const options: FetchOptions = {
-        method: "POST",
-        body: loginData,
-    }
 
-    const fetchLogin = async () => {
+    const handleLogin = async () => {
         try {
-            const response = await fetchApi('login', options)
-            console.log("Login :" + response);
-
-            if (response.loggedIn) {
-                console.log('Connexion réussie !');
-                router.push("/")
-                // Effectuer des actions supplémentaires en cas de succès
-            } else {
-
-                console.log('Échec de la connexion.');
-                // Gérer les cas d'échec de connexion
-            }
+            const result = await signIn("credentials", {
+                redirect: false,
+                email: loginData.email,
+                password: loginData.password,
+                callbackUrl: "/",
+            });
+            console.log(result);
+            router.push(result.url);
+            /*  if (result?.error) {
+                 setError("Échec de la connexion. Veuillez vérifier vos identifiants.");
+             } else {
+                 router.push("/");
+             } */
+            /*  const response = await fetchApi('auth/signin', options)
+             console.log("Login :" + response);
+ 
+             if (response.loggedIn) {
+                 console.log('Connexion réussie !');
+                 router.push("/")
+                 // Effectuer des actions supplémentaires en cas de succès
+             } else {
+ 
+                 console.log('Échec de la connexion.');
+                 // Gérer les cas d'échec de connexion
+             } */
 
         }
         catch (error) {
@@ -59,7 +76,7 @@ export default function LoginForm() {
 
 
 
-        fetchLogin();
+        handleLogin();
 
 
     };
