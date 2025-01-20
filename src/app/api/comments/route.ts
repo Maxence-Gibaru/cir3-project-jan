@@ -47,11 +47,11 @@ export async function POST(request: Request) {
 
         console.log('Données insérées avec succès :', result);
 
-
         return new Response(JSON.stringify({ message: 'Formulaire soumis avec succès !' }), {
             status: 200,
             headers,
         });
+
     } catch (error) {
         console.error('Erreur lors de la soumission du formulaire :', error);
 

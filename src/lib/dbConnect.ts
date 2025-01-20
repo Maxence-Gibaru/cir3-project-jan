@@ -4,7 +4,7 @@ import { MongoClient, ServerApiVersion } from 'mongodb';
 
 
 /* const uri = process.env.MONGODB_URI; */
-const uri = "mongodb+srv://projetcirinfo:bBGLpmtEiGyWCLSY@projetcir3.yp4fi.mongodb.net/?retryWrites=true&w=majority&appName=ProjetCIR3";
+const uri = `mongodb+srv://projetcirinfo:${process.env.MONGODB_PASSWORD}@projetcir3.yp4fi.mongodb.net/?retryWrites=true&w=majority&appName=ProjetCIR3`;
 
 
 if (!uri) {
