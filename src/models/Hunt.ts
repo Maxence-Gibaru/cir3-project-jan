@@ -47,7 +47,6 @@ export const HuntZodSchema = z.object({
 });
 
 export type HuntZodType = z.infer<typeof HuntZodSchema>;
-
 export interface Hunt extends Document, HuntZodType {}
 
 const HuntSchema = new Schema({
@@ -93,4 +92,4 @@ HuntSchema.pre('save', function (next) {
   next();
 });
 
-export const HuntModel = (mongoose.models.Hunt as Model<Hunt>) || mongoose.model<Hunt>('hunts', HuntSchema);
+export const HuntModel: Model<Hunt> = (mongoose.models.Hunt as Model<Hunt>) || mongoose.model<Hunt>('hunts', HuntSchema);

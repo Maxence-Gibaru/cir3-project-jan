@@ -1,8 +1,8 @@
+import dbConnect from "@/lib/dbConnect";
+import OrganizerModel from "@/models/OrganizerModel";
+import bcrypt from "bcrypt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import dbConnect from "@/lib/dbConnect";
-import { Organizer } from "@/models/Organizer";
-import bcrypt from "bcrypt";
 
 const handler = NextAuth({
     providers: [
@@ -17,7 +17,7 @@ const handler = NextAuth({
                     await dbConnect();
                     const { email, password } = credentials;
 
-                    const user = await Organizer.findOne({ email: email });
+                    const user = await OrganizerModel.findOne({ email: email });
 
                     if (user && password) {
                         const isValidPassword = await bcrypt.compare(password, user.password);
@@ -47,3 +47,4 @@ const handler = NextAuth({
 });
 
 export { handler as GET, handler as POST };
+

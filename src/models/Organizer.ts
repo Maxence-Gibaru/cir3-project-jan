@@ -1,4 +1,16 @@
 import mongoose, { Model, Schema } from 'mongoose';
+import { z } from 'zod';
+
+export const OrganizerZodSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+  isAdmin: z.boolean().default(false),
+  event_ids: z.array(z.string()).optional(),
+  created: z.date().default(() => new Date())
+});
+
+export type OrganizerZodType = z.infer<typeof OrganizerZodSchema>;
+export interface Organizer extends Document, OrganizerZodType {}
 
 const OrganizerSchema = new Schema({
   email: {
@@ -27,7 +39,4 @@ const OrganizerSchema = new Schema({
   // Ceci permettra d'avoir un _id par défaut généré par MongoDB
   timestamps: false
 })
-
-export type OrganizerObject = mongoose.InferSchemaType<typeof OrganizerSchema>;
-
-export const Organizer: Model<typeof OrganizerSchema> = mongoose.models.Organizer || mongoose.model('Organizer', OrganizerSchema, 'organizers');
+export const OrganizerModel: Model<Organizer> = mongoose.models.Organizer || mongoose.model<Organizer>('Organizer', OrganizerSchema, 'organizers');
