@@ -47,7 +47,7 @@ export const HuntZodSchema = z.object({
 });
 
 export type HuntZodType = z.infer<typeof HuntZodSchema>;
-export interface Hunt extends Document, HuntZodType {}
+export interface Hunt extends Document, HuntZodType { }
 
 const HuntSchema = new Schema({
   teams: {
