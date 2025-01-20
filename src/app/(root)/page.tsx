@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { Button, Avatar, useDisclosure } from "@nextui-org/react"
 import Link from "next/link"
-import SignupPage from "@/components/pages/SignupPage"
+
 import { useState } from "react"
+import LandingPage from "@/components/pages/SignupPage";
 
 /* import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'; */
@@ -24,7 +25,7 @@ export default function HomePage() {
 
     return (
         <>
-            <SignupPage />
+            <LandingPage />
         </>
     );
 }
