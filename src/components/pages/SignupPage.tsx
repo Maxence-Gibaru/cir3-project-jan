@@ -16,8 +16,8 @@ export default function LandingPage() {
 
 
 
-                {/* <Content /> */}
-                <RegisterForm />
+                <Content />
+                {/* <RegisterForm /> */}
 
 
 

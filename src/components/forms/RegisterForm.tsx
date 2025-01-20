@@ -46,8 +46,6 @@ export default function RegisterForm() {
             password: "",
         });
 
-        alert("Inscription réussie !");
-
         fetchSignup();
     };
 
