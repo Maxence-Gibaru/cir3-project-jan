@@ -19,6 +19,7 @@ export default function LandingPage() {
                     name="Créer un event"
                     classname="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum"
                     link="/createevent"
+                    onPress={null}
                 />
             </div>
 
@@ -41,7 +42,7 @@ export default function LandingPage() {
             {/* Section centrale */}
             <div className="flex flex-col items-center text-center w-full md:w-2/3 lg:w-1/2 mt-16 md:mt-8">
                 <h1 className="text-2xl md:text-3xl mb-6 text-midnightBlue">Code d'accès</h1>
-                <CodeArea value={text} onChange={handleChange} classname=" w-50 h-8 text-lg max-w-xs" />
+                <CodeArea value={text} onChange={handleChange} classname="w-50 h-13 resize-none p-2 overflow-y-auto overflow-x-hidden break-words bg-gray-200 border border-gray-400" />
                 <div className="mt-4">
                     <ButtonComponent
                         name="Rejoindre"

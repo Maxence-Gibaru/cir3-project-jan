@@ -3,6 +3,7 @@
 import { useState } from "react";
 import ButtonComponent from "@/components/pages/Button";
 import CodeArea from "@/components/pages/TextArea";
+import ModalApp from "../ui/Modal";
 
 export default function RessourcesCreationPage() {
   const [title, setTitle] = useState(""); // État pour le titre
@@ -13,11 +14,13 @@ export default function RessourcesCreationPage() {
   const addChapter = () => {
     const newId = chapters.length > 0 ? chapters[chapters.length - 1].id + 1 : 1;
     setChapters([...chapters, { id: newId, text: "" }]);
+    console.log(chapters)
   };
 
   // Supprimer un chapitre
   const removeChapter = (id) => {
     setChapters(chapters.filter((chapter) => chapter.id !== id));
+    console.log(chapters)
   };
 
   // Mettre à jour le texte d'un chapitre
@@ -31,6 +34,10 @@ export default function RessourcesCreationPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center gap-6 py-8 px-4">
+        {/* Bouton pour ouvrir le modal en haut à droite */}
+      <div className="absolute top-4 right-4">
+        <ModalApp />
+      </div>    
       {/* Titre principal */}
       <h1 className="text-3xl font-bold text-center">Créer votre ressource</h1>
 
@@ -40,7 +47,7 @@ export default function RessourcesCreationPage() {
         <CodeArea
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full"
+          classname="w-full h-20 resize-none border border-white rounded-md p-2 bg-white overflow-y-auto overflow-x-hidden break-words"
         />
       </div>
 
@@ -50,7 +57,7 @@ export default function RessourcesCreationPage() {
         <CodeArea
           value={intro}
           onChange={(e) => setIntro(e.target.value)}
-          className="w-full"
+          classname="w-full h-20 resize-none border border-white rounded-md p-2 bg-white overflow-y-auto overflow-x-hidden break-words"
         />
       </div>
 
@@ -58,29 +65,30 @@ export default function RessourcesCreationPage() {
       <div className="w-full max-w-md flex flex-col items-center">
   <h2 className="text-xl font-semibold mb-4 text-center">Chapitres :</h2>
   {chapters.map((chapter) => (
-    <div
-    key={chapter.id}
-    className="mb-4 border p-4 rounded-lg bg-white shadow-md w-full"
-  >
-    <h3 className="text-lg font-medium mb-2 text-center">
-      Chapitre {chapter.id} :
-    </h3>
-    <div className="w-full">
-      <CodeArea
-        value={chapter.text}
-        onChange={(e) => updateChapter(chapter.id, e.target.value)}
-        className="w-full h-32 resize-none border rounded-md p-2 overflow-hidden"
-      />
-    </div>
-    <div className="w-full flex justify-center mt-8">
-      <ButtonComponent
-        name="Supprimer"
-        classname="bg-red-500 text-white px-4 py-2 rounded"
-        link={null}
-        onPress={() => removeChapter(chapter.id)}
-      />
-    </div>
-  </div>
+   <div
+   key={chapter.id}
+   className="mb-4 border p-4 rounded-lg bg-white shadow-md w-full"
+ >
+   <h3 className="text-lg font-medium mb-2 text-center">
+     Chapitre {chapter.id} :
+   </h3>
+   <CodeArea
+     value={chapter.text}
+     onChange={(e) => updateChapter(chapter.id, e.target.value)}
+     classname="w-full h-20 resize-none border border-gray-400 rounded-md p-2 bg-gray-200 overflow-y-auto overflow-x-hidden break-words"
+   />
+   <div className="w-full flex justify-center mt-8">
+     <ButtonComponent
+       name="Supprimer"
+       classname="bg-red-500 text-white px-4 py-2 rounded"
+       link={null}
+       onPress={() => removeChapter(chapter.id)}
+     />
+   </div>
+ </div>
+
+
+ 
   
   ))}
 </div>

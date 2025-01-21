@@ -4,6 +4,8 @@ export type FetchOptions = {
     body?: unknown;                                 // Corps de la requête pour POST/PUT
 };
 
+
+
 export async function fetchApi(
     endpoint: string,
     options: FetchOptions = {}
