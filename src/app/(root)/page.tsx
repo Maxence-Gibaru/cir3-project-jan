@@ -4,8 +4,10 @@ import Image from "next/image";
 import { Button, Avatar, useDisclosure } from "@nextui-org/react"
 import Link from "next/link"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import LandingPage from "@/components/pages/LandingPage";
+import { useSession } from "next-auth/react";
+
 
 
 
@@ -19,18 +21,23 @@ export default function HomePage() {
     const [selectedCard, setSelectedCard] = useState(0);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
 
+
+    const { data: session } = useSession();
+
     const handleImageLoad = () => {
         setIsImageLoaded(true);  // L'image de fond a été chargée
     };
 
-
+    useEffect(() => {
+        console.log("session info", session)
+    }, [session])
 
 
     return (
         <>
-            
-                <LandingPage />
-            
+
+            <LandingPage />
+
         </>
     );
 }

@@ -11,7 +11,7 @@ import { useState } from "react"
 export default function LandingPage() {
     return (
         <>
-            <div className="w-full text-white">
+            <div className="w-full text-white bg-background">
 
                 <Hero />
                 <Content />
