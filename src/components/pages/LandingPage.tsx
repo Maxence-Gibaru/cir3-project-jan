@@ -4,10 +4,10 @@ import Image from "next/image";
 import { Textarea } from "@heroui/react";
 import { useState, useEffect } from "react";
 import { Button } from "@heroui/react";
-import { fetchApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import CodeArea from "./TextArea";
 import { useSession } from "next-auth/react";
+import { fetchApi } from "@/lib/api";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
@@ -53,12 +53,15 @@ export default function LandingPage() {
         <div className="relative min-h-screen flex flex-col items-center justify-between pt-20 px-4 md:px-16 lg:px-32">
             {/* Bouton en haut à droite */}
             <div className="absolute top-4 right-4">
-                <Button className="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum" onPress={handleJoin}>Créer un event</Button>;
+                <Button
+                    name="Créer un event"
+                    className="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum"
+                />
             </div>
 
             {/* Gros titre centré */}
             <h1 className="text-3xl md:text-5xl font-bold text-center mt-12 mb-8 text-midnightBlue">
-                One P'ISEN
+                One P&apos;ISEN
             </h1>
 
             {/* Logo sous le titre */}
@@ -75,11 +78,7 @@ export default function LandingPage() {
             {/* Section centrale */}
             <div className="flex flex-col items-center text-center w-full md:w-2/3 lg:w-1/2 mt-16 md:mt-8">
                 <h1 className="text-2xl md:text-3xl mb-6 text-midnightBlue">Code d'accès</h1>
-                <Textarea className="uppercase w-50 h-8 text-lg max-w-xs"
-                    value={text}
-                    onChange={handleChange}
-                />
-
+                <CodeArea value={text} onChange={handleChange} classname="w-50 h-13 resize-none p-2 overflow-y-auto overflow-x-hidden break-words bg-gray-200 border border-gray-400" />
                 <div className="mt-4">
                     <Button className="rounded-lg px-6 py-3 bg-brightLavender hover:bg-vibrantPlum" onPress={handleJoin}>Rejoindre</Button>;
 
