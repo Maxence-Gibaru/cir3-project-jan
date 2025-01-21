@@ -3,7 +3,7 @@ import dbConnect from "@/lib/dbConnect";
 import { OrganizerModel } from "@/models/Organizer";
 import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import { NextRequest } from "next/server";
 
 type user = {
     email: string,
@@ -19,7 +19,7 @@ export const authOptions = {
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" },
             },
-            async authorize(credentials) {
+            async authorize(credentials, req: NextRequest) {
                 try {
                     await dbConnect();
                     const { email, password } = credentials;
