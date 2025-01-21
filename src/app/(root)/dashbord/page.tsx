@@ -5,6 +5,7 @@ import TeamProgressContainer from "@/components/pages/leaderbord";
 import ProgressDashboard from "@/components/pages/pourcent";
 import ElapsedTime from "@/components/pages/timer";
 import ButtonComponent from "@/components/pages/Button";
+import DefineHintModal from "@/components/ui/HintModal";
 
 const Dashboard = () => {
   const initialTeams = [
