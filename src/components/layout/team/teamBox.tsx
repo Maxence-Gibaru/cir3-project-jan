@@ -38,7 +38,7 @@ const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs }) => {
     const response = await fetchApi("hunt/join", { method: "POST", body: { code: code, teamIndex: teamJoined.teamIndex, guestId: teamJoined.guestId } })
 
     if (response) {
-      router.push('/')
+      router.push('/map')
     }
   }
 
