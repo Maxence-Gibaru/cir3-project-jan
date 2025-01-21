@@ -1,26 +1,34 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import mongoose from 'mongoose';
 
-
-
-
-/* const uri = process.env.MONGODB_URI; */
-const uri = "mongodb+srv://projetcirinfo:bBGLpmtEiGyWCLSY@projetcir3.yp4fi.mongodb.net/?retryWrites=true&w=majority&appName=ProjetCIR3";
-
-
-if (!uri) {
-    throw new Error('La variable d\'environnement MONGODB_URI n\'est pas définie');
+if (!process.env.MONGODB_PASSWORD) {
+    throw new Error('La variable d\'environnement MONGODB_PASSWORD n\'est pas définie');
 }
 
+const mongoURI = `mongodb+srv://projetcirinfo:${process.env.MONGODB_PASSWORD}@projetcir3.yp4fi.mongodb.net/onepisen?retryWrites=true&w=majority&appName=ProjetCIR3`;
 
+let isConnected = 0; // Pour suivre l'état de la connexion
 
-const client = new MongoClient(uri, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    },
-});
+async function dbConnect() {
+    if (isConnected) {
+        console.info('Already connected to MongoDB');
+        return;
+    }
 
-const clientPromise = client.connect();
+    if (mongoose.connection.readyState) {
+        isConnected = mongoose.connection.readyState;
+        console.info('Using existing MongoDB connection');
+        return;
+    }
 
-export default clientPromise;
+    try {
+        await mongoose.connect(mongoURI);
+        mongoose.connection.useDb('onepisen');
+        isConnected = mongoose.connection.readyState;
+        console.info('Connected to MongoDB', isConnected);
+    } catch (error) {
+        console.error('Error connecting to MongoDB:', error);
+        throw new Error('MongoDB connection failed');
+    }
+}
+
+export default dbConnect;
