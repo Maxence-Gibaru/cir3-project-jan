@@ -3,7 +3,8 @@
 import Qr_code from "@/components/ui/scan_qr_code";
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import fetchApi from "@/lib/api"
+import { fetchApi } from "@/lib/api";
+
 
 
 

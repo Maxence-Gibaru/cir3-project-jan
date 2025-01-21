@@ -1,0 +1,81 @@
+{      
+  "teams": [
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        },
+        {
+          "name" : "Orelsan"
+        },
+        {
+          "name" : "Paul"
+        },
+        {
+          "name" : "Toto"
+        },
+        {
+          "name" : "Pierre"
+        }
+      ]
+    },
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        },
+        {
+          "name" : "Orelsan"
+        }
+      ]
+    },
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        },
+        {
+          "name" : "Orelsan"
+        },
+        {
+          "name" : "Paul"
+        }
+      ]
+    },
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        }
+      ]
+    },
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        },
+        {
+          "name" : "Orelsan"
+        },
+        {
+          "name" : "Paul"
+        }
+      ]
+    }
+  ]
+}
