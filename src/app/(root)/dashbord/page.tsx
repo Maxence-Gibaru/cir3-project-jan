@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import TeamProgressContainer from "@/components/pages/leaderbord";
 import ProgressDashboard from "@/components/pages/pourcent";
 import ElapsedTime from "@/components/pages/timer";
+import ButtonComponent from "@/components/pages/Button";
 
 const Dashboard = () => {
   const initialTeams = [
@@ -36,23 +37,47 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Dashboard</h1>
+    <div className="flex flex-col h-screen bg-white text-dark">
+      {/* Header */}
+      <header className="bg-primary p-6 text-white">
+        <h1 className="text-3xl font-bold text-center">Dashboard</h1>
+      </header>
 
-      {/* Timer reste indépendant */}
-      <div style={{ marginBottom: "20px" }}>
-        <ElapsedTime startTime={startTime} />
-      </div>
+      {/* Main Content */}
+      <main className="flex-1 p-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Temps écoulé */}
+          <div className="bg-background shadow-lg rounded-lg p-6">
+            <ElapsedTime startTime={startTime} />
+          </div>
 
-      {/* Classement mis à jour toutes les 5 secondes */}
-      <div style={{ marginBottom: "20px" }}>
-        <TeamProgressContainer data={teamData} />
-      </div>
+          {/* Classement */}
+          <div className="bg-background shadow-lg rounded-lg p-6">
+            <TeamProgressContainer data={teamData} />
+          </div>
 
-      {/* Progression des équipes */}
-      <div style={{ marginBottom: "20px" }}>
-        <ProgressDashboard data={teamData} />
-      </div>
+          {/* Pourcentage */}
+          <div className="bg-background shadow-lg rounded-lg p-6">
+            <ProgressDashboard data={teamData} />
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div className="flex gap-4 mt-8 justify-center">
+          <ButtonComponent
+            name="Générer les QR codes des indices"
+            classname="w-full md:w-auto bg-primary text-white px-6 py-3 rounded hover:bg-primary"
+            link={null}
+            onPress={null}
+          />
+          <ButtonComponent
+            name="Générer le code"
+            classname="w-full md:w-auto bg-primary text-white px-6 py-3 rounded hover:bg-primary"
+            link={null}
+            onPress={null}
+          />
+        </div>
+      </main>
     </div>
   );
 };
