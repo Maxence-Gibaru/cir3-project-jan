@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const GuestZodSchema = z.object({
     id: z.string(),
+    name: z.string(),
     created: z.date().optional()
 });
 
