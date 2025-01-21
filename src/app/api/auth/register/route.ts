@@ -1,7 +1,8 @@
 import dbConnect from "@/lib/dbConnect";
-import { OrganizerModel } from "@/models/Organizer";
+import { OrganizerZodSchema, OrganizerModel, Organizer } from "@/models/Organizer";
 import bcrypt from "bcrypt";
 import { NextRequest, NextResponse } from "next/server";
+import { parse } from "path";
 
 export async function GET() {
     try {
@@ -22,12 +23,22 @@ export async function POST(req: NextRequest) {
         await dbConnect();
         const body = await req.json();
 
-        const hashedPassword = await bcrypt.hash(body.password, 10);
 
-        body.password = hashedPassword;
+        const parsedBody = OrganizerZodSchema.safeParse(body);
 
-        await OrganizerModel.create(body);
-        return NextResponse.json({ message: "Registered well !" }, { status: 201 });
+        if (!parsedBody.success) {
+            return NextResponse.json(
+                { error: "Invalid input", details: parsedBody.error.errors },
+                { status: 400 }
+            );
+        }
+
+        const hashedPassword = await bcrypt.hash(parsedBody.data.password, 10);
+
+        parsedBody.data.password = hashedPassword;
+
+        const newOrganizer: Organizer = await OrganizerModel.create(parsedBody.data);
+        return NextResponse.json(newOrganizer, { status: 201 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(

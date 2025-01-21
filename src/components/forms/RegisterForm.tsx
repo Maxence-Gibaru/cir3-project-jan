@@ -1,4 +1,5 @@
 import { fetchApi, FetchOptions } from "@/lib/api";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function RegisterForm() {
@@ -15,7 +16,11 @@ export default function RegisterForm() {
     };
 
 
+    const { data: session } = useSession();
 
+    if (session) {
+        console.log(session);
+    }
 
 
 
