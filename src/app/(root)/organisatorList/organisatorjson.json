@@ -2,15 +2,15 @@
   "organisateur" : [
     {
         "name" : "Yannick",
-        "numeroPartie" : 2
+        "numeroPartie" : 1
     },
     {
         "name" : "Yannick2",
-        "numeroPartie" : 3
+        "numeroPartie" : 2
     },
     {
         "name" : "Paul",
-        "numeroPartie" : 1
+        "numeroPartie" : 3
     },
     {
         "name" : "Lucas",

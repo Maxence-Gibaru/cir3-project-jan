@@ -13,9 +13,8 @@ export default function HomePage() {
     const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
     const [selectedCard, setSelectedCard] = useState(0);
     const [isImageLoaded, setIsImageLoaded] = useState(false);
-
+    
     const Listeparties = FichierJson.organisateur;
-
     return (
         <div className="h-screen">
             <h1 className="flex justify-center h-1/6 text-4xl py-5 font-bold text-center bg-blue-100 items-center align-middle">Liste des organisateurs</h1>
