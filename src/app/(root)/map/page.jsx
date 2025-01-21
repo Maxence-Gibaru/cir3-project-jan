@@ -102,7 +102,7 @@ export default function Map() {
           <MapContainer
             center={[data1.Map[0].lat, data1.Map[0].lng]}
             zoom={data1.Map[0].zoom}
-            scrollWheelZoom={false}
+            scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer
