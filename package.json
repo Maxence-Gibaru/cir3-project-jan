@@ -10,11 +10,17 @@
   },
   "dependencies": {
     "@heroui/react": "^2.6.14",
+    "@mui/material": "^6.4.0",
+    "@mui/styled-engine-sc": "^6.4.0",
     "@nextui-org/react": "^2.6.11",
+    "html5-qrcode": "^2.3.8",
+    "leaflet": "^1.9.4",
     "mongodb": "^6.12.0",
     "next": "15.1.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-leaflet": "^5.0.0-rc.2",
+    "styled-components": "^6.1.14",
     "tailwind-scrollbar-hide": "^2.0.0"
   },
   "devDependencies": {
