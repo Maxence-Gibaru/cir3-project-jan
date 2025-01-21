@@ -3,6 +3,7 @@ import { OrganizerModel, OrganizerZodSchema } from "@/models/Organizer";
 import bcrypt from "bcrypt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { NextRequest } from "next/server";
 
 const handler = NextAuth({
     providers: [
@@ -12,12 +13,12 @@ const handler = NextAuth({
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" },
             },
-            async authorize(credentials, req) {
+            async authorize(credentials, req: NextRequest) {
                 try {
                     await dbConnect();
                     const { email, password } = credentials;
 
-                    const user = await OrganizerZodSchema.findOne({ email: email });
+                    const user = await OrganizerModel.findOne({ email: email });
 
                     if (user && password) {
                         const isValidPassword = await bcrypt.compare(password, user.password);
