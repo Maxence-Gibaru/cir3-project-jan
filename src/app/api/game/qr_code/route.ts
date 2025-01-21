@@ -1,9 +1,14 @@
-import { HuntIntro } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { getparsedBody } from "../../utils";
+
+const ReqZodSchema = z.object({
+    code: z.string(),
+});
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
@@ -11,6 +16,15 @@ export async function POST(req: NextRequest) {
 
     try {
         await dbConnect();
+        const body = await req.json();
+        const result = getparsedBody(ReqZodSchema, body);
+        if (typeof result === "string") {
+            return NextResponse.json(
+                { error: "Failed to parse body", details: result },
+                { status: 400 }
+            );
+        }
+
         const hunt_id = session.user.hunt_id;
         const team_index = session.user.team_index;
 
@@ -30,21 +44,13 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const text: string = hunt.stories[0];
-        const selected_hint: number = team.hints_order[0];
-        const hint: string = hunt.markers[selected_hint].hint;
+        const attending_code = hunt.markers[team.hints_order[team.current_hint_index]].id;
 
-        const huntIntro: HuntIntro = {
-            text, // Introduction de la story
-            hint, // Indice du lieu qu'on cherche
-            map: hunt.map,
-        };
-
-        return NextResponse.json(huntIntro, { status: 201 });
+        return NextResponse.json({isCorrect: attending_code === result.code}, { status: 201 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(
-            { error: "Failed to get init data from game" },
+            { error: "Failed to check qr code" },
             { status: 500 }
         );
     }
