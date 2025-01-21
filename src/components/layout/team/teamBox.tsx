@@ -1,6 +1,5 @@
 
 import React from "react"
-import TeamPopup from "@/components/layout/team/teampopup"
 
 import {
   Modal,

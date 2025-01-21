@@ -1,0 +1,99 @@
+{      
+  "organisateur" : [
+    {
+        "name" : "Yannick",
+        "numeroPartie" : 2
+    },
+    {
+        "name" : "Yannick2",
+        "numeroPartie" : 3
+    },
+    {
+        "name" : "Paul",
+        "numeroPartie" : 1
+    },
+    {
+        "name" : "Lucas",
+        "numeroPartie" : 4
+    }
+  ],
+  "teams": [
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        },
+        {
+          "name" : "Orelsan"
+        },
+        {
+          "name" : "Paul"
+        },
+        {
+          "name" : "Toto"
+        },
+        {
+          "name" : "Pierre"
+        }
+      ]
+    },
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        },
+        {
+          "name" : "Orelsan"
+        }
+      ]
+    },
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        },
+        {
+          "name" : "Orelsan"
+        },
+        {
+          "name" : "Paul"
+        }
+      ]
+    },
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        }
+      ]
+    },
+    {
+      "guests": [
+        {
+          "name" : "titouan"
+        },
+        {
+          "name" : "Maxime"
+        },
+        {
+          "name" : "Orelsan"
+        },
+        {
+          "name" : "Paul"
+        }
+      ]
+    }
+  ]
+}
