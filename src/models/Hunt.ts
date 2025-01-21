@@ -1,20 +1,13 @@
 import mongoose, { Model, Schema } from 'mongoose';
 import { z } from 'zod';
-import { MarkerSchema } from './Marker';
+import { MarkerSchema, MarkerZodSchema } from './Marker';
 import { TeamSchema, TeamZodSchema } from './Team';
 
 export const HuntZodSchema = z.object({
     _id: z.string().optional(),
     name: z.string().optional(), // Nom de la chasse
     teams: z.array(TeamZodSchema).default([]),
-    markers: z.array(z.object({ // Un marker
-        id: z.string(), // Identifiant unique pour le qr_code
-        position: z.object({ // Position sur la map
-            lat: z.number(),
-            lng: z.number()
-        }),
-        hint: z.string(), // Indice pour arriver à la position
-    })).default([]),
+    markers: z.array(MarkerZodSchema).default([]), // Un marker (en 0 c'est le trésor)
     stories: z.array(z.string()).default([]),
     user_id: z.string(),
     code: z.string(),
@@ -26,7 +19,8 @@ export const HuntZodSchema = z.object({
         lng: z.number(),
         zoom: z.number()
     }),
-    created: z.date().optional()
+    started_at: z.date().optional(),
+    created: z.date().default(new Date())
 });
 
 export type HuntZodType = z.infer<typeof HuntZodSchema>;
@@ -70,6 +64,23 @@ const HuntSchema = new Schema({
     max_teams: {
         type: Number,
         required: true
+    },
+    map: {
+        lat: {
+            type: Number,
+            required: true
+        },
+        lng: {
+            type: Number,
+            required: true
+        },
+        zoom: {
+            type: Number,
+            required: true
+        }
+    },
+    started_at: {
+        type: Date
     },
     created: {
         type: Date,

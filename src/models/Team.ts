@@ -3,6 +3,7 @@ import { z } from "zod";
 
 export const GuestZodSchema = z.object({
     id: z.string(),
+    name: z.string(),
     created: z.date().optional()
 });
 
@@ -23,8 +24,9 @@ const GuestSchema = new Schema({
 
 export const TeamZodSchema = z.object({
     hints_order: z.array(z.number()).default([]),
-    current_hint_index: z.number().default(0),
-    guests: z.array(GuestZodSchema).default([])
+    current_hint_index: z.number().default(0), // Indice actuel (celui qu'on cherche)
+    guests: z.array(GuestZodSchema).default([]),
+    win_at: z.date().optional()
 });
 
 export type TeamZodType = z.infer<typeof TeamZodSchema>;
@@ -42,11 +44,11 @@ export const TeamSchema = new Schema({
     guests: {
         type: [GuestSchema],
         default: []
+    },
+    win_at: {
+        type: Date,
+        default: null
     }
 });
 
-
-
-
-// ✅ Création du modèle TeamModel basé sur TeamSchema
 export const TeamModel: Model<Team> = mongoose.models.Team || mongoose.model("Team", TeamSchema);
