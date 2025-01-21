@@ -1,9 +1,9 @@
 import { Textarea } from "@heroui/react";
 
 
-export default function CodeArea({value, onChange}) {
+export default function CodeArea({value, onChange,classname}) {
     return (
-        <Textarea className="border rounded-lg w-90 h-10 text-lg max-w-xs "
+        <Textarea className={classname}
             value={value}
             onChange={onChange}
         />
