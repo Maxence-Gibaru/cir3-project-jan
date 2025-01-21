@@ -3,7 +3,7 @@ import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel, HuntZodSchema } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { getparsedBody } from "../utils";
+import { getparsedBody } from "@/app/api/utils";
 
 export async function GET() {
     const session = await getServerSession(authOptions);

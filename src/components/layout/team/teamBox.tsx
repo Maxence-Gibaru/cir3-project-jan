@@ -1,7 +1,4 @@
-
-import React from "react"
-import TeamPopup from "@/components/layout/team/teampopup"
-
+import React from "react";
 import {
   Modal,
   ModalContent,
@@ -12,12 +9,20 @@ import {
   useDisclosure,
 } from "@heroui/react";
 
-export default function teamBox(nomEquipe: number, nombreJoueurs: number) {
+interface TeamBoxProps {
+  nomEquipe: number;
+  nombreJoueurs: number;
+}
+
+const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
-      <Button className="boutonEquipe m-3 py-1 px-3 border-solid border-2 rounded-2xl border-blue-400 bg-blue-400 hover:shadow-lg" key={nomEquipe} onPress={onOpen}>
+      <Button
+        className="boutonEquipe m-3 py-1 px-3 border-solid border-2 rounded-2xl border-blue-400 bg-blue-400 hover:shadow-lg"
+        onPress={onOpen}
+      >
         <h3 className="font-bold">Equipe n°{nomEquipe}</h3>
         <p>Nombre de joueurs : {nombreJoueurs}</p>
       </Button>
@@ -28,7 +33,7 @@ export default function teamBox(nomEquipe: number, nombreJoueurs: number) {
               <ModalHeader className="flex flex-col gap-1">Attention !</ModalHeader>
               <ModalBody>
                 <p>
-                  Vous avez sélectionné l'équipe n°{nomEquipe}, êtes vous sûr?
+                  Vous avez sélectionné l'équipe n°{nomEquipe}, êtes-vous sûr ?
                 </p>
               </ModalBody>
               <ModalFooter>
@@ -44,8 +49,7 @@ export default function teamBox(nomEquipe: number, nombreJoueurs: number) {
         </ModalContent>
       </Modal>
     </>
-  )
+  );
+};
 
-}
-
-
+export default TeamBox;

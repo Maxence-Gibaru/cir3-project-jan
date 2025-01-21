@@ -26,7 +26,7 @@ export async function fetchApi(
             const errorDetails = errorResponse.details || 'No details available';
             throw new Error(`${errorMessage}. Details: ${errorDetails}`);
         }
-        
+
         return await response.json();
     } catch (error) {
         console.error('Fetch API error : ', error);

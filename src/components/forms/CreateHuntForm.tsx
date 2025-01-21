@@ -43,7 +43,7 @@ export default function CreateHuntForm() {
         setError("");
 
         // Simule une requête API
-        await fetchApi("hunt", {
+        await fetchApi("hunt/create", {
             method: "POST",
             body: huntData,
         }).then(() => {
