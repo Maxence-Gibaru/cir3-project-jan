@@ -15,6 +15,7 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
+import Menu from "./menu/Menu";
 
 export default function NavbarHeader() {
     const router = useRouter();
@@ -44,7 +45,10 @@ export default function NavbarHeader() {
                     </div>
                 </Link>
             </NavbarBrand>
-
+            
+            <NavbarContent className="absolute top-4 left-4">
+                            <Menu />
+            </NavbarContent>
             {/* Centrer le contenu dans la Navbar */}
             <NavbarContent justify='center' className="hidden sm:flex gap-4">
                 <NavbarItem>
