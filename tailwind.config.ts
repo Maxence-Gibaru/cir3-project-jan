@@ -37,19 +37,13 @@ export default {
         sans: ['var(--font-montserrat)', 'sans-serif'],
       },
       colors: {
-        deepNavy: "#111938",       // Bleu marine très profond
-        richPurple: "#442656",     // Violet riche et intense
-        duskViolet: "#59477a",     // Violet doux avec une touche de gris
-        vibrantPlum: "#6d3a8b",    // Prune vibrante et énergique
-        royalPurple: "#6340a2",    // Violet royal avec une présence forte
-        brightLavender: "#803db0", // Lavande éclatante et vive
-        deepAmethyst: "#672185",   // Améthyste profond et saturé
-        boldBlue: "#1f257d",       // Bleu audacieux et riche
-        midnightBlue: "#181f5b",   // Bleu nuit profond et apaisant
-        darkIndigo: "#161a32",     // Indigo foncé, presque noir
-        lightBlue: "90E0EF",       //Bleu Clair
-        normalBlue: "03045E",      //Bleu
+        primary: "#0077b6",       // Couleur principale : Bleu vibrant
+        secondary: "#00b4d8",     // Couleur secondaire : Aqua vif
+        accent: "#90e0ef",        // Couleur d'accentuation : Bleu ciel doux
+        background: "#caf0f8",    // Couleur de fond : Bleu pâle
+        dark: "#03045e",          // Couleur sombre : Bleu marine très profond
       },
+
 
 
     },

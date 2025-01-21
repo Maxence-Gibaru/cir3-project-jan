@@ -4,6 +4,10 @@ import "@/app/globals.css";
 import NavbarHeader from "@/components/layout/NavbarHeader";
 
 import Footer from "@/components/layout/Footer"
+import { SessionProvider } from "next-auth/react";
+import SessionWrapper from "@/lib/SessionWrapper";
+
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,18 +28,27 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>,
+
+
+) {
   return (
-    <html lang="en">
+
+
+    < html lang="en" >
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {/* <NavbarHeader /> */}
-        <main>
-          {children}
-        </main>
-        {/* <Footer /> */}
+        <SessionWrapper >
+          {/* <NavbarHeader /> */}
+          <main>
+            {children}
+          </main>
+          {/* <Footer /> */}
+        </SessionWrapper>
       </body>
-    </html>
+    </html >
+
+
   );
 }
