@@ -1,22 +1,23 @@
 export type FetchOptions = {
-    method?: 'GET' | 'POST' | 'PUT' | 'DELETE'; // Méthodes HTTP possibles
-    headers?: { [key: string]: string };        // En-têtes HTTP personnalisés
-    body?: unknown;                                 // Corps de la requête pour POST/PUT
+    method?: 'GET' | 'POST' | 'PUT' | 'DELETE'; // Possible HTTP methods
+    headers?: { [key: string]: string };        // Custom HTTP headers
+    body?: unknown;                             // Request body for POST/PUT
 };
-
-
 
 export async function fetchApi(
     endpoint: string,
     options: FetchOptions = {}
 ) {
     const defaultHeaders = {
-        'Content-Type': 'application/json', // En-tête par défaut
-        ...options.headers,                 // Fusionne avec les en-têtes personnalisés
+        'Content-Type': 'application/json', // Default header
+        ...options.headers,                 // Merge with custom headers
     };
 
+    const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Ensure you have a base URL
+    const url = `${baseUrl}/api/${endpoint}`;  // Full URL combining baseUrl and endpoint
+
     try {
-        const response = await fetch(`/api/${endpoint}`, {
+        const response = await fetch(url, {
             method: options.method || 'GET',
             headers: defaultHeaders,
             body: options.body ? JSON.stringify(options.body) : null,
@@ -31,7 +32,7 @@ export async function fetchApi(
 
         return await response.json();
     } catch (error) {
-        console.error('Fetch API error : ', error);
+        console.error('Fetch API error: ', error);
         throw error;
     }
 }

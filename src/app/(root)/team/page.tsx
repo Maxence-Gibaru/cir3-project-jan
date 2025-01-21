@@ -8,6 +8,7 @@ import { useEffect, useState } from "react"
 import FichierJson from "@/app/(root)/team/teamjson.json"
 import { useSearchParams } from 'next/navigation';
 import { fetchApi } from "@/lib/api";
+import { useSession } from "next-auth/react";
 /* import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'; */
 
@@ -17,7 +18,12 @@ export default function HomePage() {
     const code = searchParams.get("code");
 
     /* const ListeEquipes = FichierJson.teams; */
-    
+
+    const { data: session } = useSession();
+
+    if (session) {
+        console.log("session : ", session);
+    }
 
     useEffect(() => {
         const fetchHunt = async () => {
@@ -50,10 +56,11 @@ export default function HomePage() {
     let compteur = 1;
 
 
+
     const max_teams = huntData.max_teams
     // Utilisation correcte de map pour construire les équipes
     Array.from({ length: max_teams }).forEach((_, index) => {
-        Equipes.push({ id: index, size: 0 });
+        Equipes.push({ id: index, size: huntData.teams[index].guests.length });
 
     });
     return (

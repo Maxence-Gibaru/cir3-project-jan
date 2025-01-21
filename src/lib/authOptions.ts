@@ -4,12 +4,14 @@ import { OrganizerModel } from "@/models/Organizer";
 import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextRequest } from "next/server";
+import { fetchApi } from "./api";
 
 type user = {
     email: string,
     password: string
 
 }
+
 
 export const authOptions = {
     providers: [
@@ -45,10 +47,11 @@ export const authOptions = {
             name: "Guest",
             credentials: {},
             async authorize() {
-                // Create a guest user with a unique identifier
+                const response = await fetchApi("generate")
+                const data = await response.output
                 const guestUser = {
                     id: "guest_" + Math.random().toString(36).substring(2, 15),
-                    name: "Guest",
+                    name: data,
                     role: "guest",
                 };
                 return guestUser;
