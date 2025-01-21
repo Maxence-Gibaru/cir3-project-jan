@@ -1,10 +1,16 @@
+import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
-import { OrganizerZodSchema, OrganizerModel, Organizer } from "@/models/Organizer";
+import { Organizer, OrganizerModel, OrganizerZodSchema } from "@/models/Organizer";
 import bcrypt from "bcrypt";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { parse } from "path";
+import { getparsedBody } from "../../utils";
 
 export async function GET() {
+    // If already authenticated
+    const session = await getServerSession(authOptions);
+    if (session) return NextResponse.next({ status: 401 });
+    
     try {
         await dbConnect();
         const organizers = await OrganizerModel.find();
@@ -19,25 +25,24 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+    // If already authenticated
+    const session = await getServerSession(authOptions);
+    if (session) return NextResponse.next({ status: 401 });
+    
     try {
         await dbConnect();
         const body = await req.json();
-
-
-        const parsedBody = OrganizerZodSchema.safeParse(body);
-
-        if (!parsedBody.success) {
+        const hashedPassword = await bcrypt.hash(body.password, 10);
+        body.password = hashedPassword;
+        const result = getparsedBody(OrganizerZodSchema, body);
+        if (typeof result === "string") {
             return NextResponse.json(
-                { error: "Invalid input", details: parsedBody.error.errors },
+                { error: "Failed to parse body", details: result },
                 { status: 400 }
             );
         }
 
-        const hashedPassword = await bcrypt.hash(parsedBody.data.password, 10);
-
-        parsedBody.data.password = hashedPassword;
-
-        const newOrganizer: Organizer = await OrganizerModel.create(parsedBody.data);
+        const newOrganizer: Organizer = await OrganizerModel.create(result);
         return NextResponse.json(newOrganizer, { status: 201 });
     } catch (error) {
         console.error(error);

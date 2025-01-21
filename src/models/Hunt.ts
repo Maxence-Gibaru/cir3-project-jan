@@ -50,7 +50,7 @@ export const HuntZodSchema = z.object({
     })).default([]),
     story: z.array(z.string()).default([]),
     user_id: z.string(),
-    code: z.string().optional(),
+    code: z.string(),
     status: z.enum(['closed', 'opened', 'started']).default('closed'),
     max_guests: z.number(),
     max_teams: z.number(),
