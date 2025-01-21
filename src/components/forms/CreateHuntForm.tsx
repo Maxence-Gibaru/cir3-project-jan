@@ -1,12 +1,22 @@
 "use client"
 import { fetchApi } from "@/lib/api";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 export default function CreateHuntForm() {
+    const { data } = useSession();
+    const _id = data?.user?.id;
+
     const [huntData, setHuntData] = useState({
         max_guests: 5,
         max_teams: 4,
+        _id: _id,
     });
+
+
+
+
+
 
     const [error, setError] = useState("");
 
@@ -33,6 +43,7 @@ export default function CreateHuntForm() {
         setHuntData({
             max_guests: 5,
             max_teams: 4,
+            _id: _id,
         });
     };
 
