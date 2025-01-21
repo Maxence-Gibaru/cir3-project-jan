@@ -16,8 +16,8 @@ export default function HomePage() {
     const [huntData, setHuntData] = useState({})
     const code = searchParams.get("code");
 
-    const ListeEquipes = FichierJson.teams;
-
+    /* const ListeEquipes = FichierJson.teams; */
+    
 
     useEffect(() => {
         const fetchHunt = async () => {
@@ -49,10 +49,12 @@ export default function HomePage() {
     const Equipes: EquipeType[] = [];
     let compteur = 1;
 
+
+    const max_teams = huntData.max_teams
     // Utilisation correcte de map pour construire les équipes
-    ListeEquipes.forEach((Equipe) => {
-        Equipes.push({ id: compteur, size: Equipe.guests.length });
-        compteur += 1;
+    Array.from({ length: max_teams }).forEach((_, index) => {
+        Equipes.push({ id: index, size: 0 });
+
     });
     return (
         <div className="h-screen">

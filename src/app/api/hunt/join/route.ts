@@ -3,6 +3,7 @@ import dbConnect from "@/lib/dbConnect";
 import { HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { getParsedType } from "zod";
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
@@ -10,11 +11,14 @@ export async function POST(req: NextRequest) {
 
     try {
         await dbConnect();
-        const { code } = await req.json();
+        const { code, teamIndex, guestId } = await req.json();
+
+
 
         console.log('Code reçu :', code);
         const targetHunt = await HuntModel.findOne({ code, status: "opened" });
         console.log('Chasse trouvée :', targetHunt);
+
 
 
         if (!targetHunt) {
@@ -23,6 +27,21 @@ export async function POST(req: NextRequest) {
                 { status: 404 }
             );
         }
+
+        const newGuest = {
+            id: guestId,
+            name: `Guest-${guestId}` // 🔹 Ajout d'un nom par défaut
+        };
+        targetHunt.teams[teamIndex].guests.push(newGuest);
+
+        await HuntModel.findOneAndUpdate({ code, status: "opened" }, {
+            ...targetHunt,
+            /* teams:  */
+        });
+
+        // targetHunt.markModified("teams");
+
+        /* await targetHunt.save(); */
 
         return NextResponse.json({ hunt: targetHunt }, { status: 200 });
     } catch (error) {

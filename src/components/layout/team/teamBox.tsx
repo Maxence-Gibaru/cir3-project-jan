@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -9,13 +9,41 @@ import {
   useDisclosure,
 } from "@heroui/react";
 
+import { useEffect } from "react";
+
+import { useSession } from "next-auth/react";
+import { fetchApi } from "@/lib/api";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 interface TeamBoxProps {
   nomEquipe: number;
   nombreJoueurs: number;
 }
 
 const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs }) => {
+  const searchParams = useSearchParams();
+  const [huntData, setHuntData] = useState({})
+  const code = searchParams.get("code");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { data: session } = useSession();
+  const [teamJoined, setTeamJoined] = useState({
+    teamIndex: nomEquipe,
+    guestId: session?.user?.id
+  })
+
+  const router = useRouter();
+
+  const handleTeamJoin = async () => {
+    const response = await fetchApi("hunt/join", { method: "POST", body: { code: code, teamIndex: teamJoined.teamIndex, guestId: teamJoined.guestId } })
+
+    if (response) {
+      router.push('/')
+    }
+  }
+
+
+
 
   return (
     <>
@@ -40,7 +68,10 @@ const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs }) => {
                 <Button color="danger" variant="light" onPress={onClose}>
                   Non
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button color="primary" onPress={() => {
+                  handleTeamJoin()
+                  onClose()
+                }}>
                   Oui
                 </Button>
               </ModalFooter>
