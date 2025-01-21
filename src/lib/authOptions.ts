@@ -38,6 +38,21 @@ export const authOptions = {
                     return null;
                 }
             },
+
+        }),
+        CredentialsProvider({
+            id: "guest-credentials",
+            name: "Guest",
+            credentials: {},
+            async authorize() {
+                // Create a guest user with a unique identifier
+                const guestUser = {
+                    id: "guest_" + Math.random().toString(36).substring(2, 15),
+                    name: "Guest",
+                    role: "guest",
+                };
+                return guestUser;
+            },
         }),
     ],
     callbacks: {

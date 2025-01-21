@@ -6,7 +6,7 @@ import Link from "next/link"
 
 import { useEffect, useState } from "react"
 import LandingPage from "@/components/pages/LandingPage";
-import { useSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 
 
 
@@ -22,7 +22,7 @@ export default function HomePage() {
     const [isImageLoaded, setIsImageLoaded] = useState(false);
 
 
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
 
     const handleImageLoad = () => {
         setIsImageLoaded(true);  // L'image de fond a été chargée
@@ -30,13 +30,25 @@ export default function HomePage() {
 
     useEffect(() => {
         console.log("session info", session)
+        console.log("status: ", status)
     }, [session])
 
 
+    useEffect(() => {
+        if (status === "unauthenticated") {
+            signIn("guest-credentials");
+        }
+    }, [status]);
+
     return (
         <>
-
-            <LandingPage />
+            <div>
+                {session ? (
+                    <p>Bienvenue, {session?.user?.name} !</p>
+                ) : (
+                    <p>Chargement...</p>
+                )}
+            </div>
 
         </>
     );
