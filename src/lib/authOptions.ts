@@ -53,20 +53,27 @@ export const authOptions = {
                     id: "guest_" + Math.random().toString(36).substring(2, 15),
                     name: data,
                     role: "guest",
+                    huntId: null,
                 };
                 return guestUser;
             },
         }),
     ],
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
             if (user) {
                 token.user = user;
+            }
+            if (trigger === 'update' && session) {
+
+                token = { ...token, user: session }
+                return token;
             }
             return token;
         },
         async session({ session, token }) {
             session.user = token.user;
+
             return session;
         },
     },

@@ -2,11 +2,12 @@
 import Image from "next/image";
 
 import { Textarea } from "@heroui/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@heroui/react";
 import { fetchApi } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
@@ -17,12 +18,33 @@ export default function LandingPage() {
 
     const router = useRouter();
 
+    const { data: session, update } = useSession();
+
+
+    const [user, setUser] = useState({})
+    useEffect(() => {
+        if (session && session.user) {
+            setUser(session.user)
+            console.log(session.user)
+        }
+    }, [session])
+
+
+    console.log(session);
+
     const handleJoin = async () => {
         console.log("join", text)
-        const response = await fetchApi("hunt/find", { method: "POST", body: { code: text } })
+        const response = await fetchApi("hunt/find", { method: "POST", body: { code: text, id: null } })
 
         console.log("response : ", response)
         if (response) {
+
+            const huntId = response.hunt._id;
+
+            console.log("ID :", huntId);
+
+            const updateSession = await update({ ...user, huntId: huntId })
+
             router.push(`/team?code=${encodeURIComponent(text)}`);
         }
     }

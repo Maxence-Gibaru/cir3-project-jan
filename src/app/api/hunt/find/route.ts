@@ -10,10 +10,10 @@ export async function POST(req: NextRequest) {
 
     try {
         await dbConnect();
-        const { code } = await req.json();
+        const { code, id } = await req.json();
 
         console.log('Code reçu :', code);
-        const targetHunt = await HuntModel.findOne({ code, status: "opened" });
+        const targetHunt = await HuntModel.findById({ code, id, status: "opened" });
         console.log('Chasse trouvée :', targetHunt);
 
 

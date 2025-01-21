@@ -13,9 +13,7 @@ import { useSession } from "next-auth/react";
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons'; */
 
 export default function HomePage() {
-    const searchParams = useSearchParams();
     const [huntData, setHuntData] = useState({})
-    const code = searchParams.get("code");
 
     /* const ListeEquipes = FichierJson.teams; */
 
@@ -25,9 +23,13 @@ export default function HomePage() {
         console.log("session : ", session);
     }
 
+    const huntId = session?.user?.huntId
+
+    console.log("huntId", huntId)
+
     useEffect(() => {
         const fetchHunt = async () => {
-            const response = await fetchApi("hunt/find", { method: "POST", body: { code: code } })
+            const response = await fetchApi("hunt/find", { method: "POST", body: { code: null, id: huntId } })
             setHuntData(response.hunt);
         }
 
