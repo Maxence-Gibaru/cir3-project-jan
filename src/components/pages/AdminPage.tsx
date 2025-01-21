@@ -4,21 +4,16 @@
 import Hero from "@/components/layout/landing/Hero"
 import Contact from "@/components/layout/landing/Contact"
 import Content from "@/components/layout/Content"
-
-import Menu from "@/components/layout/menu/Menu";
-
+import { useState } from "react"
 
 
 
-export default function LandingPage() {
-
+export default function AdminPage() {
     return (
         <>
             <div className="w-full text-white">
 
                 <Content />
-                <Menu />
-         
 
 
 
