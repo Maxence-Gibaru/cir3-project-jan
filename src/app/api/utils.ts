@@ -8,7 +8,7 @@ export function getparsedBody<T extends ZodRawShape>(ZodSchema: ZodObject<T>, bo
             details = parsedBody.error.errors.map((error) => error.message + " " + error.path + " " + error.code).join(", ");
         }
 
-        return {success: true, content: details};
+        return {success: false, content: details};
     }
-    return {sucess: false, content: parsedBody};
+    return {sucess: true, content: parsedBody};
 }

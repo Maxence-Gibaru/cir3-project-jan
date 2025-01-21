@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
         const result = getparsedBody(HuntZodSchema, body);
         if (!result.success) {
             return NextResponse.json(
-                { error: "Failed to parse body : " + result.content },
+                { error: "Failed to parse body", details: result.content },
                 { status: 400 }
             );
         }
