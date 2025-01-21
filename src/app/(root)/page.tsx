@@ -40,16 +40,9 @@ export default function HomePage() {
         }
     }, [status]);
 
-    return (
+  return (
         <>
-            <div>
-                {session ? (
-                    <p>Bienvenue, {session?.user?.name} !</p>
-                ) : (
-                    <p>Chargement...</p>
-                )}
-            </div>
-
+            <LandingPage />
         </>
-    );
+  );
 }
