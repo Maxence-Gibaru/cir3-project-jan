@@ -1,4 +1,10 @@
-import { Schema } from "mongoose";
+import mongoose, { Model, Schema } from "mongoose";
+import { z } from "zod";
+
+export const GuestZodSchema = z.object({
+    id: z.string(),
+    created: z.date().optional()
+});
 
 const GuestSchema = new Schema({
     id: {
@@ -15,6 +21,15 @@ const GuestSchema = new Schema({
     }
 });
 
+export const TeamZodSchema = z.object({
+    hints_order: z.array(z.number()).default([]),
+    current_hint_index: z.number().default(0),
+    guests: z.array(GuestZodSchema).default([])
+});
+
+export type TeamZodType = z.infer<typeof TeamZodSchema>;
+export interface Team extends Document, TeamZodType { }
+
 export const TeamSchema = new Schema({
     hints_order: {
         type: [Number],
@@ -27,10 +42,11 @@ export const TeamSchema = new Schema({
     guests: {
         type: [GuestSchema],
         default: []
-    },
-    created: {
-        type: Date,
-        default: Date.now
     }
 });
 
+
+
+
+// ✅ Création du modèle TeamModel basé sur TeamSchema
+export const TeamModel: Model<Team> = mongoose.models.Team || mongoose.model("Team", TeamSchema);

@@ -1,20 +1,12 @@
 import mongoose, { Model, Schema } from 'mongoose';
 import { z } from 'zod';
 import { MarkerSchema } from './Marker';
-import { TeamSchema } from './Team';
+import { TeamSchema, TeamZodSchema } from './Team';
 
 export const HuntZodSchema = z.object({
     _id: z.string().optional(),
     name: z.string().optional(), // Nom de la chasse
-    teams: z.array(z.object({
-        hints_order: z.array(z.number()).default([]), // Ordre des indices
-        current_hint_index: z.number().default(0), // Indice actuel (celui qu'on cherche)
-        guests: z.array(z.object({
-            id: z.string(),
-            created: z.date().optional()
-        })).default([]),
-        created: z.date().optional()
-    })).default([]),
+    teams: z.array(TeamZodSchema).default([]),
     markers: z.array(z.object({ // Un marker
         id: z.string(), // Identifiant unique pour le qr_code
         position: z.object({ // Position sur la map
@@ -32,7 +24,7 @@ export const HuntZodSchema = z.object({
     map: z.object({
         lat: z.number(),
         lng: z.number(),
-        zoom: z.number()   
+        zoom: z.number()
     }),
     created: z.date().optional()
 });
