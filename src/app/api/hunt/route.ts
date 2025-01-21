@@ -2,8 +2,14 @@ import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel, HuntZodSchema } from "@/models/Hunt";
 import { NextRequest, NextResponse } from "next/server";
 import { getparsedBody } from "../utils";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/authOptions";
 
 export async function GET() {
+    const session = await getServerSession(authOptions);
+
+    console.log('session : ', session);
+
     try {
         await dbConnect();
         // const user_id = "";

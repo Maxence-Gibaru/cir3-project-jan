@@ -2,7 +2,7 @@
 import { fetchApi, FetchOptions } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function LoginForm() {
     const [loginData, setLoginData] = useState({
@@ -61,6 +61,9 @@ export default function LoginForm() {
     }
 
 
+
+
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError("");
@@ -83,6 +86,9 @@ export default function LoginForm() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-dark">
+            <button onClick={() => {
+                signOut({ redirect: false, callbackUrl: '/' })
+            }}>Logout</button>
             <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
                 <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
                     Connectez vous à votre compte
@@ -137,6 +143,6 @@ export default function LoginForm() {
                     </button>
                 </form>
             </div>
-        </div>
+        </div >
     );
 }
