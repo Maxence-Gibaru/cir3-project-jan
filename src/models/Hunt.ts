@@ -23,12 +23,16 @@ const TeamSchema = new Schema({
   }
 });
 
-/* const HintSchema = new Schema({
+const HintSchema = new Schema({
   content: {
     type: String,
     required: true
   },
-}); */
+  qr_code: {
+    type: String,
+    required: true
+  }
+});
 
 export const HuntZodSchema = z.object({
   _id: z.string().optional(),
@@ -36,11 +40,17 @@ export const HuntZodSchema = z.object({
     guests: z.array(z.object({
       uuid: z.string(),
       created: z.date().optional()
-    })).optional(),
+    })).default([]),
     created: z.date().optional()
-  })).optional(),
+  })).default([]),
+  hints: z.array(z.object({
+    content: z.string(),
+    qr_code: z.string()
+  })).default([]),
+  story: z.array(z.string()).default([]),
+  user_id: z.string(),
   code: z.string().optional(),
-  status: z.enum(['closed', 'opened', 'started']),
+  status: z.enum(['closed', 'opened', 'started']).default('closed'),
   max_guests: z.number(),
   max_teams: z.number(),
   created: z.date().optional()
@@ -52,6 +62,14 @@ export interface Hunt extends Document, HuntZodType {}
 const HuntSchema = new Schema({
   teams: {
     type: [TeamSchema],
+    default: []
+  },
+  hints: {
+    type: [HintSchema],
+    default: []
+  },
+  story: {
+    type: [String],
     default: []
   },
   user_id: {
@@ -92,4 +110,4 @@ HuntSchema.pre('save', function (next) {
   next();
 });
 
-export const HuntModel: Model<Hunt> = (mongoose.models.Hunt as Model<Hunt>) || mongoose.model<Hunt>('hunts', HuntSchema);
+export const HuntModel: Model<Hunt> = mongoose.models.Hunt || mongoose.model<Hunt>('Hunt', HuntSchema, 'hunts');

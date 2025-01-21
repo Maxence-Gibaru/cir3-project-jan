@@ -26,8 +26,13 @@ export async function POST(req: NextRequest) {
         const parsedBody = HuntZodSchema.safeParse(body);
 
         if (!parsedBody.success) {
+            let details = "";
+            if (parsedBody.error.errors) {
+                details = parsedBody.error.errors.map((error) => error.message + " " + error.path + " " + error.code).join(", ");
+            }
+
             return NextResponse.json(
-                { error: "Invalid input", details: parsedBody.error.errors },
+                { error: "Invalid input", details },
                 { status: 400 }
             );
         }

@@ -1,5 +1,5 @@
 import dbConnect from "@/lib/dbConnect";
-import OrganizerModel from "@/models/OrganizerModel";
+import { OrganizerModel } from "@/models/Organizer";
 import bcrypt from "bcrypt";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
