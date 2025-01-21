@@ -47,6 +47,8 @@ export default {
         boldBlue: "#1f257d",       // Bleu audacieux et riche
         midnightBlue: "#181f5b",   // Bleu nuit profond et apaisant
         darkIndigo: "#161a32",     // Indigo foncé, presque noir
+        lightBlue: "90E0EF",       //Bleu Clair
+        normalBlue: "03045E",      //Bleu
       },
 
 
