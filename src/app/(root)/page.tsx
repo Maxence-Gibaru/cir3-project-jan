@@ -1,30 +1,16 @@
 "use client";
 
-import Image from "next/image";
-import { Button, Avatar, useDisclosure } from "@nextui-org/react"
-import Link from "next/link"
-import SignupPage from "@/components/pages/SignupPage"
-import { useState } from "react"
+import CodeArea from "@/components/pages/TextArea";
+import ButtonComponent from "@/components/pages/Button";
+import LandingPage from "@/components/pages/LandingPage"
 
-/* import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons'; */
-
+import { useState } from "react";
 
 export default function HomePage() {
-    const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-    const [selectedCard, setSelectedCard] = useState(0);
-    const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-    const handleImageLoad = () => {
-        setIsImageLoaded(true);  // L'image de fond a été chargée
-    };
-
-
-
-
-    return (
+  return (
         <>
-            <SignupPage />
+            <LandingPage />
         </>
-    );
+  );
 }
