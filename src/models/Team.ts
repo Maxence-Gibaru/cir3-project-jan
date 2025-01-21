@@ -5,6 +5,10 @@ const GuestSchema = new Schema({
         type: String,
         required: true
     },
+    name: {
+        type: String,
+        required: true
+    },
     created: {
         type: Date,
         default: Date.now
