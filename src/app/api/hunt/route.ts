@@ -1,6 +1,7 @@
 import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel, HuntZodSchema } from "@/models/Hunt";
 import { NextRequest, NextResponse } from "next/server";
+import { getparsedBody } from "../utils";
 
 export async function GET() {
     try {
@@ -23,16 +24,16 @@ export async function POST(req: NextRequest) {
         await dbConnect();
         const body = await req.json();
         // body.user_id = getUserId(req);
-        const parsedBody = HuntZodSchema.safeParse(body);
-
-        if (!parsedBody.success) {
+        
+        const result = getparsedBody(HuntZodSchema, body);
+        if (!result.success) {
             return NextResponse.json(
-                { error: "Invalid input", details: parsedBody.error.errors },
+                { error: "Failed to parse body : " + result.content },
                 { status: 400 }
             );
         }
 
-        const newHunt: Hunt = await HuntModel.create(parsedBody.data);
+        const newHunt: Hunt = await HuntModel.create(result.content);
         return NextResponse.json(newHunt, { status: 201 });
     } catch (error) {
         console.error(error);

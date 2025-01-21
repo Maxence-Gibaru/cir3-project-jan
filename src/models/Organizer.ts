@@ -39,4 +39,5 @@ const OrganizerSchema = new Schema({
   // Ceci permettra d'avoir un _id par défaut généré par MongoDB
   timestamps: false
 })
+
 export const OrganizerModel: Model<Organizer> = mongoose.models.Organizer || mongoose.model<Organizer>('Organizer', OrganizerSchema, 'organizers');
