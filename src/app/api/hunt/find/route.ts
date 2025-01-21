@@ -28,10 +28,17 @@ export async function POST(req: NextRequest) {
     try {
         await dbConnect();
         const { code, id } = await req.json();
-
+        let targetHunt = null;
         console.log('Code reçu :', code);
-        const targetHunt = await HuntModel.findById({ code, id, status: "opened" });
-        console.log('Chasse trouvée :', targetHunt);
+        if (id) {
+            targetHunt = await HuntModel.findById(id);
+            console.log('Chasse trouvée :', targetHunt);
+        }
+
+        if (code) {
+            targetHunt = await HuntModel.findOne({ code, status: "opened" });
+            console.log('Chasse trouvée :', targetHunt);
+        }
 
 
         if (!targetHunt) {
