@@ -5,18 +5,31 @@ import { useEffect, useState } from "react";
 
 export default function CreateHuntForm() {
     const { data } = useSession();
-    const _id = data?.user?.id;
+    const user_id = data?.user?.id;
+
+
 
     const [huntData, setHuntData] = useState({
         max_guests: 5,
         max_teams: 4,
-        _id: _id,
+        user_id: user_id || ""
     });
 
+    /* console.log(typeof (user_id)) */
 
 
+    useEffect(() => {
+        if (user_id) {
+            setHuntData((prevState) => ({
+                ...prevState,
+                user_id,
+            }));
+        }
+    }, [user_id]);
 
-
+    useEffect(() => {
+        console.log("huntData", huntData)
+    }, [huntData])
 
     const [error, setError] = useState("");
 
@@ -43,7 +56,7 @@ export default function CreateHuntForm() {
         setHuntData({
             max_guests: 5,
             max_teams: 4,
-            _id: _id,
+            user_id
         });
     };
 

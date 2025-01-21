@@ -75,7 +75,7 @@ const HuntSchema = new Schema({
     },
     user_id: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'Organizer',
         required: true
     },
     code: {
