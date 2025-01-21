@@ -1,27 +1,6 @@
 import mongoose, { Model, Schema } from 'mongoose';
 import { z } from 'zod';
-
-const GuestSchema = new Schema({
-    uuid: {
-        type: String,
-        required: true
-    },
-    created: {
-        type: Date,
-        default: Date.now
-    }
-});
-
-const TeamSchema = new Schema({
-    guests: {
-        type: [GuestSchema],
-        default: []
-    },
-    created: {
-        type: Date,
-        default: Date.now
-    }
-});
+import { TeamSchema } from './Team';
 
 const HintSchema = new Schema({
     id: {
@@ -38,17 +17,23 @@ export const HuntZodSchema = z.object({
     _id: z.string().optional(),
     name: z.string().optional(),
     teams: z.array(z.object({
+        hints_order: z.array(z.number()).default([]),
+        current_hint_index: z.number().default(0),
         guests: z.array(z.object({
-            uuid: z.string(),
+            id: z.string(),
             created: z.date().optional()
         })).default([]),
         created: z.date().optional()
     })).default([]),
-    hints: z.array(z.object({
+    markers: z.array(z.object({
         id: z.string(),
-        content: z.string(),
+        position: z.object({
+            lat: z.number(),
+            lng: z.number()
+        }),
+        next_hint: z.number(),
     })).default([]),
-    story: z.array(z.string()).default([]),
+    stories: z.array(z.string()).default([]),
     user_id: z.string(),
     code: z.string(),
     status: z.enum(['closed', 'opened', 'started']).default('closed'),
@@ -69,7 +54,7 @@ const HuntSchema = new Schema({
         type: [HintSchema],
         default: []
     },
-    story: {
+    stories: {
         type: [String],
         default: []
     },
@@ -102,13 +87,5 @@ const HuntSchema = new Schema({
 }, {
     timestamps: false
 })
-
-HuntSchema.pre('save', function (next) {
-    const event = this as unknown as Hunt;
-    if (!event.code) {
-        event.code = Math.random().toString(36).substring(7).toUpperCase();
-    }
-    next();
-});
 
 export const HuntModel: Model<Hunt> = mongoose.models.Hunt || mongoose.model<Hunt>('Hunt', HuntSchema, 'hunts');
