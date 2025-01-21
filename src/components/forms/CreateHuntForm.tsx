@@ -12,7 +12,8 @@ export default function CreateHuntForm() {
     const [huntData, setHuntData] = useState({
         max_guests: 5,
         max_teams: 4,
-        user_id: user_id || ""
+        user_id: user_id || "",
+        map: { lat: 51.50235101912438, lng: -0.13131603921719526, zoom: 13 }
     });
 
     /* console.log(typeof (user_id)) */
@@ -43,7 +44,7 @@ export default function CreateHuntForm() {
         setError("");
 
         // Simule une requête API
-        await fetchApi("hunt", {
+        await fetchApi("hunt/create", {
             method: "POST",
             body: huntData,
         }).then(() => {
@@ -56,7 +57,8 @@ export default function CreateHuntForm() {
         setHuntData({
             max_guests: 5,
             max_teams: 4,
-            user_id
+            user_id,
+            map: { lat: 51.50235101912438, lng: -0.13131603921719526, zoom: 13 }
         });
     };
 

@@ -14,7 +14,7 @@ export default function LoginForm() {
     const { data: session } = useSession();
 
     if (session) {
-        console.log(session);
+        console.log("session : ", session);
     }
 
     const router = useRouter();
@@ -34,7 +34,6 @@ export default function LoginForm() {
                 password: loginData.password,
                 callbackUrl: "/",
             });
-            console.log(result);
             router.push(result.url);
             /*  if (result?.error) {
                  setError("Échec de la connexion. Veuillez vérifier vos identifiants.");

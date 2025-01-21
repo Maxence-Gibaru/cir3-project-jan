@@ -1,17 +1,13 @@
-import React from "react";
+import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
 
-export default function ButtonComponent({ name, classname, onPress, link }) {
-  const handlePress = () => {
+export default function ButtonComponent({ name, classname, link, handleRedirect }) {
+  const router = useRouter();
+
+  /* const handleRedirect = () => {
     if (link) {
-      window.location.href = link; // Redirection si un lien est fourni
-    } else if (onPress) {
-      onPress(); // Appelle la fonction onPress si fournie
+      router.push(link); // Redirige vers l'URL spécifiée
     }
-  };
-
-  return (
-    <button className={classname} onClick={handlePress}>
-      {name}
-    </button>
-  );
+  }; */
+  return <Button className={classname} onPress={handleRedirect}>{name}</Button>;
 }

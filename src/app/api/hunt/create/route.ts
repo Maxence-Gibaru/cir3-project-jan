@@ -3,7 +3,9 @@ import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel, HuntZodSchema } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { getparsedBody } from "../utils";
+import { getparsedBody } from "@/app/api/utils";
+import { TeamModel } from "@/models/Team";
+
 
 export async function GET() {
     const session = await getServerSession(authOptions);
@@ -39,6 +41,8 @@ export async function POST(req: NextRequest) {
                 { status: 400 }
             );
         }
+
+        result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject());
 
         const newHunt: Hunt = await HuntModel.create(result);
         return NextResponse.json(newHunt, { status: 201 });
