@@ -5,6 +5,7 @@ import { fetchApi } from "@/lib/api";
 import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import CodeArea from "./TextArea";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
@@ -29,17 +30,15 @@ export default function LandingPage() {
         <div className="relative min-h-screen flex flex-col items-center justify-between pt-20 px-4 md:px-16 lg:px-32">
             {/* Bouton en haut à droite */}
             <div className="absolute top-4 right-4">
-                <ButtonComponent
+                <Button
                     name="Créer un event"
-                    classname="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum"
-                    link="/createevent"
-                    onPress={null}
+                    className="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum"
                 />
             </div>
 
             {/* Gros titre centré */}
             <h1 className="text-3xl md:text-5xl font-bold text-center mt-12 mb-8 text-midnightBlue">
-                One P'ISEN
+                One P&apos;ISEN
             </h1>
 
             {/* Logo sous le titre */}

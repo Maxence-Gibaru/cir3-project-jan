@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import ButtonComponent from "@/components/pages/Button";
 import CodeArea from "@/components/pages/TextArea";
+import { Button } from "@heroui/react";
+import { useState } from "react";
 import ModalApp from "../ui/Modal";
 
 export default function RessourcesCreationPage() {
@@ -78,10 +78,9 @@ export default function RessourcesCreationPage() {
      classname="w-full h-20 resize-none border border-gray-400 rounded-md p-2 bg-gray-200 overflow-y-auto overflow-x-hidden break-words"
    />
    <div className="w-full flex justify-center mt-8">
-     <ButtonComponent
+     <Button
        name="Supprimer"
-       classname="bg-red-500 text-white px-4 py-2 rounded"
-       link={null}
+       className="bg-red-500 text-white px-4 py-2 rounded"
        onPress={() => removeChapter(chapter.id)}
      />
    </div>
@@ -96,21 +95,18 @@ export default function RessourcesCreationPage() {
 
       {/* Bouton pour ajouter un chapitre */}
       <div className="w-full max-w-md flex justify-center">
-        <ButtonComponent
+        <Button
           name="Ajouter un chapitre"
-          classname="bg-blue-500 text-white px-4 py-2 rounded"
-          link={null}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
           onPress={addChapter}
         />
       </div>
 
       {/* Bouton de validation */}
       <div className="w-full max-w-md flex justify-center mt-8">
-        <ButtonComponent
+        <Button
           name="Valider"
-          classname="bg-green-500 text-white px-6 py-3 rounded"
-          link="/confirmation"
-          onPress={null}
+          className="bg-green-500 text-white px-6 py-3 rounded"
         />
       </div>
     </div>

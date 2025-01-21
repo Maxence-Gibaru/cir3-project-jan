@@ -10,6 +10,7 @@ export default function CreateHuntForm() {
 
 
     const [huntData, setHuntData] = useState({
+        name: "Pour le Rohan",
         max_guests: 5,
         max_teams: 4,
         user_id: user_id || "",
@@ -55,6 +56,7 @@ export default function CreateHuntForm() {
 
         // Réinitialise le formulaire après soumission
         setHuntData({
+            name: "Pour le Rohan",
             max_guests: 5,
             max_teams: 4,
             user_id,

@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import TeamProgressContainer from "@/components/pages/leaderbord";
 import ProgressDashboard from "@/components/pages/pourcent";
 import ElapsedTime from "@/components/pages/timer";
-import ButtonComponent from "@/components/pages/Button";
-import DefineHintModal from "@/components/ui/HintModal";
+import { Button } from "@heroui/react";
+import { useEffect, useState } from "react";
 
 const Dashboard = () => {
   const initialTeams = [
@@ -65,17 +64,13 @@ const Dashboard = () => {
 
         {/* Actions */}
         <div className="flex gap-4 mt-8 justify-center">
-          <ButtonComponent
+          <Button
             name="Générer les QR codes des indices"
-            classname="w-full md:w-auto bg-primary text-white px-6 py-3 rounded hover:bg-primary"
-            link={null}
-            onPress={null}
+            className="w-full md:w-auto bg-primary text-white px-6 py-3 rounded hover:bg-primary"
           />
-          <ButtonComponent
+          <Button
             name="Générer le code"
-            classname="w-full md:w-auto bg-primary text-white px-6 py-3 rounded hover:bg-primary"
-            link={null}
-            onPress={null}
+            className="w-full md:w-auto bg-primary text-white px-6 py-3 rounded hover:bg-primary"
           />
         </div>
       </main>
