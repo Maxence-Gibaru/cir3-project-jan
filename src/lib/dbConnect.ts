@@ -10,13 +10,13 @@ let isConnected = 0; // Pour suivre l'état de la connexion
 
 async function dbConnect() {
     if (isConnected) {
-        console.log('Already connected to MongoDB');
+        console.info('Already connected to MongoDB');
         return;
     }
 
     if (mongoose.connection.readyState) {
         isConnected = mongoose.connection.readyState;
-        console.log('Using existing MongoDB connection');
+        console.info('Using existing MongoDB connection');
         return;
     }
 
@@ -24,7 +24,7 @@ async function dbConnect() {
         await mongoose.connect(mongoURI);
         mongoose.connection.useDb('onepisen');
         isConnected = mongoose.connection.readyState;
-        console.log('Connected to MongoDB', isConnected);
+        console.info('Connected to MongoDB', isConnected);
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
         throw new Error('MongoDB connection failed');

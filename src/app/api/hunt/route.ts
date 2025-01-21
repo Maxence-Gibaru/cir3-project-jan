@@ -29,24 +29,16 @@ export async function POST(req: NextRequest) {
     try {
         await dbConnect();
         const body = await req.json();
-        // body.user_id = getUserId(req);
-
-        /*         console.log("body : ", body) */
-
         const result = getparsedBody(HuntZodSchema, body);
-        console.log("result", result);
-        if (!result.success) {
+        if (typeof result === "string") {
             return NextResponse.json(
-                { error: "Failed to parse body", details: result.content },
+                { error: "Failed to parse body", details: result },
                 { status: 400 }
             );
         }
 
-
-        result.content.code = Math.random().toString(36).substring(7).toUpperCase();
-
-
-        const newHunt: Hunt = await HuntModel.create(result.content);
+        result.code = Math.random().toString(36).substring(7).toUpperCase();
+        const newHunt: Hunt = await HuntModel.create(result);
         return NextResponse.json(newHunt, { status: 201 });
     } catch (error) {
         console.error(error);
