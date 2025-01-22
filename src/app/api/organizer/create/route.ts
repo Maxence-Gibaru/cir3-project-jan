@@ -42,6 +42,9 @@ export async function POST(req: NextRequest) {
 
         result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject());
 
+
+        console.log("result : ", result);
+
         const newHunt: Hunt = await HuntModel.create(result);
         return NextResponse.json(newHunt, { status: 201 });
     } catch (error) {

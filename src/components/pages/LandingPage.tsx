@@ -1,13 +1,14 @@
 "use client";
 import Image from "next/image";
 
-import { Textarea } from "@heroui/react";
-import { useState, useEffect } from "react";
-import { Button } from "@heroui/react";
-import { useRouter } from "next/navigation";
-import CodeArea from "./TextArea";
-import { useSession } from "next-auth/react";
 import { fetchApi } from "@/lib/api";
+import { Button, Textarea, Card, CardHeader, CardBody, CardFooter, Divider, } from "@heroui/react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Input } from "@heroui/input";
+import Footer from "../layout/Footer";
+import NavbarHeader from "../layout/NavbarHeader";
+import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
@@ -33,10 +34,10 @@ export default function LandingPage() {
     console.log(session);
 
     const handleJoin = async () => {
-        console.log("join", text)
-        const response = await fetchApi("hunt/find", { method: "POST", body: { code: text, id: null } })
+        console.log("join", text);
+        const response = await fetchApi("guest/join_lobby", { method: "POST", body: { code: text } });
 
-        console.log("response : ", response)
+        console.log("response : ", response);
         if (response) {
 
             const huntId = response.hunt._id;
@@ -47,57 +48,87 @@ export default function LandingPage() {
 
             router.push(`/team?code=${encodeURIComponent(text)}`);
         }
-    }
+    };
 
     return (
-        <div className="relative min-h-screen flex flex-col items-center justify-between pt-20 px-4 md:px-16 lg:px-32">
-            {/* Bouton en haut à droite */}
-            <div className="absolute top-4 right-4">
-                <Button
-                    name="Créer un event"
-                    className="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum"
-                />
-            </div>
+        <>
+            <section >
+                <div className="relative h-screen  flex flex-col bg-greyBg ">
+                    {/* Barre supérieure */}
+                    <div className="h-[10vh]">
+                        <NavbarHeader />
+                    </div>
 
-            {/* Gros titre centré */}
-            <h1 className="text-3xl md:text-5xl font-bold text-center mt-12 mb-8 text-midnightBlue">
-                One P&apos;ISEN
-            </h1>
+                    {/* Contenu principal */}
+                    <div className="flex flex-col items-center justify-evenly flex-grow mx-6">
+                        {/* Section avec titre et logo */}
 
-            <h2>Bienvenue {session?.user?.name}</h2>
 
-            {/* Logo sous le titre */}
-            <div className="mb-1">
-                <Image
-                    src="/logoO.png" // Chemin de votre logo
-                    alt="Logo de One P'ISEN"
-                    width={100} // Ajustez la largeur
-                    height={100} // Ajustez la hauteur
-                    className="mx-auto"
-                />
-            </div>
+                        {/* Section centrale pour le code d'accès */}
+                        <div className="flex flex-col items-center text-center justify-center items-center gap-20 py-20">
 
-            {/* Section centrale */}
-            <div className="flex flex-col items-center text-center w-full md:w-2/3 lg:w-1/2 mt-16 md:mt-8">
-                <h1 className="text-2xl md:text-3xl mb-6 text-midnightBlue">Code d'accès</h1>
-                <CodeArea value={text} onChange={handleChange} classname="w-50 h-13 resize-none p-2 overflow-y-auto overflow-x-hidden break-words bg-gray-200 border border-gray-400" />
-                <div className="mt-4">
-                    <Button className="rounded-lg px-6 py-3 bg-brightLavender hover:bg-vibrantPlum" onPress={handleJoin}>Rejoindre</Button>
+
+
+                            <div className="bg-greyBg border border-gray-300 flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md">
+                                <Input
+                                    /* disableAutosize */
+                                    validationBehavior="native"
+                                    className=" rounded-full"
+                                    value={text}
+
+                                    onChange={handleChange}
+                                    placeholder="Enter code"
+                                />
+                                <Button
+                                    className="rounded-full bg-darkBlueBg text-white uppercase font-bold tracking-[0.1rem]"
+                                    onPress={handleJoin}
+                                >
+                                    Join
+                                </Button>
+                            </div>
+                            <div className="bg-white rounded-full p-2 flex flex-col md:flex-row items-center justify-start md:ml-60 w-full max-w-4xl">
+                                <h2 className="text-xl md:text-4xl text-center  uppercase tracking-[0.2rem] font-bold">
+                                    Jouez à la chasse au trésor
+                                </h2>
+
+                            </div>
+                        </div>
+
+
+                        {/* Texte descriptif */}
+                        {/* <div className="mt-4 text-sm md:text-base px-4 max-w-3xl"> */}
+                        <Card className="">
+                            <CardBody className="flex flex-col gap-5 p-0 text-gray-700 bg-[#146AFF1A] p-5 rounded-xl">
+                                <p className="font-bold text-xl">
+                                    Bienvenue dans cette chasse au trésor.
+                                </p>
+
+
+
+                                <p>
+                                    L'objectif est de trouver le trésor caché dans la ville. Pour cela, aide toi des différents indices disposés tout au long du parcours.
+                                    Chaque indice indique la position de l'indice suivant, ils devront alors être trouvés dans l'ordre établi en scannant les
+                                    QRCode correspondants.
+                                </p>
+
+                                <p>
+                                    Une fois tous les indices obtenus dans l'ordre, un indice final vous sera donné
+                                    afin d'indiquer l'emplacement du trésor. Rentrez le code d'accès fourni par votre organisateur afin
+                                    de rejoindre la partie et <span className="font-bold">amusez-vous bien !</span>
+                                </p>
+
+                            </CardBody>
+                        </Card>
+                        {/* </div> */}
+                    </div>
+
+
 
                 </div>
-            </div>
+                < Footer />
+            </section >
+            {/* Footer */}
 
-            {/* Description */}
-            <div className="mt-12 text-center text-lg px-6 text-boldBlue md:w-3/4 lg:w-1/2">
-                <p>
-                    Bienvenue dans cette chasse au trésor. L'objectif est de trouver le trésor caché dans la ville.
-                    Pour cela, aide toi des différents indices disposés tout au long du parcours. Chaque indice indique
-                    la position de l'indice suivant, ils devront alors être trouvés dans l'ordre établi en scannant les
-                    QRCode correspondants. Une fois tous les indices obtenus dans l'ordre, un indice final vous sera donné
-                    afin d'indiquer l'emplacement du trésor. Rentrez le code d'accès fourni par votre organisateur afin
-                    de rejoindre la partie et amusez-vous bien !
-                </p>
-            </div>
-        </div >
+        </>
     );
 }

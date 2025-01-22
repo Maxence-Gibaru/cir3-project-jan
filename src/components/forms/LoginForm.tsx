@@ -3,6 +3,7 @@ import { fetchApi, FetchOptions } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function LoginForm() {
     const [loginData, setLoginData] = useState({
@@ -136,9 +137,10 @@ export default function LoginForm() {
                     )}
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        className="w-full bg-blue-500 text-gray-700 py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
                         S'inscrire
+
                     </button>
                 </form>
             </div>
