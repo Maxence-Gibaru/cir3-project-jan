@@ -16,7 +16,7 @@ export default function HomePage() {
     
     const Listeparties = FichierJson.organisateur;
     return (
-        <div className="h-screen text-darkBlueBg bg-greyBg">
+        <div className="h-screen bg-greyBg text-black">
             <h1 className="flex justify-center h-1/6 text-4xl py-5 font-bold text-center items-center align-middle ">Liste des organisateurs</h1>
             <div className="h-5/6 flex flex-col justify-evenly items-center font-serif">
                 {Listeparties.map((organisateur) => (
