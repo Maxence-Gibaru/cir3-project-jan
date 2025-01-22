@@ -26,9 +26,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     console.log(body);
     if (body.résultat == "1234") {
-        return NextResponse.json("oui");
+        return NextResponse.json(true);
     }
     else {
-        return NextResponse.json("non");
+        return NextResponse.json(false);
     }
 }
