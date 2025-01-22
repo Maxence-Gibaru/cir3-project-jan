@@ -7,6 +7,11 @@ import {
   ModalFooter,
   Button,
   useDisclosure,
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Divider
 } from "@heroui/react";
 
 import { useEffect } from "react";
@@ -21,7 +26,7 @@ interface TeamBoxProps {
   nombreJoueurs: number;
 }
 
-const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs }) => {
+const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs, maxGuests }) => {
   const searchParams = useSearchParams();
   const [huntData, setHuntData] = useState({})
   const code = searchParams.get("code");
@@ -35,7 +40,7 @@ const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs }) => {
   const router = useRouter();
 
   const handleTeamJoin = async () => {
-    const response = await fetchApi("hunt/join", { method: "POST", body: { code: code, teamIndex: teamJoined.teamIndex, guestId: teamJoined.guestId } })
+    const response = await fetchApi("guest/join_team", { method: "PUT", body: { code: code, teamIndex: teamJoined.teamIndex, guestId: teamJoined.guestId } })
 
     if (response) {
       router.push('/map')
@@ -47,13 +52,25 @@ const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs }) => {
 
   return (
     <>
-      <Button
-        className="boutonEquipe m-3 py-1 px-3 border-2 rounded-2xl bg-darkBlueBg text-white w-11/12 h-1/8 hover:shadow-lg"
-        onPress={onOpen}
-      >
-        <h3 className="font-bold">Equipe n°{nomEquipe}</h3>
-        <p>Nombre de joueurs : {nombreJoueurs}</p>
-      </Button>
+      <Card className="min-w-[400px] bg-[#146AFF1A] rounded-lg" >
+        <CardHeader className="text-xl font-bold flex flex-col justify-center items-center">
+          <h1>Equipe n°{nomEquipe}</h1>
+        </CardHeader>
+        <Divider />
+        <CardBody>
+          <Button
+            className="text-5xl m-3 py-1 px-3 border-2 rounded-2xl bg-darkBlueBg text-white w-11/12 h-1/8 hover:shadow-lg uppercase font-bold"
+            onPress={onOpen}
+          >
+            Rejoindre
+
+          </Button>
+        </CardBody>
+        <Divider />
+        <CardFooter>
+          <p>Nombre de joueurs : {nombreJoueurs} / {maxGuests}</p>
+        </CardFooter>
+      </Card >
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent className="bg-white">
           {(onClose) => (
