@@ -60,7 +60,7 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
         Créer l'histoire de la chasse au trésor
       </h1>
 
-      <div className="max-w-md  flex flex-col items-center">
+      <div className="w-1/2 min-w-md flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-2 text-center">
           Nom de l'histoire :
         </h2>
@@ -71,7 +71,7 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
         />
       </div>
 
-      <div className="max-w-md flex flex-col items-center">
+      <div className="w-1/2 min-w-md flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-2 text-center">
           Introduction :
         </h2>
