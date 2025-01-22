@@ -2,32 +2,19 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
+import { Button } from "@heroui/react";
+interface TeamnumberProps {
+  Numberindice: number;
+  numTeams: number;
+  setNumTeams: Dispatch<SetStateAction<number>>;
+  playersPerTeam: number;
+  setPlayersPerTeam: Dispatch<SetStateAction<number>>;
+  onNext: () => void; // Nouvelle prop
+}
 
-export default function TeamSelectionPage() {
-  const router = useRouter();
 
-  const clues = [
-    { id: 1, clue: "Indice 1" },
-    { id: 2, clue: "Indice 2" },
-    { id: 3, clue: "Indice 3" },
-    { id: 4, clue: "Indice 4" },
-  ];
-
-  const maxTeams = clues.length;
-  const [numTeams, setNumTeams] = useState(1);
-  const [playersPerTeam, setPlayersPerTeam] = useState(1);
-  const [error, setError] = useState("");
-
-  const handleNext = () => {
-    if (numTeams > maxTeams) {
-      setError(
-        `Le nombre d'équipes (${numTeams}) ne peut pas dépasser le nombre d'indices (${maxTeams}).`
-      );
-    } else {
-      setError("");
-      router.push("/next-page");
-    }
-  };
+export default function Teamnumber({Numberindice,numTeams, setNumTeams,playersPerTeam, setPlayersPerTeam,onNext}:TeamnumberProps) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#F2EFE7] px-8 py-10">
@@ -41,7 +28,7 @@ export default function TeamSelectionPage() {
           id="numTeams"
           type="number"
           min="1"
-          max={maxTeams}
+          max={Numberindice}
           value={numTeams}
           onChange={(e) => setNumTeams(Number(e.target.value))}
           className="mt-2 w-full px-4 py-3 border-2 border-gray rounded-full text-center text-lg"
@@ -62,18 +49,9 @@ export default function TeamSelectionPage() {
         />
       </div>
 
-      {error && (
-        <p className="text-red-500 text-center mb-6">
-          {error}
-        </p>
-      )}
-
-      <button
-        onClick={handleNext}
-        className="mt-6 px-8 py-4 bg-[#9ACBD0] text-gray-700 text-xl font-semibold rounded-lg hover:bg-gray-800 transition-all duration-200"
-      >
-        Suivant
-      </button>
+          <Button   onPress={onNext}  className="bg-green-500 text-white px-6 py-3 rounded">
+              Valider
+          </Button>
     </div>
   );
 }
