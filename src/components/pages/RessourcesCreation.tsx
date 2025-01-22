@@ -46,10 +46,10 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
       setTitle(response);
     } else if (section === "intro") {
       setIntro(response);
-  } else if (section.startsWith("chapter")) {
-    const chapterIndex = parseInt(section.split("-")[1], 10); // Correspond à l'index
-    updateChapter(chapterIndex, response); // Met à jour le chapitre
-  }
+    } else if (section.startsWith("chapter")) {
+      const chapterIndex = parseInt(section.split("-")[1], 10); // Correspond à l'index
+      updateChapter(chapterIndex, response); // Met à jour le chapitre
+    }
   };
 
   return (

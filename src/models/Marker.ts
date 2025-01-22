@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 import { z } from "zod";
 
 export const MarkerZodSchema = z.object({
-    qr_code: z.string(), // Identifiant unique pour le qr_code
+    id: z.string(), // Identifiant unique pour le qr_code
     position: z.object({ // Position sur la map
         lat: z.number(),
         lng: z.number()
@@ -11,7 +11,7 @@ export const MarkerZodSchema = z.object({
 });
 
 export const MarkerSchema = new Schema({
-    qr_code: {
+    id: {
         type: String,
         required: true
     },
