@@ -7,7 +7,7 @@ export default function teamBox(nomChasse: number, nomOrganisateur:string) {
   return (
     <>
       {isActive && (
-    <div className="boutonEquipe m-3 py-1 px-1 rounded-2xl flex justify-between bg-darkBlueBg text-white w-11/12  hover:shadow-lg" key={nomOrganisateur}>
+    <div className="boutonEquipe m-3 py-1 px-1 rounded-2xl flex justify-between bg-darkBlueBg text-white w-11/12  hover:shadow-lg xl:w-1/4" key={nomOrganisateur}>
         <div className="py-2 pl-5">
           <h3 className="font-bold">Organisateur : {nomOrganisateur}</h3>
           <p className="font-bold">Chasse n°{nomChasse}</p>
