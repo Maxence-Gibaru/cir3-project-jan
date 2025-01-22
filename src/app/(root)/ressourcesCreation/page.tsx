@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation'
 import { fetchApi } from "@/lib/api";
 import { map } from "zod";
+import { send } from "process";
 
 export default function HomePage() {
     //Page ressourcesCreation.tsx
@@ -27,7 +28,7 @@ export default function HomePage() {
         name: title,
         //intro: intro,
         stories: chapters,
-        markers: markers,
+        markers: [],
         max_guests:playersPerTeam,
         max_teams: numTeams,
         map: {
@@ -37,7 +38,7 @@ export default function HomePage() {
         }
     };
     const router = useRouter();
-    const renderStep = async () => {
+    const renderStep = () => {
         switch (index) {
             case 0:
                 return (
@@ -65,23 +66,28 @@ export default function HomePage() {
                         <Teamnumber Numberindice={markers.length} numTeams={numTeams}
                             setNumTeams={setNumTeams} playersPerTeam={playersPerTeam}
                             setPlayersPerTeam={setPlayersPerTeam}
-                            onNext={() => setIndex(3)} />
+                            onNext={async() => {await sendGameData()} }
+                        />
                     </div>
                 );
             case 3:
-                await fetchApi("organizer/create", {
-                    method: "POST",
-                    body: gameData,
-                }).then(() => {
-                    alert("Chasse au trésor créée avec succès !");
-                    router.push('/create');
-                }
-                ).catch((errorMessage: string) => {
-                    setError(errorMessage);
-                });
+               
             default:
                 return <div>Étape non reconnue</div>;
         }
+    };
+    // Définition de la fonction asynchrone
+    const sendGameData = async () => {
+        await fetchApi("organizer/create", {
+            method: "POST",
+            body: gameData,
+        }).then(() => {
+            alert("Chasse au trésor créée avec succès !");
+            router.push('/create');
+        }
+        ).catch((errorMessage: string) => {
+            setError(errorMessage);
+        });
     };
     return (
         <>
