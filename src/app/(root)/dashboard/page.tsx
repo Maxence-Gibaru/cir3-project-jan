@@ -17,71 +17,68 @@ export default function Dashboard() {
   
   const [teamData, setTeamData] = useState(initialTeams);
 
-  // Initialiser le temps de départ une seule fois
   const [startTime] = useState(new Date().toISOString());
 
-  // Mettre à jour les données des équipes toutes les 5 secondes
   useEffect(() => {
     const interval = setInterval(() => {
       setTeamData((prevData) =>
         prevData.map((team) => ({
           ...team,
           indicesFaits: Math.min(
-            team.indicesFaits + Math.floor(Math.random() * 2), // Simuler progression aléatoire
+            team.indicesFaits + Math.floor(Math.random() * 2), 
             team.totalIndices
           ),
         }))
       );
     }, 5000);
 
-    // Nettoyage de l'intervalle
+
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="flex flex-col h-screen bg-gradient-to-b from-grey to-sand  text-dark">
+    <div className="flex flex-col h-screen bg-greyBg  text-dark">
       {/* Header */}
-      <header className="bg-primary p-6 text-center shadow-lg">
-        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+      <header className="bg-white p-6 text-center shadow-lg">
+        <h1 className="text-3xl font-bold text-gray-700">Dashboard</h1>
         <Image
-         src="/logoO.png" // Chemin de votre logo
+         src="/logoO.png" 
          alt="Logo de One P'ISEN"
-         width={50} // Ajustez la largeur
-         height={50} // Ajustez la hauteur
+         width={50}
+         height={50}
          className="absolute mx-auto top-4 right-4 rounded-full"
-    
         />
         
       </header>
 
-      {/* Main Content */}
+      {/* Contenu principal*/}
       <main className="flex-1 p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* Temps écoulé */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-secondary mb-4">Temps écoulé</h2>
+            <h2 className="text-xl font-bold text-gray-700 mb-4">Temps écoulé</h2>
             <ElapsedTime startTime={startTime} />
           </div>
 
           {/* Classement */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-secondary mb-4">Classement</h2>
+            <h2 className="text-xl font-bold text-gray-700 mb-4">Classement</h2>
             <TeamProgressContainer data={teamData} />
           </div>
 
           {/* Pourcentage */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-secondary mb-4">Pourcentage</h2>
+            <h2 className="text-xl font-bold text-gray-700 mb-4">Pourcentage</h2>
             <ProgressDashboard data={teamData} />
           </div>
         </div>
 
         {/* Actions */}
         <div className="flex gap-4 mt-8 justify-center">
-          <Button className="bg-white text-primary px-6 py-3 rounded-lg hover:bg-secondary hover:text-white">
+          <Button className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg">
             Générer les QR codes des indices
           </Button>
-          <Button className="bg-white text-primary px-6 py-3 rounded-lg hover:bg-secondary hover:text-white">
+          <Button className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg">
             Générer le code
           </Button>
         </div>
