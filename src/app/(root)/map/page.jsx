@@ -57,7 +57,7 @@ export default function Map() {
   } = useDisclosure();
 
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const [Markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useState([]);
 
 
   const { data: session } = useSession();
@@ -99,8 +99,9 @@ export default function Map() {
   // Ajoute un marqueur (simulation d'une récupération via API)
   useEffect(() => {
     const addMarker = async () => {
-      await fetchApi("organizer/hunt", {
+      await fetchApi("guest/markers", {
         method: "GET",
+        params: { markersCount: markers.length }
       }).then((data) => setMarkers(data)).catch((err) => console.error(err), 5000);
       // const newMarker = await new Promise((resolve) =>
       //   setTimeout(() => resolve(data2), 500)
@@ -145,7 +146,7 @@ export default function Map() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {Markers.map((indice, index) => (
+            {markers.map((indice, index) => (
               <Marker
                 icon={icon}
                 key={index}

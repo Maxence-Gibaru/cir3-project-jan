@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { useState } from "react";
 
-export default function IAModalApp({ chapters, onIaResponse }) {
+export default function IAModalApp({ chapters, onIaRespons}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [userPrompt, setUserPrompt] = useState(""); // Stocke le prompt
   const [targetSection, setTargetSection] = useState("title"); // Section ciblée
@@ -24,9 +24,12 @@ export default function IAModalApp({ chapters, onIaResponse }) {
   }
 
   const handleSendPrompt = async () => {
+    options.body = options.body.concat(" En francais. Réponse de maximum 100 mots");
 
+    console.log(options.body);
+    
     const response = await fetchApi('generate', options)
-
+    
     const data = await response.output;
 
     setOutput(data);
