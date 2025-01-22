@@ -1,75 +1,45 @@
 import mongoose, { Model, Schema } from 'mongoose';
 import { z } from 'zod';
-
-const GuestSchema = new Schema({
-    uuid: {
-        type: String,
-        required: true
-    },
-    created: {
-        type: Date,
-        default: Date.now
-    }
-});
-
-const TeamSchema = new Schema({
-    guests: {
-        type: [GuestSchema],
-        default: []
-    },
-    created: {
-        type: Date,
-        default: Date.now
-    }
-});
-
-const HintSchema = new Schema({
-    id: {
-        type: String,
-        required: true
-    },
-    content: {
-        type: String,
-        required: true
-    },
-});
+import { MarkerSchema, MarkerZodSchema } from './Marker';
+import { TeamSchema, TeamZodSchema } from './Team';
 
 export const HuntZodSchema = z.object({
     _id: z.string().optional(),
-    name: z.string().optional(),
-    teams: z.array(z.object({
-        guests: z.array(z.object({
-            uuid: z.string(),
-            created: z.date().optional()
-        })).default([]),
-        created: z.date().optional()
-    })).default([]),
-    hints: z.array(z.object({
-        id: z.string(),
-        content: z.string(),
-    })).default([]),
-    story: z.array(z.string()).default([]),
+    name: z.string().optional(), // Nom de la chasse
+    teams: z.array(TeamZodSchema).default([]),
+    markers: z.array(MarkerZodSchema).default([]), // Un marker (en 0 c'est le trésor)
+    stories: z.array(z.string()).default([]),
     user_id: z.string(),
     code: z.string(),
     status: z.enum(['closed', 'opened', 'started']).default('closed'),
     max_guests: z.number(),
     max_teams: z.number(),
-    created: z.date().optional()
+    map: z.object({
+        lat: z.number(),
+        lng: z.number(),
+        zoom: z.number()
+    }),
+    started_at: z.date().optional(),
+    created: z.date().default(new Date())
 });
 
 export type HuntZodType = z.infer<typeof HuntZodSchema>;
 export interface Hunt extends Document, HuntZodType { }
 
 const HuntSchema = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
     teams: {
         type: [TeamSchema],
         default: []
     },
-    hints: {
-        type: [HintSchema],
+    markers: {
+        type: [MarkerSchema],
         default: []
     },
-    story: {
+    stories: {
         type: [String],
         default: []
     },
@@ -95,6 +65,23 @@ const HuntSchema = new Schema({
         type: Number,
         required: true
     },
+    map: {
+        lat: {
+            type: Number,
+            required: true
+        },
+        lng: {
+            type: Number,
+            required: true
+        },
+        zoom: {
+            type: Number,
+            required: true
+        }
+    },
+    started_at: {
+        type: Date
+    },
     created: {
         type: Date,
         default: Date.now
@@ -102,13 +89,5 @@ const HuntSchema = new Schema({
 }, {
     timestamps: false
 })
-
-HuntSchema.pre('save', function (next) {
-    const event = this as unknown as Hunt;
-    if (!event.code) {
-        event.code = Math.random().toString(36).substring(7).toUpperCase();
-    }
-    next();
-});
 
 export const HuntModel: Model<Hunt> = mongoose.models.Hunt || mongoose.model<Hunt>('Hunt', HuntSchema, 'hunts');
