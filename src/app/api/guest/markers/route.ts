@@ -4,32 +4,29 @@ import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { getparsedBody } from "../../utils";
 
-const ReqZodSchema = z.object({
-    markers_count: z.number(),
-});
-
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.isGuest) return NextResponse.next({ status: 401 });
+    if (!session) return NextResponse.next({ status: 401 });
 
     try {
         await dbConnect();
-        const body = await req.json();
-        const result = getparsedBody(ReqZodSchema, body);
-        if (typeof result === "string") {
+        // Get from URl search
+        const urlSearch = new URLSearchParams(req.nextUrl.search);
+        const markersCountStr = urlSearch.get("markersCount");
+        if (!markersCountStr) {
             return NextResponse.json(
-                { error: "Failed to parse body", details: result },
+                { error: "Markers count missing" },
                 { status: 400 }
             );
         }
 
-        const hunt_id = session.user.hunt_id;
-        const team_index = session.user.team_index;
+        const markersCount = parseInt(markersCountStr);
 
-        const hunt: Hunt | null = await HuntModel.findById(hunt_id);
+        const huntId = session.user.huntId;
+        const teamIndex = session.user.teamIndex;
+
+        const hunt: Hunt | null = await HuntModel.findById(huntId);
         if (!hunt) {
             return NextResponse.json(
                 { error: "Hunt not found" },
@@ -37,7 +34,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const team = hunt.teams[team_index];
+        const team = hunt.teams[teamIndex];
         if (!team) {
             return NextResponse.json(
                 { error: "Team not found" },
@@ -46,7 +43,7 @@ export async function POST(req: NextRequest) {
         }
 
         // Si aucun nouvel indice n'a été trouvé
-        if (team.current_hint_index < result.markers_count) {
+        if (team.current_hint_index < markersCount) {
             return NextResponse.json([], { status: 200 });
         }
 
@@ -66,7 +63,7 @@ export async function POST(req: NextRequest) {
         }
 
         let huntAddedMarkers: HuntMarker[] = [];
-        for (let i = result.markers_count; i <= team.current_hint_index; i++) {
+        for (let i = markersCount; i <= team.current_hint_index; i++) {
             const position = hunt.markers[team.hints_order[i]].position;
             const hint = (team.current_hint_index === hunt.markers.length - 1)
             ? hunt.markers[0].hint

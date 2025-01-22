@@ -5,7 +5,6 @@ export const OrganizerZodSchema = z.object({
   email: z.string().email(),
   password: z.string().min(1),
   isAdmin: z.boolean().default(false),
-  event_ids: z.array(z.string()).optional(),
   created: z.date().default(() => new Date())
 });
 
@@ -27,10 +26,6 @@ const OrganizerSchema = new Schema({
     type: Boolean,
     default: false
   },
-  event_ids: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Event'
-  }],
   created: {
     type: Date,
     default: Date.now
