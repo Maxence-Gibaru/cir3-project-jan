@@ -49,7 +49,6 @@ export default function Dashboard() {
          width={50} // Ajustez la largeur
          height={50} // Ajustez la hauteur
          className="absolute mx-auto top-4 right-4 rounded-full"
-    
         />
         
       </header>
