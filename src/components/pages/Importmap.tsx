@@ -62,14 +62,16 @@ export default function Importmap({markers, setMarkers, onNext}:ImportmapPagePro
   }
   
   return (
-    <div className="flex flex-col gap-4 p-4">
-      <div className="p-4 bg-gray-100 rounded">
-      <h3 className="text-lg font-bold mb-2">
-          Indices sur la carte : {markers.length}/{MAX_MARKERS}
-        </h3>
-      </div>
+    <div className="flex flex-col gap-6 p-6 bg-greyBg min-h-screen">
+<div className="flex justify-center items-center">
+    <div className="bg-primary text-white rounded-lg p-4 shadow-md">
+      <h3 className="text-lg font-bold text-center">
+        Indices sur la carte : {markers.length}/{MAX_MARKERS}
+      </h3>
+    </div>
+  </div>
       <div className="z-10">
-      <Map className="z-10"
+      <Map className="z-10 h-[600px] w-full bg-gray-100 rounded-lg shadow-lg"
         markers={markers} 
         onMarkerAdd={addMarker}
         onMarkerRemove={removeMarker}
@@ -78,7 +80,8 @@ export default function Importmap({markers, setMarkers, onNext}:ImportmapPagePro
        {markers.length > 0 && (
         <Button 
           color="primary"   
-          onPress={onNext}      
+          onPress={onNext}  
+          className="rounded-lg text-white hover:bg-secondary"    
         >
           Enregistrer les indices ({markers.length})
         </Button>
