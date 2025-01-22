@@ -15,16 +15,25 @@ export default function IAModalApp({ chapters, onIaResponse }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [userPrompt, setUserPrompt] = useState(""); // Stocke le prompt
   const [targetSection, setTargetSection] = useState("title"); // Section ciblée
+  const [output, setOutput] = useState("");
 
 
+  const options = {
+    method: "POST",
+    body: userPrompt
+  }
 
   const handleSendPrompt = async () => {
 
-    const response = fetchApi("generate", { method: "POST", body: userPrompt })
+    const response = await fetchApi('generate', options)
 
-    const simulatedResponse = response.output;
+    const data = await response.output;
 
-    onIaResponse(targetSection, simulatedResponse); // Envoie la réponse à la section sélectionnée
+    setOutput(data);
+
+    console.log("Ia response", output);
+
+    onIaResponse(targetSection, data); // Envoie la réponse à la section sélectionnée
     setUserPrompt(""); // Réinitialise la saisie
     onOpenChange(); // Ferme le modal
   };
@@ -66,9 +75,9 @@ export default function IAModalApp({ chapters, onIaResponse }) {
                   >
                     <option value="title">Titre</option>
                     <option value="intro">Introduction</option>
-                    {chapters.map((chapter) => (
-                      <option key={chapter.id} value={`chapter-${chapter.id}`}>
-                        Chapitre {chapter.id}
+                    {chapters.map((_, index) => (
+                      <option key={index} value={`chapter-${index}`}>
+                      Chapitre {index + 1}
                       </option>
                     ))}
                   </select>

@@ -2,33 +2,43 @@
 
 import CodeArea from "@/components/pages/TextArea";
 import { Button } from "@heroui/react";
-import { useState } from "react";
+
+import ModalApp from "../ui/Modal";
+import { Dispatch, SetStateAction } from "react";
 import IAModalApp from "../ui/IAModal";
 
-export default function RessourcesCreationPage() {
-  const [title, setTitle] = useState(""); // État pour le titre
-  const [intro, setIntro] = useState(""); // État pour l'introduction
-  const [chapters, setChapters] = useState([{ id: 1, text: "" }]); // Liste des chapitres
+
+interface RessourcesCreationPageProps {
+  title: string;
+  intro: string;
+  chapters: string[];
+  setTitle: Dispatch<SetStateAction<string>>;
+  setIntro: Dispatch<SetStateAction<string>>;
+  setChapters: Dispatch<SetStateAction<string[]>>;
+  onNext: () => void; // Nouvelle prop
+}
+
+export default function RessourcesCreationPage({ chapters, title, intro, setChapters, setIntro, setTitle, onNext }: RessourcesCreationPageProps) {
+
 
   // Ajouter un nouveau chapitre
   const addChapter = () => {
-    const newId = chapters.length > 0 ? chapters[chapters.length - 1].id + 1 : 1;
-    setChapters([...chapters, { id: newId, text: "" }]);
+    setChapters([...chapters, ""]);
   };
 
+
   // Supprimer un chapitre
-  const removeChapter = (id) => {
-    setChapters(chapters.filter((chapter) => chapter.id !== id));
+  const removeChapter = (index: number) => {
+    setChapters(chapters.filter((_, i) => i !== index));
   };
 
   // Mettre à jour le texte d'un chapitre
-  const updateChapter = (id, newText) => {
-    setChapters(
-      chapters.map((chapter) =>
-        chapter.id === id ? { ...chapter, text: newText } : chapter
-      )
-    );
+  const updateChapter = (index: number, newText: string) => {
+    const newChapters = [...chapters];
+    newChapters[index] = newText;
+    setChapters(newChapters);
   };
+
 
   // Mettre à jour la section ciblée avec la réponse de l'IA
   const handleIaResponse = (section, response) => {
@@ -36,10 +46,10 @@ export default function RessourcesCreationPage() {
       setTitle(response);
     } else if (section === "intro") {
       setIntro(response);
-    } else if (section.startsWith("chapter")) {
-      const chapterId = parseInt(section.split("-")[1], 10);
-      updateChapter(chapterId, response);
-    }
+  } else if (section.startsWith("chapter")) {
+    const chapterIndex = parseInt(section.split("-")[1], 10); // Correspond à l'index
+    updateChapter(chapterIndex, response); // Met à jour le chapitre
+  }
   };
 
   return (
@@ -57,7 +67,6 @@ export default function RessourcesCreationPage() {
         Créer l'histoire de la chasse au trésor
       </h1>
 
-      {/* Zone de saisie pour le titre */}
       <div className="w-full max-w-md flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-2 text-center">
           Nom de l'histoire :
@@ -69,7 +78,6 @@ export default function RessourcesCreationPage() {
         />
       </div>
 
-      {/* Zone de saisie pour l'introduction */}
       <div className="w-full max-w-md flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-2 text-center">
           Introduction :
@@ -81,48 +89,42 @@ export default function RessourcesCreationPage() {
         />
       </div>
 
-      {/* Liste des chapitres */}
       <div className="w-full max-w-md flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-4 text-center">Chapitres :</h2>
-        {chapters.map((chapter) => (
+        {chapters.map((chapter, index) => (
           <div
-            key={chapter.id}
+            key={index}
             className="mb-4 border p-4 rounded-lg bg-white shadow-md w-full"
           >
             <h3 className="text-lg font-medium mb-2 text-center">
-              Chapitre {chapter.id} :
+              Chapitre {index + 1} :
             </h3>
             <CodeArea
-              value={chapter.text}
-              onChange={(e) => updateChapter(chapter.id, e.target.value)}
+              value={chapter}
+              onChange={(e) => updateChapter(index, e.target.value)}
               classname="w-full h-20 resize-none border border-gray-400 rounded-md p-2 bg-gray-200 overflow-y-auto overflow-x-hidden break-words"
             />
             <div className="w-full flex justify-center mt-8">
               <Button
-                name="Supprimer"
+
                 className="bg-red-500 text-white px-4 py-2 rounded"
-                onPress={() => removeChapter(chapter.id)}
+                onPress={() => removeChapter(index)}
               >Supprimer</Button>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Bouton pour ajouter un chapitre */}
       <div className="w-full max-w-md flex justify-center">
         <Button
-          name="Ajouter un chapitre"
-          className="bg-primary text-white px-4 py-2 rounded"
-          onPress={addChapter}
-        >Ajouter un chapitre</Button>
+          className="bg-black text-white px-6 py-3 rounded"
+          onPress={addChapter}>Ajouter un chapitre</Button>
       </div>
 
-      {/* Bouton de validation */}
       <div className="w-full max-w-md flex justify-center mt-8">
-        <Button
-          name="Valider"
-          className="bg-green-500 text-white px-6 py-3 rounded"
-        >Valider</Button>
+        <Button onPress={onNext} className="bg-green-500 text-white px-6 py-3 rounded">
+          Valider
+        </Button>
       </div>
     </div>
   );

@@ -3,32 +3,27 @@ import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { getparsedBody } from "../../utils";
 
-const ReqZodSchema = z.object({
-    code: z.string(),
-});
-
-export async function POST(req: NextRequest) {
+export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (!session || session.user.isGuest) return NextResponse.next({ status: 401 });
+    if (!session) return NextResponse.next({ status: 401 });
 
     try {
         await dbConnect();
-        const body = await req.json();
-        const result = getparsedBody(ReqZodSchema, body);
-        if (typeof result === "string") {
+        // Get from URl search
+        const urlSearch = new URLSearchParams(req.nextUrl.search);
+        const qr_code = urlSearch.get("markers_count");
+        if (!qr_code) {
             return NextResponse.json(
-                { error: "Failed to parse body", details: result },
+                { error: "Markers count missing" },
                 { status: 400 }
             );
         }
 
-        const hunt_id = session.user.hunt_id;
-        const team_index = session.user.team_index;
+        const huntId = session.user.huntId;
+        const teamIndex = session.user.teamIndex;
 
-        const hunt: Hunt | null = await HuntModel.findById(hunt_id);
+        const hunt: Hunt | null = await HuntModel.findById(huntId);
         if (!hunt) {
             return NextResponse.json(
                 { error: "Hunt not found" },
@@ -36,7 +31,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const team = hunt.teams[team_index];
+        const team = hunt.teams[teamIndex];
         if (!team) {
             return NextResponse.json(
                 { error: "Team not found" },
@@ -46,7 +41,7 @@ export async function POST(req: NextRequest) {
 
         const attending_code = hunt.markers[team.hints_order[team.current_hint_index]].id;
 
-        return NextResponse.json({isCorrect: attending_code === result.code}, { status: 201 });
+        return NextResponse.json({isCorrect: attending_code === qr_code}, { status: 201 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(
