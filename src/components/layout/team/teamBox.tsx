@@ -43,7 +43,8 @@ const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs, maxGuests }
     const response = await fetchApi("guest/join_team", { method: "PUT", body: { code: code, teamIndex: teamJoined.teamIndex, guestId: teamJoined.guestId } })
 
     if (response) {
-      router.push('/map')
+      localStorage.setItem('data_attente', JSON.stringify(response));//pour siméon
+      router.push('/map');
     }
   }
 

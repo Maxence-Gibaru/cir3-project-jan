@@ -6,20 +6,26 @@ import { Hunt } from "@/models/Hunt";
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+
 
 function HuntButtons() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentHunt, setCurrentHunt] = useState<Hunt | null>(null);
   const [hunts, setHunts] = useState<Hunt[]>([]);
 
-  const router = useRouter();
-
+  
 
   useEffect(() => {
-    fetchApi("organizer/find").then((data) => setHunts(data)).catch((err) => console.error(err));
+    const createHunt = async () => {
+      await fetchApi("organizer/hunt",{method: "GET"})
+        .then((data) => {setHunts(data);
+          console.log(data);
+        })
+        .catch((err) => console.error(err));
+    };
+    
+    createHunt();
   }, []);
-
 
   const openModal = (hunt: Hunt) => {
     setCurrentHunt(hunt);
