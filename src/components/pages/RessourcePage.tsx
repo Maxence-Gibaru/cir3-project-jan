@@ -52,8 +52,8 @@ export default function RessourcePage() {
   return (
     <div className="bg-greyBg min-h-screen flex flex-col p-6">
       <div className="absolute top-4 left-4">
-                  <PlayerMenu />
-              </div>
+        <PlayerMenu />
+      </div>
       <h1 className="text-3xl font-bold text-center text-black mb-6">Histoire de la Chasse au Trésor</h1>
 
       {/* Introduction */}

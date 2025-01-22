@@ -35,7 +35,7 @@ export default function LandingPage() {
 
     const handleJoin = async () => {
         console.log("join", text);
-        const response = await fetchApi("guest/join_lobby", { method: "POST", body: { code: text } });
+        const response = await fetchApi("guest/join_lobby", { method: "POST", body: { lobby_code: text } });
 
         console.log("response : ", response);
         if (response) {
