@@ -64,6 +64,8 @@ export default function LandingPage() {
                 One P&apos;ISEN
             </h1>
 
+            <h2>Bienvenue {session?.user?.name}</h2>
+
             {/* Logo sous le titre */}
             <div className="mb-1">
                 <Image
@@ -80,7 +82,7 @@ export default function LandingPage() {
                 <h1 className="text-2xl md:text-3xl mb-6 text-midnightBlue">Code d'accès</h1>
                 <CodeArea value={text} onChange={handleChange} classname="w-50 h-13 resize-none p-2 overflow-y-auto overflow-x-hidden break-words bg-gray-200 border border-gray-400" />
                 <div className="mt-4">
-                    <Button className="rounded-lg px-6 py-3 bg-brightLavender hover:bg-vibrantPlum" onPress={handleJoin}>Rejoindre</Button>;
+                    <Button className="rounded-lg px-6 py-3 bg-brightLavender hover:bg-vibrantPlum" onPress={handleJoin}>Rejoindre</Button>
 
                 </div>
             </div>
