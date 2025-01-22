@@ -9,9 +9,12 @@ import { Input } from "@heroui/input";
 import Footer from "../layout/Footer";
 import NavbarHeader from "../layout/NavbarHeader";
 import { useSession } from "next-auth/react";
+import LoginModal from "../ui/LoginModal";
+import { useDisclosure } from "@nextui-org/react";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const handleChange = (e: any) => {
         setText(e.target.value);
@@ -19,7 +22,7 @@ export default function LandingPage() {
 
     const router = useRouter();
 
-    const { data: session, update } = useSession();
+    const { data: session, update, status } = useSession();
 
 
     const [user, setUser] = useState({})
@@ -31,11 +34,18 @@ export default function LandingPage() {
     }, [session])
 
 
+    useEffect(() => {
+        if (status === "unauthenticated") {
+
+            onOpen();
+        }
+    }, [session])
+
     console.log(session);
 
     const handleJoin = async () => {
         console.log("join", text);
-        const response = await fetchApi("guest/join_lobby", { method: "POST", body: { code: text } });
+        const response = await fetchApi("guest/join_lobby", { method: "POST", body: { lobby_code: text } });
 
         console.log("response : ", response);
         if (response) {
@@ -46,17 +56,18 @@ export default function LandingPage() {
 
             const updateSession = await update({ ...user, huntId: huntId })
 
-            router.push(`/team?code=${encodeURIComponent(text)}`);
+            router.push(`/team`);
         }
     };
 
     return (
         <>
+            <LoginModal isOpen={isOpen} onOpenChange={onOpenChange} />
             <section >
                 <div className="relative h-screen  flex flex-col bg-greyBg ">
                     {/* Barre supérieure */}
                     <div className="h-[10vh]">
-                        <NavbarHeader />
+                        <NavbarHeader status={status} />
                     </div>
 
                     {/* Contenu principal */}
@@ -71,7 +82,7 @@ export default function LandingPage() {
 
                             <div className="bg-greyBg border border-gray-300 flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md">
                                 <Input
-                                    /* disableAutosize */
+
                                     validationBehavior="native"
                                     className=" rounded-full"
                                     value={text}
@@ -86,7 +97,7 @@ export default function LandingPage() {
                                     Join
                                 </Button>
                             </div>
-                            <div className="bg-white rounded-full p-2 flex flex-col md:flex-row items-center justify-start md:ml-60 w-full max-w-4xl">
+                            <div className="bg-white rounded-full p-2 flex flex-col md:flex-row items-center justify-start w-full max-w-4xl">
                                 <h2 className="text-xl md:text-4xl text-center  uppercase tracking-[0.2rem] font-bold">
                                     Jouez à la chasse au trésor
                                 </h2>

@@ -12,9 +12,9 @@ export default function Footer() {
                 </div>
                 <div className="flex flex-col flex-grow justify-center items-center gap-10">
                     <div className="flex flex-col gap-5 bg-white rounded-lg text-gray-700 p-5">
-                        <h2 className="font-bold text-xl uppercase">Lorem ipsum dolor sit amet, consectetur adipiscing elit,</h2>
+                        <h2 className="font-bold text-xl uppercase">OnePisen vous présente sa chasse au trésor !</h2>
                         <p>
-                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+                            Rejoignez vos amis pour une chasse au trésor des plus amusantes ! Jouez des parties personnalisées avec votre propre scénario. Chaque équipe commence à un endroit différent et doit trouver tous les indices dans l'ordre. Scannez les QRcode afin d'obtenir les indices. Une fois tous les indices obtenus, un dernier indice vous sera donné afin de trouver le trésor. Soyez la première équipe à trouver le trésor pour gagner la partie !
                         </p>
                     </div>
                     <div className="flex flex-row  text-lg gap-10">
@@ -24,7 +24,6 @@ export default function Footer() {
                                 <li>MATHIEU Paul</li>
                                 <li>GIBARU Maxence</li>
                                 <li>FATRAS Edgar</li>
-                                <li>HU Lucas</li>
                                 <li>LAMOUR Jeremy</li>
                             </ul>
                         </div>
@@ -35,6 +34,7 @@ export default function Footer() {
                                 <li>BOSSUT Siméon</li>
                                 <li>THEPKAISONE Louis</li>
                                 <li>LEGRAND Julien</li>
+                                <li>HU Lucas</li>
                             </ul>
                         </div>
 

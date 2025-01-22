@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { useState } from "react";
 
-export default function IAModalApp({ chapters, onIaResponse }) {
+export default function IAModalApp({ chapters, onIaRespons}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [userPrompt, setUserPrompt] = useState(""); // Stocke le prompt
   const [targetSection, setTargetSection] = useState("title"); // Section ciblée
@@ -24,9 +24,12 @@ export default function IAModalApp({ chapters, onIaResponse }) {
   }
 
   const handleSendPrompt = async () => {
+    options.body = options.body.concat(" En francais. Réponse de maximum 100 mots");
 
+    console.log(options.body);
+    
     const response = await fetchApi('generate', options)
-
+    
     const data = await response.output;
 
     setOutput(data);
@@ -42,17 +45,14 @@ export default function IAModalApp({ chapters, onIaResponse }) {
     <>
       <Button
         onPress={onOpen}
-        style={{
-          backgroundColor: "#3B82F6",
-          color: "white",
-          borderRadius: "0.5rem",
-        }}
+        className="text-white rounded-xl bg-darkBlueBg hover:bg-darkBlueHoverBg"
+        
       >
         Aide IA
       </Button>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent className="bg-opacity-75 bg-gray-300 rounded-lg">
+        <ModalContent className="bg-white rounded-lg border border-gray-200">
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
@@ -63,7 +63,7 @@ export default function IAModalApp({ chapters, onIaResponse }) {
                 <div className="mb-4">
                   <label
                     htmlFor="section-select"
-                    className="block font-bold mb-2"
+                    className="block mb-2"
                   >
                     Section ciblée :
                   </label>
@@ -71,7 +71,7 @@ export default function IAModalApp({ chapters, onIaResponse }) {
                     id="section-select"
                     value={targetSection}
                     onChange={(e) => setTargetSection(e.target.value)}
-                    className="w-full p-2 border border-gray-400 rounded-md bg-white"
+                    className="w-full p-2 border border-gray-400 rounded-2xl bg-gray-100 shadow-xl"
                   >
                     <option value="title">Titre</option>
                     <option value="intro">Introduction</option>
@@ -84,7 +84,7 @@ export default function IAModalApp({ chapters, onIaResponse }) {
                 </div>
 
                 {/* Zone de saisie pour le prompt */}
-                <div className="mb-4">
+                <div className="mb-4 bg-gray-100 rounded-2xl border border-gray-400 shadow-xl">
                   <Input
                     placeholder="Entrez votre demande ou sujet..."
                     value={userPrompt}
@@ -94,14 +94,14 @@ export default function IAModalApp({ chapters, onIaResponse }) {
               </ModalBody>
               <ModalFooter>
                 <Button
-                  className="bg-red-500 rounded-lg"
+                  className="bg-red-500 rounded-lg hover:bg-red-300"
                   variant="light"
                   onPress={onClose}
                 >
                   Annuler
                 </Button>
                 <Button
-                  className="bg-green-500 rounded-lg"
+                  className="bg-green-500 rounded-lg hover:bg-green-300"
                   onPress={handleSendPrompt}
                   disabled={!userPrompt.trim()}
                 >

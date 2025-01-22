@@ -28,7 +28,7 @@ export default function HomePage() {
         name: title,
         //intro: intro,
         stories: chapters,
-        markers: [],
+        markers,
         max_guests: playersPerTeam,
         max_teams: numTeams,
         map: {

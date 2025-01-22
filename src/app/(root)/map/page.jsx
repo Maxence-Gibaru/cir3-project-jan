@@ -57,7 +57,7 @@ export default function Map() {
   } = useDisclosure();
 
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const [Markers, setMarkers] = useState([]);
+  const [markers, setMarkers] = useState([]);
 
 
   const { data: session } = useSession();
@@ -99,8 +99,9 @@ export default function Map() {
   // Ajoute un marqueur (simulation d'une récupération via API)
   useEffect(() => {
     const addMarker = async () => {
-      await fetchApi("organizer/hunt", {
+      await fetchApi("guest/markers", {
         method: "GET",
+        params: { markersCount: markers.length }
       }).then((data) => setMarkers(data)).catch((err) => console.error(err), 5000);
       // const newMarker = await new Promise((resolve) =>
       //   setTimeout(() => resolve(data2), 500)
@@ -120,16 +121,14 @@ export default function Map() {
   return (
     <div className="w-full text-black">
       <div className="absolute z-30 top-4 right-4">
-        <Dropdown >
+        <Dropdown>
           <DropdownTrigger>
             <Button className="text-black bg-white rounded-md" variant="bordered">Menu</Button>
           </DropdownTrigger>
           <DropdownMenu className="text-black bg-white rounded-md" aria-label="Example with disabled actions" disabledKeys={["edit", "delete"]}>
             <DropdownItem key="new"><Link href="/ressources">Récapitulatif histoire</Link></DropdownItem>
-            <DropdownItem key="copy"><Link href="">Régles</Link></DropdownItem>
-            <DropdownItem key="delete" className="text-danger" color="danger">
-              Déconnexion
-            </DropdownItem>
+            <DropdownItem key="copy"><Link href="/playerrules">Régles</Link></DropdownItem>
+            <DropdownItem key="HomePage"><Link href="/" className="text-red-500 underline">Déconnexion</Link></DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
@@ -147,7 +146,7 @@ export default function Map() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {Markers.map((indice, index) => (
+            {markers.map((indice, index) => (
               <Marker
                 icon={icon}
                 key={index}

@@ -29,8 +29,9 @@ export default function HomePage() {
 
     useEffect(() => {
         const fetchHunt = async () => {
-            const response = await fetchApi("hunt/find", { method: "POST", body: { code: null, id: huntId } })
-            setHuntData(response.hunt);
+            const response = await fetchApi("guest/init_lobby")
+            console.log(response);
+            setHuntData(response);
         }
 
         fetchHunt();
@@ -59,7 +60,7 @@ export default function HomePage() {
 
 
 
-    const max_teams = huntData.max_teams
+    const max_teams = huntData.max_teams;
     // Utilisation correcte de map pour construire les équipes
     Array.from({ length: max_teams }).forEach((_, index) => {
         Equipes.push({ id: index, size: huntData.teams[index].guests.length });
@@ -67,10 +68,11 @@ export default function HomePage() {
     });
     return (
         <div className="h-screen bg-greyBg">
-            <h1 className="flex justify-center h-1/6 text-4xl py-5 font-bold text-center items-center align-middle">Choix des équipes</h1>
-            <div className="h-5/6 flex flex-col justify-evenly items-center font-serif ">
+            <h1 className="flex justify-center text-4xl py-5 font-bold text-center items-center align-middle uppercase">{huntData?.name}</h1>
+            <h3 className="flex justify-center text-4xl py-5 font-bold text-center items-center align-middle">Choix des équipes</h3>
+            <div className="flex flex-col justify-evenly items-center gap-10 sm:flex-row flex-wrap">
                 {Equipes.map((Equipe, index) => (
-                    <TeamBox key={index} nomEquipe={Equipe.id} nombreJoueurs={Equipe.size} />
+                    <TeamBox key={index} nomEquipe={Equipe.id} nombreJoueurs={Equipe.size} maxGuests={huntData.max_guests} />
                 ))}
                 {/* {TeamBox(compteur, 0)} */}
                 {/* <button className="w-fit py-3 px-5 my-5 border-solid border-2 rounded-2xl border-blue-300 bg-blue-500 font-bold hover:shadow-lg">Créer une équipe</button> */}
