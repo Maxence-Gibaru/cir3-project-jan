@@ -11,10 +11,9 @@ const ElapsedTime = ({ startTime }) => {
       setElapsedTime(now - startTimestamp);
     }, 1000);
 
-    return () => clearInterval(interval); // Nettoyer l'intervalle pour éviter les fuites de mémoire
+    return () => clearInterval(interval); 
   }, [startTime]);
 
-  // Convertir le temps écoulé en hh:mm:ss
   const formatTime = (milliseconds) => {
     const totalSeconds = Math.floor(milliseconds / 1000);
     const hours = Math.floor(totalSeconds / 3600);
@@ -27,9 +26,9 @@ const ElapsedTime = ({ startTime }) => {
   };
 
   return (
-    <div>
-      <h2>Temps écoulé :</h2>
-      <p>{formatTime(elapsedTime)}</p>
+    <div className="text-gray-700">
+      <p className="text-gray-700 ">Temps depuis le début de la partie :</p>
+      <p className="text-gray-700 text-base">{formatTime(elapsedTime)}</p>
     </div>
   );
 };

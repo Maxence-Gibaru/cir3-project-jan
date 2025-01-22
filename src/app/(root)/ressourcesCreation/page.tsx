@@ -29,7 +29,7 @@ export default function HomePage() {
         //intro: intro,
         stories: chapters,
         markers: [],
-        max_guests:playersPerTeam,
+        max_guests: playersPerTeam,
         max_teams: numTeams,
         map: {
             lat: 46.603354,
@@ -66,12 +66,12 @@ export default function HomePage() {
                         <Teamnumber Numberindice={markers.length} numTeams={numTeams}
                             setNumTeams={setNumTeams} playersPerTeam={playersPerTeam}
                             setPlayersPerTeam={setPlayersPerTeam}
-                            onNext={async() => {await sendGameData()} }
+                            onNext={async () => { await sendGameData() }}
                         />
                     </div>
                 );
             case 3:
-               
+
             default:
                 return <div>Étape non reconnue</div>;
         }
