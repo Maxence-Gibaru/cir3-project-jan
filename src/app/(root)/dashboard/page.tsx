@@ -6,7 +6,7 @@ import ElapsedTime from "@/components/pages/timer";
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
+import Creation_qrcode from "@/components/ui/Creation_qrcode";
 export default function Dashboard() {
   const initialTeams = [
     { equipe: "Equipe A", indicesFaits: 8, totalIndices: 10 },
@@ -75,9 +75,9 @@ export default function Dashboard() {
 
         {/* Actions */}
         <div className="flex gap-4 mt-8 justify-center">
-          <Button className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg">
-            Générer les QR codes des indices
-          </Button>
+        
+          <Creation_qrcode />
+           
           <Button className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg">
             Générer le code
           </Button>
