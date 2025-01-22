@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+
 import { Dispatch, SetStateAction } from "react";
 import { Button } from "@heroui/react";
 interface TeamnumberProps {
@@ -15,7 +15,7 @@ interface TeamnumberProps {
 
 
 export default function Teamnumber({Numberindice,numTeams, setNumTeams,playersPerTeam, setPlayersPerTeam,onNext}:TeamnumberProps) {
-
+  
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-[#F2EFE7] px-8 py-10">
         <h1 className="text-gray-700 text-4xl font-bold text-center">Sélection du nombre d'équipes</h1>
