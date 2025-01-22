@@ -45,6 +45,7 @@ export default {
         sand: "#e1c881",          // Couleur sable
         blue: "#a6fffe",          // Couleur bleu ciel
         grey: "#e0deda",          // Couleur gris clair
+        oceanBlue : "#0066cc"     // Bleu Ocean
       },
 
 

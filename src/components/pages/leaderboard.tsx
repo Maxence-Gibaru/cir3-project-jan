@@ -1,7 +1,6 @@
 import React from 'react';
 
 const TeamProgressContainer = ({ data }) => {
-  // Trier les équipes par le nombre d'indices obtenus (indicesFaits) dans l'ordre décroissant
   const sortedData = [...data].sort((a, b) => b.indicesFaits - a.indicesFaits);
 
   return (

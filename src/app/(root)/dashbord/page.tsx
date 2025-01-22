@@ -1,6 +1,6 @@
 "use client";
 
-import TeamProgressContainer from "@/components/pages/leaderbord";
+import TeamProgressContainer from "@/components/pages/leaderboard";
 import ProgressDashboard from "@/components/pages/pourcent";
 import ElapsedTime from "@/components/pages/timer";
 import { Button } from "@heroui/react";
