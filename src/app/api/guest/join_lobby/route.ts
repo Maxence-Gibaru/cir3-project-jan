@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
         await dbConnect();
         const body = await req.json();
         const result = getparsedBody(ReqZodSchema, body);
+
         if (typeof result === "string") {
             return NextResponse.json(
                 { error: "Failed to parse body", details: result },
