@@ -10,7 +10,7 @@ export async function GET() {
     // If already authenticated
     const session = await getServerSession(authOptions);
     if (session) return NextResponse.next({ status: 401 });
-    
+
     try {
         await dbConnect();
         const organizers = await OrganizerModel.find();
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
     // If already authenticated
     const session = await getServerSession(authOptions);
     if (session) return NextResponse.next({ status: 401 });
-    
+
     try {
         await dbConnect();
         const body = await req.json();

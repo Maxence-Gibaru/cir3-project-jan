@@ -30,7 +30,7 @@ export default function LandingPage() {
 
     return (
         <>
-            <section className="relative h-screen bg-white flex flex-col bg-yellow-100">
+            <section className="relative h-screen  flex flex-col bg-greyBg ">
                 {/* Barre supérieure */}
                 <div className="h-[10vh]">
                     <NavbarHeader />
@@ -57,7 +57,7 @@ export default function LandingPage() {
  */}
 
 
-                        <div className="flex flex-row gap-5 bg-white rounded-full justfiy-center items-center">
+                        <div className="bg-greyBg flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md">
                             <Input
                                 /* disableAutosize */
                                 validationBehavior="native"
@@ -68,13 +68,13 @@ export default function LandingPage() {
                                 placeholder="Enter code"
                             />
                             <Button
-                                className="rounded-full bg-blue hover:bg-blue-dark"
+                                className="rounded-full bg-lightBlueBg uppercase font-bold tracking-[0.1rem]"
                                 onPress={handleJoin}
                             >
                                 Join
                             </Button>
                         </div>
-                        <div className="flex flex-col md:flex-row items-center justify-start md:ml-60 w-full max-w-4xl">
+                        <div className="bg-white rounded-full p-2 flex flex-col md:flex-row items-center justify-start md:ml-60 w-full max-w-4xl">
                             <h2 className="text-xl md:text-4xl text-center  uppercase tracking-[0.2rem] font-bold">
                                 Jouez à la chasse au trésor
                             </h2>
@@ -85,16 +85,26 @@ export default function LandingPage() {
 
                     {/* Texte descriptif */}
                     {/* <div className="mt-4 text-sm md:text-base px-4 max-w-3xl"> */}
-                    <Card className="py-20">
-                        <CardBody className="p-0 font-bold text-white bg-gray-500 p-5 rounded-xl">
-                            <p className="">
-                                Bienvenue dans cette chasse au trésor. L'objectif est de trouver le trésor caché dans la ville.
-                                Pour cela, aide toi des différents indices disposés tout au long du parcours. Chaque indice indique
-                                la position de l'indice suivant, ils devront alors être trouvés dans l'ordre établi en scannant les
-                                QRCode correspondants. Une fois tous les indices obtenus dans l'ordre, un indice final vous sera donné
-                                afin d'indiquer l'emplacement du trésor. Rentrez le code d'accès fourni par votre organisateur afin
-                                de rejoindre la partie et amusez-vous bien !
+                    <Card className="">
+                        <CardBody className="flex flex-col gap-5 p-0 text-gray-700 bg-[#146AFF1A] p-5 rounded-xl">
+                            <p className="font-bold text-xl">
+                                Bienvenue dans cette chasse au trésor.
                             </p>
+
+
+
+                            <p>
+                                L'objectif est de trouver le trésor caché dans la ville. Pour cela, aide toi des différents indices disposés tout au long du parcours.
+                                Chaque indice indique la position de l'indice suivant, ils devront alors être trouvés dans l'ordre établi en scannant les
+                                QRCode correspondants.
+                            </p>
+
+                            <p>
+                                Une fois tous les indices obtenus dans l'ordre, un indice final vous sera donné
+                                afin d'indiquer l'emplacement du trésor. Rentrez le code d'accès fourni par votre organisateur afin
+                                de rejoindre la partie et <span className="font-bold">amusez-vous bien !</span>
+                            </p>
+
                         </CardBody>
                     </Card>
                     {/* </div> */}
@@ -105,7 +115,7 @@ export default function LandingPage() {
 
             </section >
             {/* Footer */}
-            <Footer />
+            < Footer />
         </>
     );
 }

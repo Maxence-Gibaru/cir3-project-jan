@@ -87,7 +87,7 @@ export default function NavbarHeader() {
                                 isBordered
                                 as="button"
                                 className="transition-transform"
-                                color="secondary"
+                                color="primary"
                                 name={user?.name}
                                 size="sm"
 
