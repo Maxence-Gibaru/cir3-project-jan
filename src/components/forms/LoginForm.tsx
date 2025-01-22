@@ -3,6 +3,7 @@ import { fetchApi, FetchOptions } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
 import { signIn, signOut, useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function LoginForm() {
     const [loginData, setLoginData] = useState({
@@ -14,7 +15,7 @@ export default function LoginForm() {
     const { data: session } = useSession();
 
     if (session) {
-        console.log(session);
+        console.log("session : ", session);
     }
 
     const router = useRouter();
@@ -34,7 +35,6 @@ export default function LoginForm() {
                 password: loginData.password,
                 callbackUrl: "/",
             });
-            console.log(result);
             router.push(result.url);
             /*  if (result?.error) {
                  setError("Échec de la connexion. Veuillez vérifier vos identifiants.");
@@ -138,8 +138,9 @@ export default function LoginForm() {
                     <button
                         type="submit"
                         className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    >
+                    ><Link href="./create">
                         S'inscrire
+                    </Link>
                     </button>
                 </form>
             </div>

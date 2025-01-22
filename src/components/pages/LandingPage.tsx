@@ -1,31 +1,44 @@
 "use client";
 import Image from "next/image";
-import CodeArea from "@/components/pages/TextArea";
-import ButtonComponent from "@/components/pages/Button";
+
+import { fetchApi } from "@/lib/api";
+import { Button } from "@heroui/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import CodeArea from "./TextArea";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
 
-    const handleChange = (e) => {
+    const handleChange = (e: any) => {
         setText(e.target.value);
     };
+
+    const router = useRouter();
+
+    const handleJoin = async () => {
+        console.log("join", text)
+        const response = await fetchApi("hunt/find", { method: "POST", body: { code: text } })
+
+        console.log("response : ", response)
+        if (response) {
+            router.push(`/team?code=${encodeURIComponent(text)}`);
+        }
+    }
 
     return (
         <div className="relative min-h-screen flex flex-col items-center justify-between pt-20 px-4 md:px-16 lg:px-32">
             {/* Bouton en haut à droite */}
             <div className="absolute top-4 right-4">
-                <ButtonComponent
+                <Button
                     name="Créer un event"
-                    classname="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum"
-                    link="/create"
-                    onPress={null}
+                    className="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum"
                 />
             </div>
 
             {/* Gros titre centré */}
             <h1 className="text-3xl md:text-5xl font-bold text-center mt-12 mb-8 text-midnightBlue">
-                One P'ISEN
+                One P&apos;ISEN
             </h1>
 
             {/* Logo sous le titre */}
@@ -44,12 +57,8 @@ export default function LandingPage() {
                 <h1 className="text-2xl md:text-3xl mb-6 text-midnightBlue">Code d'accès</h1>
                 <CodeArea value={text} onChange={handleChange} classname="w-50 h-13 resize-none p-2 overflow-y-auto overflow-x-hidden break-words bg-gray-200 border border-gray-400" />
                 <div className="mt-4">
-                    <ButtonComponent
-                        name="Rejoindre"
-                        classname="rounded-lg px-6 py-3 bg-brightLavender hover:bg-vibrantPlum"
-                        link="/join"
-                        onPress={null}
-                    />
+                    <Button className="rounded-lg px-6 py-3 bg-brightLavender hover:bg-vibrantPlum" onPress={handleJoin}>Rejoindre</Button>;
+
                 </div>
             </div>
 
@@ -64,6 +73,6 @@ export default function LandingPage() {
                     de rejoindre la partie et amusez-vous bien !
                 </p>
             </div>
-        </div>
+        </div >
     );
 }

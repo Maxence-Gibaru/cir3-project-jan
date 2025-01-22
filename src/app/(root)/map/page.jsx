@@ -128,9 +128,9 @@ export default function Map() {
       
         <div className="z-10 flex-grow">
           <MapContainer
-            center={[data1.map[0].lat, data1.map[0].lng]}
-            zoom={data1.map[0].zoom}
-            scrollWheelZoom={false}
+            center={[data1.Map[0].lat, data1.Map[0].lng]}
+            zoom={data1.Map[0].zoom}
+            scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
           >
             <TileLayer
