@@ -5,13 +5,13 @@ import EventModal from "@/components/ui/EventModal";
 import { useState } from "react";
 
 const events = [
-    { id: 1, name: "Event 1", link: "ouais"},
-    { id: 2, name: "Event 2", link: "event2" },
-    { id: 3, name: "Event 3", link:"event3" },
-    { id: 4, name: "Event 3", link:"ouais" },
-    { id: 5, name: "Event 3", link:"ouais" },
-    { id: 6, name: "Event 3", link:"ouais" },
-    { id: 7, name: "Event 3", link:"ouais" },
+    { id: 1, name: "Event 1", link:"./dashbord"},
+    { id: 2, name: "Event 2", link: "./dashbord" },
+    { id: 3, name: "Event 3", link:"./dashbord" },
+    { id: 4, name: "Event 3", link:"./dashbord" },
+    { id: 5, name: "Event 3", link:"./dashbord" },
+    { id: 6, name: "Event 3", link:"./dashbord" },
+    { id: 7, name: "Event 3", link:"./dashbord" },
   ];
 
 function EventButtons() {
@@ -34,7 +34,7 @@ function EventButtons() {
       <ButtonComponent
         name="Créer un nouvel événement"
         classname="w-64 rounded-lg px-4 py-8 bg-[#03045E] text-white text-lg hover:bg-[#023E8A] mt-8"
-        link="/createevent"
+        link={null}
         onPress={null}
       />
     

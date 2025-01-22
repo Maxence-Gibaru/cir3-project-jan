@@ -3,6 +3,7 @@ import Image from "next/image";
 import CodeArea from "@/components/pages/TextArea";
 import ButtonComponent from "@/components/pages/Button";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
@@ -15,10 +16,10 @@ export default function LandingPage() {
         <div className="relative min-h-screen flex flex-col items-center justify-between pt-20 px-4 md:px-16 lg:px-32">
             {/* Bouton en haut à droite */}
             <div className="absolute top-4 right-4">
-                <ButtonComponent
+               <ButtonComponent
                     name="Créer un event"
                     classname="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum"
-                    link="/createevent"
+                    link="/signin"
                     onPress={null}
                 />
             </div>
