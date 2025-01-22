@@ -20,10 +20,10 @@ export default function Qrcode() {
     fetchApi('qr-code', { method: 'POST', body: jsondata })
       .then((data) => {
         console.log(data); // Traitement des données reçues
-        if (data == "oui") {
+        if (data == true) {
           router.push('/map'); // Redirige vers "/nouvelle-page"
         }
-        else if (data == "non") {
+        else if (data == false) {
           alert("Mauvaise Qr-code");
         }
       })

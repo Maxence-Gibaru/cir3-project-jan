@@ -39,11 +39,11 @@ export default function RessourcesCreationPage() {
         <ModalApp />
       </div>    
       {/* Titre principal */}
-      <h1 className="text-3xl font-bold text-center">Créer votre ressource</h1>
+      <h1 className="text-3xl font-bold text-center">Créer l'histoire de la chasse au trésor</h1>
 
       {/* Zone de saisie pour le titre */}
       <div className="w-full max-w-md flex flex-col items-center">
-        <h2 className="text-xl font-semibold mb-2 text-center">Titre :</h2>
+        <h2 className="text-xl font-semibold mb-2 text-center">Nom de l'histoire :</h2>
         <CodeArea
           value={title}
           onChange={(e) => setTitle(e.target.value)}
