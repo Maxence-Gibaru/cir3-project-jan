@@ -52,7 +52,7 @@ export default function IAModalApp({ chapters, onIaRespons}) {
       </Button>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent className="bg-white rounded-lg border border-gray-200">
+        <ModalContent className="bg-white rounded-lg border border-gray-200 shadow-md">
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
