@@ -49,6 +49,8 @@ export default {
         greyBg: "#F2EFE7",
         lightBlueBg: "#9ACBD0",
         blueBg: "#48A6A7",
+        blueHoverBg: "#389697",
+        darkBlueHoverBg: "#1963A2",
         darkBlueBg:"#2973B2"
       },
 

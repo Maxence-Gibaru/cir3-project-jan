@@ -71,7 +71,7 @@ export default function LandingPage() {
 
                             <div className="bg-greyBg border border-gray-300 flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md">
                                 <Input
-                                    /* disableAutosize */
+
                                     validationBehavior="native"
                                     className=" rounded-full"
                                     value={text}
@@ -86,7 +86,7 @@ export default function LandingPage() {
                                     Join
                                 </Button>
                             </div>
-                            <div className="bg-white rounded-full p-2 flex flex-col md:flex-row items-center justify-start md:ml-60 w-full max-w-4xl">
+                            <div className="bg-white rounded-full p-2 flex flex-col md:flex-row items-center justify-start w-full max-w-4xl">
                                 <h2 className="text-xl md:text-4xl text-center  uppercase tracking-[0.2rem] font-bold">
                                     Jouez à la chasse au trésor
                                 </h2>
