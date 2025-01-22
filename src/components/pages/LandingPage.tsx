@@ -1,11 +1,13 @@
 "use client";
 import Image from "next/image";
 
-import { fetchApi } from "@/lib/api";
+import { Textarea } from "@heroui/react";
+import { useState, useEffect } from "react";
 import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import CodeArea from "./TextArea";
+import { useSession } from "next-auth/react";
+import { fetchApi } from "@/lib/api";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
@@ -16,12 +18,33 @@ export default function LandingPage() {
 
     const router = useRouter();
 
+    const { data: session, update } = useSession();
+
+
+    const [user, setUser] = useState({})
+    useEffect(() => {
+        if (session && session.user) {
+            setUser(session.user)
+            console.log(session.user)
+        }
+    }, [session])
+
+
+    console.log(session);
+
     const handleJoin = async () => {
         console.log("join", text)
-        const response = await fetchApi("hunt/find", { method: "POST", body: { code: text } })
+        const response = await fetchApi("hunt/find", { method: "POST", body: { code: text, id: null } })
 
         console.log("response : ", response)
         if (response) {
+
+            const huntId = response.hunt._id;
+
+            console.log("ID :", huntId);
+
+            const updateSession = await update({ ...user, huntId: huntId })
+
             router.push(`/team?code=${encodeURIComponent(text)}`);
         }
     }
@@ -41,6 +64,8 @@ export default function LandingPage() {
                 One P&apos;ISEN
             </h1>
 
+            <h2>Bienvenue {session?.user?.name}</h2>
+
             {/* Logo sous le titre */}
             <div className="mb-1">
                 <Image
@@ -57,7 +82,7 @@ export default function LandingPage() {
                 <h1 className="text-2xl md:text-3xl mb-6 text-midnightBlue">Code d'accès</h1>
                 <CodeArea value={text} onChange={handleChange} classname="w-50 h-13 resize-none p-2 overflow-y-auto overflow-x-hidden break-words bg-gray-200 border border-gray-400" />
                 <div className="mt-4">
-                    <Button className="rounded-lg px-6 py-3 bg-brightLavender hover:bg-vibrantPlum" onPress={handleJoin}>Rejoindre</Button>;
+                    <Button className="rounded-lg px-6 py-3 bg-brightLavender hover:bg-vibrantPlum" onPress={handleJoin}>Rejoindre</Button>
 
                 </div>
             </div>
