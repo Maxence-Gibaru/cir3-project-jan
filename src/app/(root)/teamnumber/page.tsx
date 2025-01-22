@@ -30,13 +30,11 @@ export default function TeamSelectionPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white px-8 py-10">
-      <h1 className="text-[#03045E] text-4xl font-bold mb-8 text-center">
-        Sélection du nombre d'équipes
-      </h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#F2EFE7] px-8 py-10">
+        <h1 className="text-gray-700 text-4xl font-bold text-center">Sélection du nombre d'équipes</h1>
 
-      <div className="mb-6 w-full max-w-xs">
-        <label htmlFor="numTeams" className="text-[#03045E] text-xl font-semibold">
+      <div className="mb-6 w-full max-w-xs mt-8">
+        <label htmlFor="numTeams" className="text-gray-700 text-xl font-semibold">
           Nombre d'équipes :
         </label>
         <input
@@ -46,12 +44,12 @@ export default function TeamSelectionPage() {
           max={maxTeams}
           value={numTeams}
           onChange={(e) => setNumTeams(Number(e.target.value))}
-          className="mt-2 w-full px-4 py-3 border-2 border-black rounded-lg text-center text-lg"
+          className="mt-2 w-full px-4 py-3 border-2 border-gray rounded-full text-center text-lg"
         />
       </div>
 
       <div className="mb-8 w-full max-w-xs">
-        <label htmlFor="playersPerTeam" className="text-[#03045E] text-xl font-semibold">
+        <label htmlFor="playersPerTeam" className="text-gray-700 text-xl font-semibold">
           Joueurs par équipe (optionnel si 0) :
         </label>
         <input
@@ -60,7 +58,7 @@ export default function TeamSelectionPage() {
           min="0"
           value={playersPerTeam}
           onChange={(e) => setPlayersPerTeam(Number(e.target.value))}
-          className="mt-2 w-full px-4 py-3 border-2 border-black rounded-lg text-center text-lg"
+          className="mt-2 w-full px-4 py-3 border-2 border-grey rounded-full text-center text-lg"
         />
       </div>
 
@@ -72,7 +70,7 @@ export default function TeamSelectionPage() {
 
       <button
         onClick={handleNext}
-        className="mt-6 px-8 py-4 bg-[#03045E] text-white text-xl font-semibold rounded-lg hover:bg-[#023E8A] transition-all duration-200"
+        className="mt-6 px-8 py-4 bg-[#9ACBD0] text-gray-700 text-xl font-semibold rounded-lg hover:bg-gray-800 transition-all duration-200"
       >
         Suivant
       </button>
