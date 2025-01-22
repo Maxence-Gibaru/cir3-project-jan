@@ -67,7 +67,6 @@ const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs, maxGuests }
             onPress={onOpen}
           >
             Rejoindre
-
           </Button>
         </CardBody>
         <Divider />
