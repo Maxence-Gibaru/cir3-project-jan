@@ -53,48 +53,40 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center gap-6 py-8 px-4">
-      {/* Bouton pour ouvrir le modal en haut à droite */}
-      <div className="absolute top-4 right-4">
-        <IAModalApp
-          chapters={chapters}
-          onIaResponse={handleIaResponse}
-        />
-      </div>
+    <div className="min-h-screen bg-greyBg flex flex-col items-center gap-6 py-8 px-4">
 
       {/* Titre principal */}
       <h1 className="text-3xl font-bold text-center">
         Créer l'histoire de la chasse au trésor
       </h1>
 
-      <div className="w-full max-w-md flex flex-col items-center">
+      <div className="max-w-md  flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-2 text-center">
           Nom de l'histoire :
         </h2>
         <CodeArea
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          classname="w-full h-20 resize-none border border-white rounded-md p-2 bg-white overflow-y-auto overflow-x-hidden break-words"
+          classname="border border-gray-300 flex flex-row gap-5 bg-white rounded-3xl justfiy-center items-center shadow-md"
         />
       </div>
 
-      <div className="w-full max-w-md flex flex-col items-center">
+      <div className="max-w-md flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-2 text-center">
           Introduction :
         </h2>
         <CodeArea
           value={intro}
           onChange={(e) => setIntro(e.target.value)}
-          classname="w-full h-20 resize-none border border-white rounded-md p-2 bg-white overflow-y-auto overflow-x-hidden break-words"
+          classname="border border-gray-300 flex flex-row gap-5 bg-white rounded-3xl justify-center items-center shadow-md"
         />
       </div>
-
       <div className="w-full max-w-md flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-4 text-center">Chapitres :</h2>
         {chapters.map((chapter, index) => (
           <div
             key={index}
-            className="mb-4 border p-4 rounded-lg bg-white shadow-md w-full"
+            className="mb-4 border border-gray-200 p-4 rounded-2xl bg-white shadow-md w-full "
           >
             <h3 className="text-lg font-medium mb-2 text-center">
               Chapitre {index + 1} :
@@ -102,27 +94,33 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
             <CodeArea
               value={chapter}
               onChange={(e) => updateChapter(index, e.target.value)}
-              classname="w-full h-20 resize-none border border-gray-400 rounded-md p-2 bg-gray-200 overflow-y-auto overflow-x-hidden break-words"
+              classname="w-full resize-none border border-gray-400 rounded-2xl p-2 bg-gray-100 overflow-y-auto overflow-x-hidden break-words shadow-xl"
             />
             <div className="w-full flex justify-center mt-8">
               <Button
 
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-300"
                 onPress={() => removeChapter(index)}
               >Supprimer</Button>
             </div>
           </div>
         ))}
       </div>
-
+      
       <div className="w-full max-w-md flex justify-center">
         <Button
-          className="bg-black text-white px-6 py-3 rounded"
+          className="bg-darkBlueBg text-white rounded-2xl px-6 py-3 shadow-xl hover:bg-darkBlueHoverBg"
           onPress={addChapter}>Ajouter un chapitre</Button>
       </div>
-
+      {/* Bouton pour ouvrir le modal en haut à droite */}
+      <div className="flex">
+        <IAModalApp
+          chapters={chapters}
+          onIaResponse={handleIaResponse}
+        />
+      </div>
       <div className="w-full max-w-md flex justify-center mt-8">
-        <Button onPress={onNext} className="bg-green-500 text-white px-6 py-3 rounded">
+        <Button onPress={onNext} className="bg-blueBg text-white px-6 py-3 rounded-2xl shadow-xl hover:bg-blueHoverBg">
           Valider
         </Button>
       </div>
