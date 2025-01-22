@@ -83,6 +83,7 @@ export default function Importmap({ markers, setMarkers, onNext }: ImportmapPage
                 <Button
                     color="primary"
                     onPress={onNext}
+                    className="rounded-lg shadow-lg hover:bg-secondary text-white"
                 >
                     Enregistrer les indices ({markers.length})
                 </Button>
