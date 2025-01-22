@@ -17,9 +17,7 @@ function HuntButtons() {
 
 
   useEffect(() => {
-    fetchApi("hunt/find")
-      .then((data) => setHunts(data))
-      .catch((err) => console.error(err));
+    fetchApi("organizer/find").then((data) => setHunts(data)).catch((err) => console.error(err));
   }, []);
 
 
