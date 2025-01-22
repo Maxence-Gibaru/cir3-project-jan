@@ -5,7 +5,7 @@ import { fetchApi } from "@/lib/api";
 import { Hunt } from "@/models/Hunt";
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
-
+import Link from "next/link";
 
 function HuntButtons() {
   const [isModalOpen, setIsModalOpen] = useState(false); // État pour le modal
@@ -32,12 +32,11 @@ function HuntButtons() {
   };
   return (
     <div className="flex flex-col items-center mt-14">
-      <Button
+      <Link href="/rules"
         className="w-64 rounded-lg px-4 py-8 bg-[#03045E] text-white text-lg hover:bg-[#023E8A] mt-8"
-        onPress={() => {}}
       >
         Créer un nouvel événement
-      </Button>
+      </Link>
     
       {hunts.map(hunt => (
         <Button
