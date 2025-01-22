@@ -34,7 +34,7 @@ function EventButtons() {
       <ButtonComponent
         name="Créer un nouvel événement"
         classname="w-64 rounded-lg px-4 py-8 bg-[#03045E] text-white text-lg hover:bg-[#023E8A] mt-8"
-        link="/createevent"
+        link="/rules"
         onPress={null}
       />
     

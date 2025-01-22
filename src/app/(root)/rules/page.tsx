@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function CenteredTextPage() {
@@ -18,12 +19,12 @@ export default function CenteredTextPage() {
         Au cours de celle-ci et à la fin, vous pourrez consulter les statistiques des différentes équipes et le classement. Amusez-vous bien !
       </p>
 
-      <button
-        className="mt-8 px-6 py-3 bg-[#03045E] text-white text-lg font-semibold rounded-lg hover:bg-[#023E8A] transition-all duration-200"
-        onClick={() => router.push("/lien")}
-      >
+      <Link href={"/ressourcesCreation"}
+        className="mt-8 px-6 py-3 bg-[#03045E] text-white text-lg font-semibold rounded-lg hover:bg-[#023E8A] transition-all duration-200"> 
         Suivant
-      </button>
+      </Link>
+        
+      
     </div>
   );
 }

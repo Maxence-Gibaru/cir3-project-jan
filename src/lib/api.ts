@@ -6,7 +6,7 @@ export type FetchOptions = {
 
 
 
-export async function fetchApi(
+export async  function fetchApi(
     endpoint: string,
     options: FetchOptions = {}
 ) {

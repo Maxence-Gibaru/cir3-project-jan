@@ -18,7 +18,7 @@ export default function LandingPage() {
                 <ButtonComponent
                     name="Créer un event"
                     classname="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum"
-                    link="/createevent"
+                    link="/create"
                     onPress={null}
                 />
             </div>
