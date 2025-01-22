@@ -42,7 +42,8 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        return NextResponse.json({ hunt }, { status: 200 });
+        session.user.huntId = hunt._id;
+        return NextResponse.json({ teams: hunt.teams }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(
