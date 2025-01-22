@@ -19,7 +19,7 @@ function EventButtons() {
   const [currentEvent, setCurrentEvent] = useState(null); // Événement actuellement sélectionné
 
   // Ouvrir le modal pour un événement spécifique
-  const openModal = (event) => {
+  const openModal = (event:any) => {
     setCurrentEvent(event);
     setIsModalOpen(true);
   };
