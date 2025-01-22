@@ -4,10 +4,11 @@ import Image from "next/image";
 import { fetchApi } from "@/lib/api";
 import { Button, Textarea, Card, CardHeader, CardBody, CardFooter, Divider, } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@heroui/input";
 import Footer from "../layout/Footer";
 import NavbarHeader from "../layout/NavbarHeader";
+import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
@@ -78,18 +79,18 @@ export default function LandingPage() {
  */}
 
 
-                        <div className="bg-greyBg flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md">
+                        <div className="bg-greyBg border border-gray-300 flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md">
                             <Input
                                 /* disableAutosize */
                                 validationBehavior="native"
-                                className="border-gray-500 rounded-full"
+                                className=" rounded-full"
                                 value={text}
 
                                 onChange={handleChange}
                                 placeholder="Enter code"
                             />
                             <Button
-                                className="rounded-full bg-lightBlueBg uppercase font-bold tracking-[0.1rem]"
+                                className="rounded-full bg-darkBlueBg text-white uppercase font-bold tracking-[0.1rem]"
                                 onPress={handleJoin}
                             >
                                 Join
