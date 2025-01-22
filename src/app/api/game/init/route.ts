@@ -3,18 +3,18 @@ import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function GET() {
     const session = await getServerSession(authOptions);
     if (!session || session.user.isGuest) return NextResponse.next({ status: 401 });
 
     try {
         await dbConnect();
-        const hunt_id = session.user.hunt_id;
-        const team_index = session.user.team_index;
+        const huntId = session.user.huntId;
+        const teamIndex = session.user.teamIndex;
 
-        const hunt: Hunt | null = await HuntModel.findById(hunt_id);
+        const hunt: Hunt | null = await HuntModel.findById(huntId);
         if (!hunt) {
             return NextResponse.json(
                 { error: "Hunt not found" },
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        const team = hunt.teams[team_index];
+        const team = hunt.teams[teamIndex];
         if (!team) {
             return NextResponse.json(
                 { error: "Team not found" },
