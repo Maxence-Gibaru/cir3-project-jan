@@ -29,7 +29,7 @@ export default function HomePage() {
 
     useEffect(() => {
         const fetchHunt = async () => {
-            const response = await fetchApi("hunt/find", { method: "POST", body: { code: null, id: huntId } })
+            const response = await fetchApi("guest/init")
             setHuntData(response.hunt);
         }
 
