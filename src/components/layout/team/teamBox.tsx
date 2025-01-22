@@ -48,7 +48,7 @@ const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs }) => {
   return (
     <>
       <Button
-        className="boutonEquipe m-3 py-1 px-3 border-solid border-2 rounded-2xl border-blue-400 bg-blue-400 hover:shadow-lg"
+        className="boutonEquipe m-3 py-1 px-3 border-2 rounded-2xl bg-sand hover:shadow-lg"
         onPress={onOpen}
       >
         <h3 className="font-bold">Equipe n°{nomEquipe}</h3>

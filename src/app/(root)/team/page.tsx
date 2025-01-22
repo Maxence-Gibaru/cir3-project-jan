@@ -57,9 +57,9 @@ export default function HomePage() {
 
     });
     return (
-        <div className="h-screen">
-            <h1 className="flex justify-center h-1/6 text-4xl py-5 font-bold text-center bg-blue-100 items-center align-middle">Choix des équipes</h1>
-            <div className="h-5/6 flex flex-col justify-evenly items-center font-serif border-solid border-2 bg-blue-200">
+        <div className="h-screen bg-gradient-to-t from-sand to-blue">
+            <h1 className="flex justify-center h-1/6 text-4xl py-5 font-bold text-center items-center align-middle text-oceanBlue">Choix des équipes</h1>
+            <div className="h-5/6 flex flex-col justify-evenly items-center font-serif ">
                 {Equipes.map((Equipe, index) => (
                     <TeamBox key={index} nomEquipe={Equipe.id} nombreJoueurs={Equipe.size} />
                 ))}

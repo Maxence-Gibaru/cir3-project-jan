@@ -8,28 +8,30 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 
 function HuntButtons() {
-  const [isModalOpen, setIsModalOpen] = useState(false); // État pour le modal
-  const [currentHunt, setCurrentHunt] = useState<Hunt | null>(null); // État pour l'événement actuel
-
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+  const [currentHunt, setCurrentHunt] = useState<Hunt | null>(null); 
   const [hunts, setHunts] = useState<Hunt[]>([]);
 
-  // Get from api
+  const router = useRouter();
+
+
   useEffect(() => {
-    fetchApi("hunt/find").then((data) => setHunts(data)).catch((err) => console.error(err));
+    fetchApi("hunt/find")
+      .then((data) => setHunts(data))
+      .catch((err) => console.error(err));
   }, []);
 
 
-  // Ouvrir le modal pour un événement spécifique
   const openModal = (hunt: Hunt) => {
     setCurrentHunt(hunt);
     setIsModalOpen(true);
   };
 
-  // Fermer le modal
   const closeModal = () => {
     setIsModalOpen(false);
     setCurrentHunt(null);
   };
+
   return (
     <div className="flex flex-col items-center mt-14">
       <Link href="/rules"
