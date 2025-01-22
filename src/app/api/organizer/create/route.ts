@@ -5,16 +5,33 @@ import { Hunt, HuntModel, HuntZodSchema } from "@/models/Hunt";
 import { TeamModel } from "@/models/Team";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.next({ status: 401 });
 
+    type Marker = {
+        qr_code?: string; // Identifiant unique pour le qr_code
+        position: {
+            lat: number;
+            lng: number;
+        };
+        hint: string;
+    }
+
     try {
         await dbConnect();
         const body = await req.json();
         body.organizer_id = session.user.id;
-        body.code = Math.random().toString(36).substring(7).toUpperCase();
+
+        const shortUuid = uuidv4().slice(0, 8);
+        body.code = shortUuid.toUpperCase();
+
+        body.markers.map((marker: Marker) => {
+            marker.qr_code = uuidv4().slice(0, 8);
+        });
+
         const result = getparsedBody(HuntZodSchema, body);
         if (typeof result === "string") {
             return NextResponse.json(
