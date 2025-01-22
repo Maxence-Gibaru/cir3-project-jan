@@ -6,6 +6,7 @@ import { Button } from "@heroui/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import CodeArea from "./TextArea";
+import Link from "next/link";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
@@ -27,16 +28,12 @@ export default function LandingPage() {
     };
 
     return (
-        <div className="relative h-screen bg-white flex flex-col">
-            {/* Barre supérieure */}
-            <div className="flex items-center justify-between w-full bg-oceanBlue px-6 py-4 shadow-md">
-                <h1 className="text-xl font-bold text-midnightBlue">OnePisen</h1>
-                <Button
-                    className="rounded-lg px-4 py-2 bg-white hover:bg-blue-dark"
-                    onClick={() => console.log("Créer un event")}
-                >
-                    Créer un event
-                </Button>
+        <div className="relative min-h-screen flex flex-col items-center justify-between pt-20 px-4 md:px-16 lg:px-32">
+            {/* Bouton en haut à droite */}
+            <div className="absolute top-4 right-4">
+                <Link href="/create" className="rounded-lg px-4 py-2 bg-brightLavender hover:bg-vibrantPlum">
+                    Créer un event  
+                </Link>
             </div>
 
             {/* Contenu principal */}
