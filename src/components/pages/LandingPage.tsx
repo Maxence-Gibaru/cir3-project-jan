@@ -79,18 +79,18 @@ export default function LandingPage() {
  */}
 
 
-                        <div className="bg-greyBg flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md">
+                        <div className="bg-greyBg border border-gray-300 flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md">
                             <Input
                                 /* disableAutosize */
                                 validationBehavior="native"
-                                className="border-gray-500 rounded-full"
+                                className=" rounded-full"
                                 value={text}
 
                                 onChange={handleChange}
                                 placeholder="Enter code"
                             />
                             <Button
-                                className="rounded-full bg-lightBlueBg uppercase font-bold tracking-[0.1rem]"
+                                className="rounded-full bg-darkBlueBg text-white uppercase font-bold tracking-[0.1rem]"
                                 onPress={handleJoin}
                             >
                                 Join

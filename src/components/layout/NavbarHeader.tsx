@@ -41,8 +41,8 @@ export default function NavbarHeader() {
                         <Image
                             src="/logoO.png"
                             alt="Logo de One P'ISEN"
-                            width={50}
-                            height={50}
+                            width={72}
+                            height={72}
                             className="mx-auto md:ml-5 rounded-full"
                         />
                     </div>
