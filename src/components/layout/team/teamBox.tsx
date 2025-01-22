@@ -31,7 +31,7 @@ const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs, maxGuests }
   const [huntData, setHuntData] = useState({})
   const code = searchParams.get("code");
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const { data: session } = useSession();
+  const { data: session, update } = useSession();
   const [teamJoined, setTeamJoined] = useState({
     teamIndex: nomEquipe,
     guestId: session?.user?.id
@@ -40,10 +40,14 @@ const TeamBox: React.FC<TeamBoxProps> = ({ nomEquipe, nombreJoueurs, maxGuests }
   const router = useRouter();
 
   const handleTeamJoin = async () => {
-    const response = await fetchApi("guest/join_team", { method: "PUT", body: { code: code, teamIndex: teamJoined.teamIndex, guestId: teamJoined.guestId } })
+    const response = await fetchApi("guest/join_team", { method: "PUT", body: { teamIndex: teamJoined.teamIndex, guestId: teamJoined.guestId } })
+
+    const user = session?.user;
 
     if (response) {
-      router.push('/map')
+
+      const updateSession = await update({ ...user, teamIndex: teamJoined.teamIndex })
+      router.push('/wait')
     }
   }
 

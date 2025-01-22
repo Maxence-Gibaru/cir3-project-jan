@@ -64,7 +64,10 @@ export async function GET(req: NextRequest) {
 
         let huntAddedMarkers: HuntMarker[] = [];
         for (let i = markersCount; i <= team.current_hint_index; i++) {
-            const position = hunt.markers[team.hints_order[i]].position;
+            const marker = hunt.markers[team.hints_order[i]];
+            console.log('marker :', marker)
+            console.log('markers :', hunt.markers, team.hints_order[i], team, team.hints_order, i)
+            const position = marker.position;
             const hint = (team.current_hint_index === hunt.markers.length - 1)
                 ? hunt.markers[0].hint
                 : hunt.markers[team.hints_order[i + 1]].hint;

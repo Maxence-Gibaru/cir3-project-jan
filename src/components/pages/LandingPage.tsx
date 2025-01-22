@@ -46,7 +46,7 @@ export default function LandingPage() {
 
             const updateSession = await update({ ...user, huntId: huntId })
 
-            router.push(`/team?code=${encodeURIComponent(text)}`);
+            router.push(`/team`);
         }
     };
 
