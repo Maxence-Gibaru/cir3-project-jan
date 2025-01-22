@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         body.organizer_id = session.user.id;
         body.code = Math.random().toString(36).substring(7).toUpperCase();
+        console.log("body : ", body);
         const result = getparsedBody(HuntZodSchema, body);
         if (typeof result === "string") {
             return NextResponse.json(
@@ -25,7 +26,8 @@ export async function POST(req: NextRequest) {
 
         result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject());
 
-        console.log(result);
+
+        console.log("result : ", result);
 
         const newHunt: Hunt = await HuntModel.create(result);
         return NextResponse.json(newHunt, { status: 201 });

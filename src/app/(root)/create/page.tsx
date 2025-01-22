@@ -6,7 +6,7 @@ import { Hunt } from "@/models/Hunt";
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function HuntButtons() {
   const [isModalOpen, setIsModalOpen] = useState(false);
