@@ -34,8 +34,6 @@ export async function POST(req: NextRequest) {
         }
 
         const hunt = await HuntModel.findOne({ code: result.lobby_code, status: "opened" });
-
-
         if (!hunt) {
             return NextResponse.json(
                 { error: "Aucune chasse au trésor trouvée avec ce code." },

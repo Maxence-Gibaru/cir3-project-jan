@@ -2,6 +2,7 @@ export type FetchOptions = {
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE'; // Possible HTTP methods
     headers?: { [key: string]: string };        // Custom HTTP headers
     body?: unknown;                             // Request body for POST/PUT
+    params?: { [key: string]: string | number }; // URL parameters
 };
 
 export async function fetchApi(
@@ -14,7 +15,15 @@ export async function fetchApi(
     };
 
     const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Ensure you have a base URL
-    const url = `${baseUrl}/api/${endpoint}`;  // Full URL combining baseUrl and endpoint
+    let url = `${baseUrl}/api/${endpoint}`;  // Full URL combining baseUrl and endpoint
+
+    if (options.params) {
+        const params = new URLSearchParams();
+        for (const key in options.params) {
+            params.append(key, options.params[key].toString());
+        }
+        url += '?' + params.toString();
+    }
 
     try {
         const response = await fetch(url, {

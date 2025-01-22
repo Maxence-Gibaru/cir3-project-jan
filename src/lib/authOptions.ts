@@ -6,13 +6,6 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { NextRequest } from "next/server";
 import { fetchApi } from "./api";
 
-type user = {
-    email: string,
-    password: string
-
-}
-
-
 export const authOptions = {
     providers: [
         CredentialsProvider({
@@ -24,6 +17,7 @@ export const authOptions = {
             async authorize(credentials, req: NextRequest) {
                 try {
                     await dbConnect();
+                    if (!credentials) return null;
                     const { email, password } = credentials;
 
                     const user = await OrganizerModel.findOne({ email });
@@ -31,7 +25,11 @@ export const authOptions = {
                     if (user && password) {
                         const isValidPassword = await bcrypt.compare(password, user.password);
                         if (isValidPassword) {
-                            return { id: user._id.toString(), email: user.email };
+                            return {
+                                id: user._id.toString(),
+                                email: user.email,
+                                role: "organizer",
+                            };
                         }
                     }
                     return null;
@@ -54,6 +52,7 @@ export const authOptions = {
                     name: data,
                     role: "guest",
                     huntId: null,
+                    teamIndex: null,
                 };
                 return guestUser;
             },
