@@ -28,11 +28,11 @@ export default function HomePage() {
         setIsImageLoaded(true);  // L'image de fond a été chargée
     };
 
-    useEffect(() => {
-        console.log("session info", session)
-        console.log("status: ", status)
-    }, [session])
-
+    /*     useEffect(() => {
+            console.log("session info", session)
+            console.log("status: ", status)
+        }, [session])
+     */
 
     useEffect(() => {
         if (status === "unauthenticated") {
@@ -40,9 +40,10 @@ export default function HomePage() {
         }
     }, [status]);
 
-  return (
+    return (
         <>
+            
             <LandingPage />
         </>
-  );
+    );
 }

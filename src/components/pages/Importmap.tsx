@@ -2,6 +2,7 @@
 "use client"
 import React, { useState } from 'react'
 import dynamic from "next/dynamic"
+import { Dispatch, SetStateAction } from "react";
 import { Input, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter ,useDisclosure } from '@nextui-org/react'
 // Import dynamique du composant Map pour éviter les erreurs SSR
 const Map = dynamic(() => import("@/components/ui/Map"), { 
@@ -13,13 +14,20 @@ const Map = dynamic(() => import("@/components/ui/Map"), {
   )
 })
 const MAX_MARKERS = 10 // Limite maximale de marqueurs
-const MapPage = () => {
-  const [markers, setMarkers] = useState([
-    {
-      position: [48.8566, 2.3522],
-      text: "Paris"
-    }
-  ])
+type Marker = {
+  position: {
+      lat: number;
+      lng: number;
+  };
+hint: string;
+}
+interface ImportmapPageProps {
+  markers: Marker[];
+  setMarkers: Dispatch<SetStateAction<string>>;
+  onNext: () => void; // Nouvelle prop
+}
+export default function Importmap({markers, setMarkers, onNext}:ImportmapPageProps){
+ 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [markerText, setMarkerText] = useState('')
   const [currentPosition, setCurrentPosition] = useState(null)
@@ -52,33 +60,7 @@ const MapPage = () => {
   const removeMarker = (index) => {
     setMarkers(prev => prev.filter((_, i) => i !== index))
   }
-  const handleSubmitMarkers = async () => {
-    if (markers.length === 0) {
-      alert('Veuillez ajouter au moins un indice')
-      return
-    }
-
-    
-    try {
-      const response = await fetch('/api/markers', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(markers),
-      })
-
-      if (!response.ok) {
-        throw new Error('Erreur lors de l\'envoi des indices')
-      }
-
-      const data = await response.json()
-      alert('Indices enregistrés avec succès !')
-    } catch (error) {
-      console.error('Erreur:', error)
-      alert('Une erreur est survenue lors de l\'envoi des indices')
-    } 
-  }
+  
   return (
     <div className="flex flex-col gap-4 p-4">
       <div className="p-4 bg-gray-100 rounded">
@@ -95,9 +77,8 @@ const MapPage = () => {
       </div>
        {markers.length > 0 && (
         <Button 
-          color="primary"
-          onPress={handleSubmitMarkers}
-        
+          color="primary"   
+          onPress={onNext}      
         >
           Enregistrer les indices ({markers.length})
         </Button>
@@ -132,5 +113,3 @@ const MapPage = () => {
     </div>
   )
 }
-
-export default MapPage

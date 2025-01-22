@@ -4,9 +4,9 @@ export default function Menu() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button className="text-white bg-boldBlue rounded">Open Menu</Button>
+        <Button className="text-white bg-darkBlueBg rounded">Open Menu</Button>
       </DropdownTrigger>
-      <DropdownMenu className="text-white bg-boldBlue rounded">
+      <DropdownMenu className="text-white bg-darkBlueBg rounded">
         <DropdownItem key="HomePage">Page d'accueil</DropdownItem>
         <DropdownItem key="TeamPage">Page d'équipe</DropdownItem>
         <DropdownItem key="ValidationPage">Validation</DropdownItem>
