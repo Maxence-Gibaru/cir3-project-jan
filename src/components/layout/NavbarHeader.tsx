@@ -16,39 +16,42 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation"
 import Menu from "./menu/Menu";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 export default function NavbarHeader() {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(true);
 
-    const user = {
-        firstName: "Maxence",
-        lastName: "GIBARU"
-    }
+    const { data: session } = useSession();
+
+    const user = session?.user;
 
     return (
         <Navbar
-            className="fixed bg-white bg-opacity-80 backdrop-blur-md shadow-md py-3 h-[10vh]"
+            className="bg-white bg-opacity-80 h-[10vh]"
             shouldHideOnScroll
             isBordered
             isBlurred
         >
             <NavbarBrand>
                 <Link href="/">
-                    <div className="relative h-20 w-20">
+                    <div className="relative">
                         {/* Logo */}
-                        {/* <Image
-                            alt="Logo"
-                            className="relative h-20 w-20 object-cover"
-                            src={require("@/assets/logo-nobg.png")}
-                        /> */}
+                        <Image
+                            src="/logoO.png"
+                            alt="Logo de One P'ISEN"
+                            width={50}
+                            height={50}
+                            className="mx-auto md:ml-5 rounded-full"
+                        />
                     </div>
                 </Link>
             </NavbarBrand>
-            
-            <NavbarContent className="absolute top-4 left-4">
-                            <Menu />
-            </NavbarContent>
+
+            {/*             <NavbarContent className="absolute top-4 left-4">
+                <Menu />
+            </NavbarContent> */}
             {/* Centrer le contenu dans la Navbar */}
             <NavbarContent justify='center' className="hidden sm:flex gap-4">
                 <NavbarItem>
@@ -85,7 +88,7 @@ export default function NavbarHeader() {
                                 as="button"
                                 className="transition-transform"
                                 color="secondary"
-                                name={user.firstName + " " + user.lastName}
+                                name={user?.name}
                                 size="sm"
 
                             />
@@ -94,7 +97,7 @@ export default function NavbarHeader() {
                             <DropdownItem key="profile" className="h-14 gap-2">
                                 <p className="font-semibold">Signed in as</p>
                                 <p className="font-semibold">
-                                    {user.firstName} {user.lastName}
+                                    {user?.name}
                                 </p>
                             </DropdownItem>
                             <DropdownItem key="divider" />

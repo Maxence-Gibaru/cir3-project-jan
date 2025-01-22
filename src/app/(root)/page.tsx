@@ -40,9 +40,9 @@ export default function HomePage() {
         }
     }, [status]);
 
-  return (
+    return (
         <>
             <LandingPage />
         </>
-  );
+    );
 }
