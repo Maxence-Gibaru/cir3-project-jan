@@ -5,7 +5,9 @@ import Link from "next/link";
 import "leaflet/dist/leaflet.css";
 import dynamic from "next/dynamic";
 import L from "leaflet";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/react";
+import { useSession } from "next-auth/react";
+import { fetchApi } from "@/lib/api";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
 import {
   Modal,
   ModalContent,
@@ -16,18 +18,16 @@ import {
   useDisclosure,
 } from "@heroui/react";
 
-// Corrige les icônes Leaflet
-if (typeof window !== "undefined") {
-  delete L.Icon.Default.prototype._getIconUrl;
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-    iconUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-    shadowUrl:
-      "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-  });
-}
+
+const icon = L.icon({
+  iconUrl: '/marker-icon.png',
+  iconRetinaUrl: '/marker-icon-2x.png',
+  shadowUrl: '/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+})
 
 // Charge les composants de la carte uniquement côté client
 const MapContainer = dynamic(
@@ -58,6 +58,13 @@ export default function Map() {
 
   const [selectedMarker, setSelectedMarker] = useState(null);
   const [Markers, setMarkers] = useState([]);
+
+
+  const { data: session } = useSession();
+
+  if (session) {
+    console.log(session);
+  }
 
   const data1 = {
     map: [
@@ -92,18 +99,20 @@ export default function Map() {
   // Ajoute un marqueur (simulation d'une récupération via API)
   useEffect(() => {
     const addMarker = async () => {
-      // Simule un fetch API pour récupérer un nouveau marqueur
-      const newMarker = await new Promise((resolve) =>
-        setTimeout(() => resolve(data2), 500)
-      );
-      console.log(newMarker);
-      if (newMarker?.close) {
-        console.log("Trésor trouvé");
-        setSelectedMarker(newMarker);
-        onOpenthirdModal();
-      } else {
-        setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
-      }
+      await fetchApi("organizer/hunt", {
+        method: "GET",
+      }).then((data) => setMarkers(data)).catch((err) => console.error(err), 5000);
+      // const newMarker = await new Promise((resolve) =>
+      //   setTimeout(() => resolve(data2), 500)
+      // );
+      // console.log(newMarker);
+      // if (newMarker?.close) {
+      //   console.log("Trésor trouvé");
+      //   setSelectedMarker(newMarker);
+      //   onOpenthirdModal();
+      // } else {
+      //   setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
+      // }
     };
     addMarker();
   }, [onOpenthirdModal]);
@@ -111,25 +120,23 @@ export default function Map() {
   return (
     <div className="w-full text-black">
       <div className="absolute z-30 top-4 right-4">
-      <Dropdown >
-        <DropdownTrigger>
-          <Button className="text-black bg-white rounded-md" variant="bordered">Menu</Button>
-        </DropdownTrigger>
-        <DropdownMenu  className="text-black bg-white rounded-md" aria-label="Example with disabled actions" disabledKeys={["edit", "delete"]}>
-          <DropdownItem key="new"><Link href="/ressources">Récapitulatif histoire</Link></DropdownItem>
-          <DropdownItem key="copy"><Link href="">Régles</Link></DropdownItem>
-          <DropdownItem key="delete" className="text-danger" color="danger">
-            Déconnexion
-          </DropdownItem>
-        </DropdownMenu>
-      </Dropdown>
+        <Dropdown>
+          <DropdownTrigger>
+            <Button className="text-black bg-white rounded-md" variant="bordered">Menu</Button>
+          </DropdownTrigger>
+          <DropdownMenu className="text-black bg-white rounded-md" aria-label="Example with disabled actions" disabledKeys={["edit", "delete"]}>
+            <DropdownItem key="new"><Link href="/ressources">Récapitulatif histoire</Link></DropdownItem>
+            <DropdownItem key="copy"><Link href="/playerrules">Régles</Link></DropdownItem>
+            <DropdownItem key="HomePage"><Link href="/" className="text-red-500 underline">Déconnexion</Link></DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
       <section className="h-screen bg-vibrantPlum flex relative">
-      
+
         <div className="z-10 flex-grow">
           <MapContainer
-            center={[data1.Map[0].lat, data1.Map[0].lng]}
-            zoom={data1.Map[0].zoom}
+            center={[data1.map[0].lat, data1.map[0].lng]}
+            zoom={data1.map[0].zoom}
             scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
           >
@@ -140,6 +147,7 @@ export default function Map() {
 
             {Markers.map((indice, index) => (
               <Marker
+                icon={icon}
                 key={index}
                 position={[indice.position.lat, indice.position.lng]}
                 eventHandlers={{
@@ -223,22 +231,22 @@ export default function Map() {
           </ModalContent>
         </Modal>
       </section>
-       {/* Bouton sticky */}
-       <div className="absolute z-30 bottom-4 right-4">
-          <Link
-            href="/qr-code"
-            className="bg-white text-vibrantPlum w-16 h-16 flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-gray-200 transition"
+      {/* Bouton sticky */}
+      <div className="absolute z-30 bottom-4 right-4">
+        <Link
+          href="/qr-code"
+          className="bg-white text-vibrantPlum w-16 h-16 flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-gray-200 transition"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 448 512"
+            className="w-6 h-6"
+            fill="black"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 448 512"
-              className="w-6 h-6"
-              fill="black"
-            >
-              <path d="M0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 96l0 64 64 0 0-64L64 96zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zm64 16l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zm80 64l-64 0 0 64 64 0 0-64zM256 304c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16l0 96c0 8.8-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16l0 64c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-160zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z" />
-            </svg>
-          </Link>
-        </div>
+            <path d="M0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 96l0 64 64 0 0-64L64 96zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zm64 16l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zm80 64l-64 0 0 64 64 0 0-64zM256 304c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16l0 96c0 8.8-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16l0 64c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-160zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z" />
+          </svg>
+        </Link>
+      </div>
     </div>
   );
 }

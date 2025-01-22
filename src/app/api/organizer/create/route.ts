@@ -5,16 +5,38 @@ import { Hunt, HuntModel, HuntZodSchema } from "@/models/Hunt";
 import { TeamModel } from "@/models/Team";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { Marker } from "react-leaflet";
+import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.next({ status: 401 });
 
+    type Marker = {
+        id?: string; // Identifiant unique pour le qr_code
+        position: {
+            lat: number;
+            lng: number;
+        };
+        hint: string;
+    }
+
     try {
         await dbConnect();
         const body = await req.json();
         body.organizer_id = session.user.id;
-        body.code = Math.random().toString(36).substring(7).toUpperCase();
+
+        const shortUuid = uuidv4().slice(0, 8);
+        body.code = shortUuid.toUpperCase();
+
+        body.markers.map((marker: Marker) => {
+            marker.id = uuidv4().slice(0, 8);
+            /* marker.position = { lat: marker.position.lat, lng: marker.position.lng } */
+            console.log(marker.position)
+        });
+
+        /* console.log("body :", body.markers); */
+
         const result = getparsedBody(HuntZodSchema, body);
         if (typeof result === "string") {
             return NextResponse.json(
@@ -23,9 +45,10 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject());
+        /* result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject()); */
 
-        console.log(result);
+        result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject());
+        console.log("result : ", result);
 
         const newHunt: Hunt = await HuntModel.create(result);
         return NextResponse.json(newHunt, { status: 201 });

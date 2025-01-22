@@ -4,6 +4,7 @@ import { OrganizerModel } from "@/models/Organizer";
 import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextRequest } from "next/server";
+import { v4 as uuidv4 } from 'uuid';
 import { fetchApi } from "./api";
 
 export const authOptions = {
@@ -48,7 +49,7 @@ export const authOptions = {
                 const response = await fetchApi("generate")
                 const data = await response.output
                 const guestUser = {
-                    id: "guest_" + Math.random().toString(36).substring(2, 15),
+                    id: "guest_" + uuidv4().slice(0, 8),
                     name: data,
                     role: "guest",
                     huntId: null,
