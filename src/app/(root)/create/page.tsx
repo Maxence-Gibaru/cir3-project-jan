@@ -34,7 +34,7 @@ function HuntButtons() {
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-greyBg text-gray-700">
         <Link href="/rules"
-        className=" m-3 py-5 px-1 rounded-2xl flex justify-center bg-darkBlueBg w-11/12 h-1/8 hover:shadow-lg font-bold "
+        className=" m-3 py-5 px-1 rounded-2xl flex justify-center bg-darkBlueBg text-white w-11/12 h-1/8 hover:shadow-lg font-bold "
         >
           Créer un nouvel événement
         </Link>
@@ -42,7 +42,7 @@ function HuntButtons() {
       {hunts.map(hunt => (
         <Button
           key={hunt._id}
-          className="m-3 py-5 px-1 rounded-2xl flex justify-center bg-darkBlueBg w-11/12 h-1/8 hover:shadow-lg font-bold"
+          className="m-3 py-5 px-1 rounded-2xl flex justify-center bg-darkBlueBg text-white w-11/12 h-1/8 hover:shadow-lg font-bold"
           onPress={() => openModal(hunt)}
         >
           {hunt.name}
