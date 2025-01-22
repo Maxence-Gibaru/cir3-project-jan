@@ -9,9 +9,12 @@ import { Input } from "@heroui/input";
 import Footer from "../layout/Footer";
 import NavbarHeader from "../layout/NavbarHeader";
 import { useSession } from "next-auth/react";
+import LoginModal from "../ui/LoginModal";
+import { useDisclosure } from "@nextui-org/react";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const handleChange = (e: any) => {
         setText(e.target.value);
@@ -19,7 +22,7 @@ export default function LandingPage() {
 
     const router = useRouter();
 
-    const { data: session, update } = useSession();
+    const { data: session, update, status } = useSession();
 
 
     const [user, setUser] = useState({})
@@ -30,6 +33,13 @@ export default function LandingPage() {
         }
     }, [session])
 
+
+    useEffect(() => {
+        if (status === "unauthenticated") {
+
+            onOpen();
+        }
+    }, [session])
 
     console.log(session);
 
@@ -52,11 +62,12 @@ export default function LandingPage() {
 
     return (
         <>
+            <LoginModal isOpen={isOpen} onOpenChange={onOpenChange} />
             <section >
                 <div className="relative h-screen  flex flex-col bg-greyBg ">
                     {/* Barre supérieure */}
                     <div className="h-[10vh]">
-                        <NavbarHeader />
+                        <NavbarHeader status={status} />
                     </div>
 
                     {/* Contenu principal */}

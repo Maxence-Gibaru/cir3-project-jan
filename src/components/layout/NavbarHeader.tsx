@@ -13,15 +13,23 @@ import {
     Button
 } from "@nextui-org/react";
 import Link from "next/link";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
 import Menu from "./menu/Menu";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
-export default function NavbarHeader() {
+export default function NavbarHeader({ status }) {
     const router = useRouter();
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        if (status === "authenticated") {
+            setIsAuthenticated(true);
+        } else {
+            setIsAuthenticated(false)
+        }
+    })
 
     const { data: session } = useSession();
 
@@ -118,7 +126,8 @@ export default function NavbarHeader() {
               </DropdownItem>
               <DropdownItem key="help_and_feedback">Help & Feedback</DropdownItem> */}
                             <DropdownItem onPress={() => {
-                                /* handleLogout(); */
+                                signOut()
+
                             }} key="logout" color="danger">
 
                                 Log Out
@@ -131,7 +140,7 @@ export default function NavbarHeader() {
                     <Button onPress={() => {
                         router.push("/sign-in");
                     }}
-                        className="text-white font-medium bg-customPurple400 font-poppins border border-customPurple400 px-4 py-2 rounded-xl ">
+                        className="text-gray-700 font-medium bg-customPurple400 font-poppins border border-customPurple400 px-4 py-2 rounded-xl ">
                         Connexion
                     </Button>)
                 }

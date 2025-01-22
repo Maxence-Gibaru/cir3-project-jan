@@ -34,15 +34,10 @@ export default function HomePage() {
         }, [session])
      */
 
-    useEffect(() => {
-        if (status === "unauthenticated") {
-            signIn("guest-credentials");
-        }
-    }, [status]);
+    
 
     return (
         <>
-            
             <LandingPage />
         </>
     );

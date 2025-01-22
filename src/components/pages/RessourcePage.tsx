@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@heroui/react";
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@heroui/react";
 import Link from "next/link";
 
 // Types des chapitres et de l'histoire
