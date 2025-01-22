@@ -1,35 +1,40 @@
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
-import { Organizer, OrganizerModel, OrganizerZodSchema } from "@/models/Organizer";
-import bcrypt from "bcrypt";
+import { HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 import { getparsedBody } from "../../utils";
 
-export async function POST(req: NextRequest) {
-    // If already authenticated
+const ReqZodSchema = z.object({
+    huntId: z.string(),
+});
+
+export async function PUT(req: NextRequest) {
     const session = await getServerSession(authOptions);
-    if (session && session.user.role == "organizer") return NextResponse.json({ error: "Vous êtes déjà connecté" }, { status: 401 });
-    
+    if (!session) return NextResponse.next({ status: 401 });
+
     try {
         await dbConnect();
         const body = await req.json();
-        const hashedPassword = await bcrypt.hash(body.password, 10);
-        body.password = hashedPassword;
-        const result = getparsedBody(OrganizerZodSchema, body);
+        const result = getparsedBody(ReqZodSchema, body);
         if (typeof result === "string") {
             return NextResponse.json(
                 { error: "Failed to parse body", details: result },
                 { status: 400 }
             );
         }
+        
+        // Find by id and update the status
+        const hunt = await HuntModel.findByIdAndUpdate(result.huntId, {
+            status: "opened",
+        });
 
-        const newOrganizer: Organizer = await OrganizerModel.create(result);
-        return NextResponse.json(newOrganizer, { status: 201 });
+        return NextResponse.json({ hunt }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(
-            { error: "Failed to create organizer" },
+            { error: "Echec lors de l'actualisation du status" },
             { status: 500 }
         );
     }

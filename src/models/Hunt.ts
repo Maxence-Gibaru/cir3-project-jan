@@ -5,11 +5,11 @@ import { TeamSchema, TeamZodSchema } from './Team';
 
 export const HuntZodSchema = z.object({
     _id: z.string().optional(),
-    name: z.string().optional(), // Nom de la chasse
+    name: z.string(), // Nom de la chasse
     teams: z.array(TeamZodSchema).default([]),
-    markers: z.array(MarkerZodSchema).default([]), // Un marker (en 0 c'est le trésor)
-    stories: z.array(z.string()).default([]),
-    user_id: z.string(),
+    markers: z.array(MarkerZodSchema), // Un marker (en 0 c'est le trésor)
+    stories: z.array(z.string()),
+    organizer_id: z.string(),
     code: z.string(),
     status: z.enum(['closed', 'opened', 'started']).default('closed'),
     max_guests: z.number(),
@@ -33,17 +33,17 @@ const HuntSchema = new Schema({
     },
     teams: {
         type: [TeamSchema],
-        default: []
+        required: true
     },
     markers: {
         type: [MarkerSchema],
-        default: []
+        required: true
     },
     stories: {
         type: [String],
-        default: []
+        required: true
     },
-    user_id: {
+    organizer_id: {
         type: Schema.Types.ObjectId,
         ref: 'Organizer',
         required: true
