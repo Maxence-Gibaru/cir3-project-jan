@@ -29,7 +29,7 @@ export default function NavbarHeader() {
 
     return (
         <Navbar
-            className="bg-white bg-opacity-80 h-[10vh]"
+            className="bg-white bg-opacity-80 h-[10vh] md:h-20"
             shouldHideOnScroll
             isBordered
             isBlurred
@@ -43,7 +43,7 @@ export default function NavbarHeader() {
                             alt="Logo de One P'ISEN"
                             width={72}
                             height={72}
-                            className="mx-auto md:ml-5 rounded-full"
+                            className="mx-auto rounded-full"
                         />
                     </div>
                 </Link>
