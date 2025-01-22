@@ -6,7 +6,7 @@ import { Hunt } from "@/models/Hunt";
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function HuntButtons() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,17 +32,17 @@ function HuntButtons() {
   };
 
   return (
-    <div className="flex flex-col items-center mt-14">
-      <Link href="/rules"
-        className="w-64 rounded-lg px-4 py-8 bg-[#03045E] text-white text-lg hover:bg-[#023E8A] mt-8"
-      >
-        Créer un nouvel événement
-      </Link>
-
+    <div className="flex flex-col items-center justify-center h-screen bg-greyBg">
+        <Link href="/rules"
+        className=" m-3 py-5 px-1 rounded-2xl flex justify-center bg-lightBlueBg w-11/12 h-1/8 hover:shadow-lg font-bold"
+        >
+          Créer un nouvel événement
+        </Link>
+      
       {hunts.map(hunt => (
         <Button
           key={hunt._id}
-          className="w-64 rounded-lg px-4 py-8 bg-[#03045E] text-white text-lg hover:bg-[#023E8A] mt-8"
+          className="m-3 py-5 px-1 rounded-2xl flex justify-center bg-lightBlueBg w-11/12 h-1/8 hover:shadow-lg font-bold"
           onPress={() => openModal(hunt)}
         >
           {hunt.name}
