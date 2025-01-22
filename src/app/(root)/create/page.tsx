@@ -5,7 +5,7 @@ import { fetchApi } from "@/lib/api";
 import { Hunt } from "@/models/Hunt";
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function HuntButtons() {
   const [isModalOpen, setIsModalOpen] = useState(false); 
@@ -33,34 +33,23 @@ function HuntButtons() {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-white">
-      {/* Header */}
-      <header className="w-full bg-oceanBlue py-4 px-6 shadow-md">
-        <h1 className="text-white text-2xl font-bold">OnePisen</h1>
-      </header>
-
-      {/* Contenu principal */}
-      <div className="flex flex-col items-center mt-14">
+    <div className="flex flex-col items-center mt-14">
+      <Link href="/rules"
+        className="w-64 rounded-lg px-4 py-8 bg-[#03045E] text-white text-lg hover:bg-[#023E8A] mt-8"
+      >
+        Créer un nouvel événement
+      </Link>
+    
+      {hunts.map(hunt => (
         <Button
-          className="w-64 rounded-lg px-4 py-8 bg-oceanBlue text-white text-lg hover:bg-[#023E8A] mt-8"
-          onPress={() => router.push("/rules")} // Redirection vers la page "rules"
+          key={hunt._id}
+          className="w-64 rounded-lg px-4 py-8 bg-[#03045E] text-white text-lg hover:bg-[#023E8A] mt-8"
+          onPress={()=> openModal(hunt)}
         >
-          Créer un nouvel événement
+          {hunt.name}
         </Button>
-
-        {hunts.map((hunt) => (
-          <Button
-            key={hunt._id}
-            className="w-64 rounded-lg px-4 py-8 bg-oceanBlue text-white text-lg hover:bg-[#023E8A] mt-8"
-            onPress={() => openModal(hunt)}
-          >
-            {hunt.name}
-          </Button>
-        ))}
-
-        <HuntModal isOpen={isModalOpen} hunt={currentHunt} onClose={closeModal} />
-      </div>
-
+      ))}
+       <HuntModal isOpen={isModalOpen} hunt={currentHunt} onClose={closeModal} />
     </div>
   );
 }
