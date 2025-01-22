@@ -4,13 +4,12 @@ const TeamProgressContainer = ({ data }) => {
   const sortedData = [...data].sort((a, b) => b.indicesFaits - a.indicesFaits);
 
   return (
-    <div>
-      <h2>Classement des équipes par progression :</h2>
-      <ol>
+    <div className="text-gray-700">
+      <h2 className="text-gray-700">Classement des équipes par progression :</h2>
+      <ol className="list-decimal list-inside">
         {sortedData.map((team, index) => (
-          <li key={index}>
-            <strong>{team.equipe}</strong> - Indices obtenus : {team.indicesFaits}/{team.totalIndices} (
-            {((team.indicesFaits / team.totalIndices) * 100).toFixed(2)}%)
+          <li key={index} className="text-gray-700">
+            <strong>{team.equipe}</strong> - Indices obtenus : {team.indicesFaits}/{team.totalIndices}
           </li>
         ))}
       </ol>
