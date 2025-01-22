@@ -4,10 +4,11 @@ import Image from "next/image";
 import { fetchApi } from "@/lib/api";
 import { Button, Textarea, Card, CardHeader, CardBody, CardFooter, Divider, } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@heroui/input";
 import Footer from "../layout/Footer";
 import NavbarHeader from "../layout/NavbarHeader";
+import { useSession } from "next-auth/react";
 
 export default function LandingPage() {
     const [text, setText] = useState("");
