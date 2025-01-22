@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import PlayerMenu from "@/components/layout/playermenu/Playermenu";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@heroui/react";
+import Link from "next/link";
 
 // Types des chapitres et de l'histoire
 interface Chapter {
@@ -51,9 +52,18 @@ export default function RessourcePage() {
 
   return (
     <div className="bg-greyBg min-h-screen flex flex-col p-6">
-      <div className="absolute top-4 left-4">
-                  <PlayerMenu />
-              </div>
+      <div className="absolute z-30 top-4 right-4">
+        <Dropdown>
+          <DropdownTrigger>
+            <Button className="text-black bg-white rounded-md" variant="bordered">Menu</Button>
+          </DropdownTrigger>
+          <DropdownMenu className="text-black bg-white rounded-md" aria-label="Example with disabled actions" disabledKeys={["edit", "delete"]}>
+            <DropdownItem key="new"><Link href="/playerrules">Règles</Link></DropdownItem>
+            <DropdownItem key="copy"><Link href="/map">Carte</Link></DropdownItem>
+            <DropdownItem key="HomePage"><Link href="/" className="text-red-500 underline">Déconnexion</Link></DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
       <h1 className="text-3xl font-bold text-center text-black mb-6">Histoire de la Chasse au Trésor</h1>
 
       {/* Introduction */}
