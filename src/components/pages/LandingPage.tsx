@@ -67,7 +67,7 @@ export default function LandingPage() {
                 <div className="relative h-screen  flex flex-col bg-greyBg ">
                     {/* Barre supérieure */}
                     <div className="h-[10vh]">
-                        <NavbarHeader status={status} />
+                        <NavbarHeader onOpen={onOpen} status={status} />
                     </div>
 
                     {/* Contenu principal */}

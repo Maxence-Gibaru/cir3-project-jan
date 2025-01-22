@@ -14,7 +14,7 @@ export default function Dashboard() {
     { equipe: "Equipe C", indicesFaits: 7, totalIndices: 10 },
   ];
 
-  
+
   const [teamData, setTeamData] = useState(initialTeams);
 
   const [startTime] = useState(new Date().toISOString());
@@ -25,7 +25,7 @@ export default function Dashboard() {
         prevData.map((team) => ({
           ...team,
           indicesFaits: Math.min(
-            team.indicesFaits + Math.floor(Math.random() * 2), 
+            team.indicesFaits + Math.floor(Math.random() * 2),
             team.totalIndices
           ),
         }))
@@ -42,13 +42,13 @@ export default function Dashboard() {
       <header className="bg-white p-6 text-center shadow-lg">
         <h1 className="text-3xl font-bold text-gray-700">Dashboard</h1>
         <Image
-         src="/logoO.png" 
-         alt="Logo de One P'ISEN"
-         width={50}
-         height={50}
-         className="absolute mx-auto top-4 right-4 rounded-full"
+          src="/logoO.png"
+          alt="Logo de One P'ISEN"
+          width={50}
+          height={50}
+          className="absolute mx-auto top-4 right-4 rounded-full"
         />
-        
+
       </header>
 
       {/* Contenu principal*/}
@@ -75,9 +75,9 @@ export default function Dashboard() {
 
         {/* Actions */}
         <div className="flex gap-4 mt-8 justify-center">
-        
+
           <Creation_qrcode />
-           
+
           <Button className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg">
             Générer le code
           </Button>
