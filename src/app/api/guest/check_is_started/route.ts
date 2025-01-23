@@ -38,10 +38,16 @@ export async function GET(req: NextRequest) {
             );
         }
 
-        const selected_hint: number = team.hints_order[0];
-        const firstHint: string = hunt.markers[selected_hint].hint; // Indice du lieu qu'on cherche
-        
+        let firstHint: string | null = null;
+        try {
+            const selected_hint: number = team.hints_order[0];
+            firstHint = hunt.markers[selected_hint].hint; // Indice du lieu qu'on cherche
+        }
+        catch (error) {
+            console.error(error);
+        }
         const isStarted = hunt.status === "started";
+
         return NextResponse.json({ isStarted, firstHint }, { status: 200 });
     } catch (error) {
         console.error(error);

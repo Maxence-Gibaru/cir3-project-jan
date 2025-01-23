@@ -31,7 +31,7 @@ export default function HuntPage({
                 .then((data) => {
                     if (data) {
                         setHuntInit(data.huntInit);
-                        // setPageStatus("selection");
+                        setPageStatus("selection");
                     }
                 })
                 .catch((error) => {
