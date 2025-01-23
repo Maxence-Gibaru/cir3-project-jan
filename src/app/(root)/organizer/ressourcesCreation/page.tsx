@@ -55,6 +55,7 @@ export default function HomePage() {
             case 1:
                 return (
                     <Importmap
+                        chapters={chapters}
                         markers={markers}
                         setMarkers={setMarkers}
                         onNext={() => setIndex(2)}

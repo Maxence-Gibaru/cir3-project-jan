@@ -98,7 +98,7 @@ export default function RessourcesCreationPage({ chapters, title, setChapters, s
             <div className="w-full flex justify-center mt-8">
               <Button
 
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-300"
+                className="bg-red text-white px-4 py-2 rounded hover:bg-red-300"
                 onPress={() => removeChapter(index)}
               >Supprimer</Button>
             </div>
