@@ -6,7 +6,7 @@ import { fetchApi } from "@/lib/api";
 import clsx from 'clsx';
 
 
-export default function HuntModal({ isOpen, hunt,setHunt, onNext, onClose } : { isOpen: boolean, hunt: Hunt | null, onClose: () => void }) {
+export default function HuntModal({ isOpen, hunt, setHunt, onNext, onClose }: { isOpen: boolean, hunt: Hunt | null, onClose: () => void }) {
   if (!isOpen || !hunt) return null; // Ne pas afficher si le modal est fermé ou aucun événement n'est sélectionné
 
   const start_game = async () => {
@@ -35,13 +35,13 @@ export default function HuntModal({ isOpen, hunt,setHunt, onNext, onClose } : { 
         </h2>
         <div className="flex justify-between">
           {/* Bouton Lancer */}
-          <Button 
-          onPress={hunt.status === 'closed' ? start_game : dashboard_game}
-          className={clsx(
-            "px-4 py-2 rounded bg-green hover:bg-gray text-white",
-          )}
+          <Button
+            onPress={hunt.status === 'closed' ? start_game : dashboard_game}
+            className={clsx(
+              "px-4 py-2 rounded bg-green hover:bg-gray text-white",
+            )}
           >
-          {hunt.status === 'closed' ? 'Ouvrir' : 'Dashboard'}
+            {hunt.status === 'closed' ? 'Ouvrir' : 'Dashboard'}
           </Button>
 
           {/* Bouton Annuler */}

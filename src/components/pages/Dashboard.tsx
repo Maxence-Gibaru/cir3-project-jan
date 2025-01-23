@@ -12,6 +12,7 @@ import { fetchApi } from "@/lib/api";
 import clsx from 'clsx';
 import { set } from "mongoose";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 interface SecondComponentProps {
   hunts: Hunt[];
   setHunts: (hunts: Hunt[]) => void;
@@ -151,14 +152,15 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
       {/* Header */}
       <header className="bg-white p-6 text-center shadow-lg">
         <h1 className="text-3xl font-bold text-gray-700">Dashboard</h1>
-        <Image
-          src="/logoO.png"
-          alt="Logo de One P'ISEN"
-          width={50}
-          height={50}
-          className="absolute mx-auto top-4 right-4 rounded-full"
-        />
-
+        <Link href="/">
+          <Image
+            src="/logoO.png"
+            alt="Logo de One P'ISEN"
+            width={50}
+            height={50}
+            className="absolute mx-auto top-4 right-4 rounded-full"
+          />
+        </Link>
       </header>
 
       {/* Contenu principal*/}
@@ -188,10 +190,26 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
 
           <Creation_qrcode hunt={hunt}/>
 
-          <Button className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg">
+          <Button
+            onClick={async () => {
+              try {
+                await navigator.clipboard.writeText(hunt.code);
+                alert("Code copié dans le presse-papiers !");
+              } catch (err) {
+                console.error("Erreur lors de la copie :", err);
+              }
+            }}
+            className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg"
+          >
             Code : {hunt.code}
           </Button>
-           {/* Bouton Lancer */}
+          <button
+            onClick={() => window.location.reload()}
+            className="bg-darkBlueBg text-white px-4 py-2 rounded-lg hover:bg-blueBg"
+          >
+            Retour à la liste
+          </button>
+                    {/* Bouton Lancer */}
            <Button  
           onPress={
             hunt.status === 'opened'
@@ -215,7 +233,6 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
             ? 'Arrêter la chasse'
             : 'Reset la chasse'}
         </Button>
-
         </div>
       </main>
     </div>

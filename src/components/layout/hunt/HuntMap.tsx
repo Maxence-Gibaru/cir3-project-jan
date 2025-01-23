@@ -36,10 +36,11 @@ const Marker = dynamic(
 interface HuntMapData {
   map: { lat: number; lng: number; zoom: number };
   introduction_story: string;
-  first_hint: string;
+  firstHint: string;
+  markers: any
 }
 
-export default function HuntMap({ map, introduction_story, first_hint, markers }: HuntMapData) {
+export default function HuntMap({ map, introduction_story, firstHint, markers }: HuntMapData) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenSecondModal,
@@ -161,7 +162,7 @@ export default function HuntMap({ map, introduction_story, first_hint, markers }
             </ModalHeader>
             <ModalBody className="text-base">
               <p>{introduction_story}</p>
-              <p>{first_hint}</p>
+              <p>{firstHint}</p>
             </ModalBody>
             <ModalFooter>
               <Button
