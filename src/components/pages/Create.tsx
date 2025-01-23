@@ -5,6 +5,7 @@ import { Hunt } from "@/models/Hunt";
 import { Button } from "@heroui/react";
 import Link from "next/link";
 import { useState } from "react";
+import Image from "next/image";
 
 interface FirstComponentProps {
   onNext: () => void;
@@ -33,7 +34,7 @@ function HuntButtons({ hunts, setHunts, hunt, setHunt, onNext }: FirstComponentP
       <nav className="fixed w-full top-0 bg-white shadow-md z-10">
         <div className="container mx-auto p-4 flex justify-between items-center">
           <Link href="/">
-            <img
+            <Image
               src="/logoO.png"
               alt="Logo de One P'ISEN"
               width={72}

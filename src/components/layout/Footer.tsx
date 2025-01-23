@@ -14,7 +14,7 @@ export default function Footer() {
                     <div className="flex flex-col gap-5 bg-white rounded-lg text-gray-700 p-5">
                         <h2 className="font-bold text-xl uppercase">OnePisen vous présente sa chasse au trésor !</h2>
                         <p>
-                            Rejoignez vos amis pour une chasse au trésor des plus amusantes ! Jouez des parties personnalisées avec votre propre scénario. Chaque équipe commence à un endroit différent et doit trouver tous les indices dans l'ordre. Scannez les QRcode afin d'obtenir les indices. Une fois tous les indices obtenus, un dernier indice vous sera donné afin de trouver le trésor. Soyez la première équipe à trouver le trésor pour gagner la partie !
+                            Rejoignez vos amis pour une chasse au trésor des plus amusantes ! Jouez des parties personnalisées avec votre propre scénario. Chaque équipe commence à un endroit différent et doit trouver tous les indices dans l&apos;ordre. Scannez les QRcode afin d&apos;obtenir les indices. Une fois tous les indices obtenus, un dernier indice vous sera donné afin de trouver le trésor. Soyez la première équipe à trouver le trésor pour gagner la partie !
                         </p>
                     </div>
                     <div className="flex flex-row  text-lg gap-10">

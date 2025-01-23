@@ -21,7 +21,7 @@ type Marker = {
         lng: number;
     };
     hint: string;
-    istreasure: boolean; 
+    istreasure: boolean;
 }
 interface ImportmapPageProps {
     chapters: string[];
@@ -36,7 +36,7 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
     const [currentPosition, setCurrentPosition] = useState({})
     const [currentTrésor, setCurrentTrésor] = useState(); // Nouvelle state pour le trésor
 
-    const MAX_MARKERS=chapters.length;
+    const MAX_MARKERS = chapters.length;
 
     const addMarker = (position) => {
         if (markers.length >= MAX_MARKERS) {
@@ -59,24 +59,24 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
             if (currentTrésor === true) {
                 // Ajouter au premier élément du tableau tout en modifiant les anciens trésors
                 setMarkers((prev) =>
-                  [
-                    {
-                      position: currentPosition,
-                      hint: markerText.trim(),
-                      istreasure: true,
-                    },
-                    ...prev.map((marker) => ({
-                      ...marker,
-                      istreasure: false, // Remplacer tous les `tresor` existants par `false`
-                    })),
-                  ]
+                    [
+                        {
+                            position: currentPosition,
+                            hint: markerText.trim(),
+                            istreasure: true,
+                        },
+                        ...prev.map((marker) => ({
+                            ...marker,
+                            istreasure: false, // Remplacer tous les `tresor` existants par `false`
+                        })),
+                    ]
                 );
-              }              
-            else{
+            }
+            else {
                 setMarkers(prev => [...prev, {
                     position: currentPosition,
                     hint: markerText.trim(),
-                    istreasure:false
+                    istreasure: false
                 }])
             }
             onClose()
@@ -87,23 +87,23 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
         setMarkers(prev => prev.filter((_, i) => i !== index))
     }
 
-    const handleIaResponse = ( response) => {
+    const handleIaResponse = (response) => {
         setMarkerText(response);
-      };
+    };
 
     return (
-      <div className="flex flex-col bg-greyBg min-h-screen">
-         {markers.length == 0 && (
-              <h1 className='absolute z-20 w-full py-4 bg-white text-2xl text-center'>Cliquez sur la map pour indiquer la position des différents lieux de la Chasse au trésor</h1>
+        <div className="flex flex-col bg-greyBg min-h-screen">
+            {markers.length == 0 && (
+                <h1 className='absolute z-20 w-full py-4 bg-white text-2xl text-center'>Cliquez sur la map pour indiquer la position des différents lieux de la Chasse au trésor</h1>
             )}
             {markers.length > 0 && (
-            <div className="absolute top-4 right-4 z-20 bg-primary text-white rounded-lg p-4 shadow-md">
-                <h3 className="text-lg font-bold text-center">
-                Indices sur la carte : {markers.length}/{MAX_MARKERS}
-                </h3>
-           
-            </div>
-           )}
+                <div className="absolute top-4 right-4 z-20 bg-primary text-white rounded-lg p-4 shadow-md">
+                    <h3 className="text-lg font-bold text-center">
+                        Indices sur la carte : {markers.length}/{MAX_MARKERS}
+                    </h3>
+
+                </div>
+            )}
             <div className="z-10">
                 <Map className="z-10 h-full w-full bg-gray-100"
                     markers={markers}
@@ -112,15 +112,15 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
                 />
             </div>
             <div className='z-20 absolute bottom-4 right-4'>
-            {markers.length > 0 && (
-                <Button
-                    color="primary"
-                    onPress={onNext}
-                    className="rounded-lg shadow-lg hover:bg-secondary text-white"
-                >
-                    Enregistrer les indices ({markers.length})
-                </Button>
-            )}
+                {markers.length > 0 && (
+                    <Button
+                        color="primary"
+                        onPress={onNext}
+                        className="rounded-lg shadow-lg hover:bg-secondary text-white"
+                    >
+                        Enregistrer les indices ({markers.length})
+                    </Button>
+                )}
             </div>
             <div className='z-30'>
                 <Modal className="z-30" isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -129,7 +129,7 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
                             <>
                                 <ModalHeader>Ajouter un indice ({markers.length + 1}/{MAX_MARKERS})</ModalHeader>
                                 <ModalBody>
-                                    <h2>Donner un texte qui permet de découvrir la position de l'indice</h2>
+                                    <h2>Donner un texte qui permet de découvrir la position de l&apos;indice</h2>
                                     <Input
                                         placeholder="Entrez votre indice ici"
                                         value={markerText}
@@ -142,7 +142,7 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
                                     <Button color="danger" variant="light" onPress={onClose}>
                                         Annuler
                                     </Button>
-                                    <IAModalHintApp onIaResponse={handleIaResponse}/>
+                                    <IAModalHintApp onIaResponse={handleIaResponse} />
                                     <Button color="primary" onPress={handleAddMarker} className="rounded-xl text-white bg-darkBlueBg hover:bg-darkBlueHoverBg">
                                         Ajouter
                                     </Button>

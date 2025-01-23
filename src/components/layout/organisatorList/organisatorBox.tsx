@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
-import FichierJson from "@/app/(root)/organisatorList/organisatorjson.json"
+import Image from "next/image";
+
 
 export default function teamBox(nomChasse: number, nomOrganisateur:string) {
   const [isActive, setIsActive] = useState(true);
@@ -17,7 +18,7 @@ export default function teamBox(nomChasse: number, nomOrganisateur:string) {
           className="text-red-500 text-5xl hover:text-red-400 py-2 px-5"
           onClick={() => setIsActive(false)}
         >
-          <img src="cross.svg" alt="Supprimer" className="h-10"/>
+          <Image src="cross.svg" alt="Supprimer" className="h-10"/>
         </button>
       
     </div>

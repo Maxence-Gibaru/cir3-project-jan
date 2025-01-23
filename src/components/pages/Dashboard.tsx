@@ -2,15 +2,13 @@
 
 import TeamProgressContainer from "@/components/pages/leaderboard";
 import ProgressDashboard from "@/components/pages/pourcent";
-import ElapsedTime from "@/components/pages/timer";
 import { Button } from "@heroui/react";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Creation_qrcode from "@/components/ui/Creation_qrcode";
 import { Hunt } from "@/models/Hunt";
 import { fetchApi } from "@/lib/api";
 import clsx from 'clsx';
-import { set } from "mongoose";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 interface SecondComponentProps {

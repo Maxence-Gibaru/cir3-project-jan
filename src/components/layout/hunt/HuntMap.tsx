@@ -4,10 +4,10 @@ import HuntDetails from "@/components/ui/HuntDetails";
 import HuntWelcome from "@/components/ui/HuntWelcome";
 import { Position } from "@/definitions";
 import { fetchApi } from "@/lib/api";
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/react";
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
 import L, { marker } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { signOut, useSession } from "next-auth/react";
+import { signOut} from "next-auth/react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Input } from "@heroui/react"
@@ -40,7 +40,8 @@ interface HuntMapData {
   map: { lat: number; lng: number; zoom: number };
   stories: string[];
   hintsRevealed: string[];
-  markers: Position[]
+  markers: Position[];
+  lobbyCode: string;
 }
 
 export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCode }: HuntMapData) {
@@ -48,7 +49,7 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
   const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onOpenChange: onDetailsOpenChange } = useDisclosure();
   const [qrCode, setQrCode] = useState("")
 
-  console.log("rerender");
+  /* console.log("rerender"); */
 
 
   /* const {
@@ -66,18 +67,20 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
 
   useEffect(() => {
     onWelcomeOpen();
-  }, [])
+  }, [onWelcomeOpen])
 
-  useEffect(() => {
+/*   useEffect(() => {
+    console.log("hintsRevealed", hintsRevealed)
     console.log(markers)
-  }, [markers])
+  }, [markers, hintsRevealed]) */
 
   /* const { data: session } = useSession(); */
 
-  const handleMarkerClick = ({ markerData }: any) => {
+/*   const handleMarkerClick = ({ markerData }: any) => {
+    console.log("markerData :", markerData);
     setSelectedMarker(markerData);
     onDetailsOpen();
-  };
+  }; */
 
 
   const handleQrCode = async () => {
@@ -123,12 +126,16 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
 
             {markers.map((position, index) => {
               if (index !== 0) {
+                console.log("index : ", index);
                 return <Marker
                   icon={icon}
                   key={index}
                   position={[position.lat, position.lng]}
                   eventHandlers={{
-                    click: () => handleMarkerClick(index),
+                    click: () => {
+                      setSelectedMarker(index)
+                      onDetailsOpen()
+                    }
                   }}
                 />
               }
@@ -167,19 +174,6 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
         <Button className="bg-white" onPress={handleQrCode}>
           test
         </Button>
-        {/*   <Link
-          href="/qr-code"
-          className="bg-white text-vibrantPlum w-16 h-16 flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-gray-200 transition"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            className="w-6 h-6"
-            fill="black"
-          >
-            <path d="M0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 96l0 64 64 0 0-64L64 96zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zm64 16l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zm80 64l-64 0 0 64 64 0 0-64zM256 304c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16l0 96c0 8.8-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16l0 64c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-160zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z" />
-          </svg>
-        </Link> */}
       </div >
     </div >
   );

@@ -32,7 +32,7 @@ export default function HuntModal({ isOpen, hunt, setHunt, onNext, onClose }: { 
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-bold mb-4">
-          Voulez-vous lancer l'événement : {hunt.name} ?
+          Voulez-vous lancer l&apos;événement : {hunt.name} ?
         </h2>
         <div className="flex justify-between">
           {/* Bouton Lancer */}

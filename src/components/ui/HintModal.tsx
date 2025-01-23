@@ -55,7 +55,7 @@ import {
             {(onClose) => (
               <>
                 <ModalHeader>
-                  Définir l'indice {currentIndex + 1} / {maxClues}
+                  Définir l&apos;indice {currentIndex + 1} / {maxClues}
                 </ModalHeader>
                 <ModalBody>
                   <div className="mb-4">

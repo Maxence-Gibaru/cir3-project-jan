@@ -5,6 +5,9 @@ import { Hunt, HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+
+
+
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.next({ status: 401 });
@@ -16,7 +19,7 @@ export async function GET(req: NextRequest) {
         const lobbyCode = urlSearch.get("lobby_code");
 
         let progression = "not_started";
-        let data: any = {};
+        let data: data = {};
         if (lobbyCode) {
             const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: { $ne: "closed" } });
             if (hunt) {
@@ -36,7 +39,7 @@ export async function GET(req: NextRequest) {
                 } else if (team) {
                     data = getInitData(hunt);
                     const current_hint_index = team.current_hint_index;
-                    for (var i = 0; i <= current_hint_index; i++) {
+                    for (let i = 0; i <= current_hint_index; i++) {
                         data.stories.push(hunt.stories[i]);
 
                         const position = (i == 0) ? {} : hunt.markers[team.hints_order[i - 1]].position;
