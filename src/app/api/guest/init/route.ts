@@ -1,4 +1,3 @@
-import { HuntIntro } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel } from "@/models/Hunt";
@@ -14,9 +13,8 @@ export async function GET() {
         const huntId = session.user.huntId;
         const teamIndex = session.user.teamIndex;
 
-        const hunt: Hunt | null = await HuntModel.findById(huntId);
+        const hunt: Hunt | null = await HuntModel.findById(huntId, { status: "started" });
 
-        console.log("found hunt :", hunt);
         if (!hunt) {
             return NextResponse.json(
                 { error: "Hunt not found" },
@@ -25,7 +23,6 @@ export async function GET() {
         }
 
         const team = hunt.teams[teamIndex];
-        console.log("found team :", team);
         if (!team) {
             return NextResponse.json(
                 { error: "Team not found" },
@@ -33,17 +30,10 @@ export async function GET() {
             );
         }
 
-        const text: string = hunt.stories[0];
         const selected_hint: number = team.hints_order[0];
-        const hint: string = hunt.markers[selected_hint].hint;
+        const hint: string = hunt.markers[selected_hint].hint; // Indice du lieu qu'on cherche
 
-        const huntIntro: HuntIntro = {
-            text, // Introduction de la story
-            hint, // Indice du lieu qu'on cherche
-            map: hunt.map,
-        };
-
-        return NextResponse.json(huntIntro, { status: 201 });
+        return NextResponse.json({ hint }, { status: 201 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(

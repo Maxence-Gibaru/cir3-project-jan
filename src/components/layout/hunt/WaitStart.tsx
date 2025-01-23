@@ -1,19 +1,20 @@
 "use client";
-import NavbarHeader from "@/components/layout/NavbarHeader";
 import Modal from "@/components/ui/InfoModal";
-import "./wait.css";
-import { Spinner } from "@heroui/react";
-import { useState, useEffect } from "react";
 import { fetchApi } from "@/lib/api";
-import router from "next/router";
-import { checkCustomRoutes } from "next/dist/lib/load-custom-routes";
+import { Spinner } from "@heroui/react";
+import { useEffect, useState } from "react";
+import "./wait.css";
 
-export default function Page() {
 
+interface WaitStartData {
+    huntId: string;
+    name: string;
+    intro: string;
+}
+
+export default function WaitStart({ huntId, name, intro, goNext }: WaitStartData & { goNext: () => void }) {
     const [dots, setDots] = useState(""); // État pour les points
     const [error, setError] = useState(""); // État pour les erreurs
-
-
 
     useEffect(() => {
         // Cycle les points : "", ".", "..", "..."
@@ -25,16 +26,13 @@ export default function Page() {
         return () => clearInterval(interval);
     }, []);
 
-
     const ckeck_start = async () => {
-
         await fetchApi("/api/guest/check_is_started", {
             method: "GET",
+            params: { id: huntId },
         }).then((data) => {
-
             if (data.isStarted) {
-                alert("La chasse au trésor a commencé !");
-                router.push('map');
+                goNext();
             }
         }
         ).catch((errorMessage: string) => {
@@ -50,12 +48,9 @@ export default function Page() {
         return () => clearInterval(intervalStart);
     }, []);
 
-
-
     return (
         <div className="flex flex-col bg-greyBg h-screen">
 
-            <NavbarHeader />
             <div className="flex-grow flex flex-col justify-center items-center">
                 {/* Texte avec animation des points */}
                 <p className="text-3xl my-5">
