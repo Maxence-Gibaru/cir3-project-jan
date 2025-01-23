@@ -186,9 +186,8 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
         </div>
 
         {/* Actions */}
-        <div className="flex gap-4 mt-8 justify-center">
-
-          <Creation_qrcode hunt={hunt}/>
+        <div className="flex flex-col gap-4 mt-8 justify-center md:flex-row">
+          <Creation_qrcode hunt={hunt} />
 
           <Button
             onClick={async () => {
@@ -199,40 +198,41 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
                 console.error("Erreur lors de la copie :", err);
               }
             }}
-            className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg"
+            className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg w-full md:w-auto"
           >
             Code : {hunt.code}
           </Button>
+
           <button
             onClick={() => window.location.reload()}
-            className="bg-darkBlueBg text-white px-4 py-2 rounded-lg hover:bg-blueBg"
+            className="bg-darkBlueBg text-white px-4 py-2 rounded-lg hover:bg-blueBg w-full md:w-auto"
           >
             Retour à la liste
           </button>
-                    {/* Bouton Lancer */}
-           <Button  
-          onPress={
-            hunt.status === 'opened'
-              ? start_game
+
+          <Button
+            onPress={
+              hunt.status === 'opened'
+                ? start_game
+                : hunt.status === 'started'
+                ? stop_game
+                : reset_game
+            }
+            className={clsx(
+              "px-4 py-2 rounded text-white w-full md:w-auto",
+              hunt.status === 'opened'
+                ? "bg-green hover:bg-green-600"
+                : hunt.status === 'started'
+                ? "bg-yellow hover:bg-yellow-600"
+                : "bg-red hover:bg-red-600"
+            )}
+          >
+            {hunt.status === 'opened'
+              ? 'Lancer'
               : hunt.status === 'started'
-              ? stop_game
-              : reset_game
-          }
-          className={clsx(
-            "px-4 py-2 rounded text-white",
-            hunt.status === 'opened'
-              ? "bg-green hover:bg-green-600"
-              : hunt.status === 'started'
-              ? "bg-yellow hover:bg-yellow-600"
-              : "bg-red hover:bg-red-600"
-          )}
-        >
-          {hunt.status === 'opened'
-            ? 'Lancer'
-            : hunt.status === 'started'
-            ? 'Arrêter la chasse'
-            : 'Reset la chasse'}
-        </Button>
+              ? 'Arrêter la chasse'
+              : 'Reset la chasse'}
+          </Button>
         </div>
       </main>
     </div>
