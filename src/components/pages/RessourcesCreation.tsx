@@ -2,7 +2,6 @@
 
 import CodeArea from "@/components/pages/TextArea";
 import { Button } from "@heroui/react";
-
 import ModalApp from "../ui/Modal";
 import { Dispatch, SetStateAction } from "react";
 import IAModalApp from "../ui/IAModal";
@@ -10,27 +9,27 @@ import IAModalApp from "../ui/IAModal";
 
 interface RessourcesCreationPageProps {
   title: string;
-  intro: string;
   chapters: string[];
   setTitle: Dispatch<SetStateAction<string>>;
-  setIntro: Dispatch<SetStateAction<string>>;
   setChapters: Dispatch<SetStateAction<string[]>>;
   onNext: () => void; // Nouvelle prop
 }
 
-export default function RessourcesCreationPage({ chapters, title, intro, setChapters, setIntro, setTitle, onNext }: RessourcesCreationPageProps) {
+export default function RessourcesCreationPage({ chapters, title, setChapters, setTitle, onNext }: RessourcesCreationPageProps) {
 
 
   // Ajouter un nouveau chapitre
   const addChapter = () => {
-    setChapters([...chapters, ""]);
+    setChapters([...chapters, ""]); 
   };
+  
 
 
   // Supprimer un chapitre
   const removeChapter = (index: number) => {
     setChapters(chapters.filter((_, i) => i !== index));
   };
+  
 
   // Mettre à jour le texte d'un chapitre
   const updateChapter = (index: number, newText: string) => {
@@ -45,7 +44,7 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
     if (section === "title") {
       setTitle(response);
     } else if (section === "intro") {
-      setIntro(response);
+      updateChapter(0,response);
     } else if (section.startsWith("chapter")) {
       const chapterIndex = parseInt(section.split("-")[1], 10); // Correspond à l'index
       updateChapter(chapterIndex, response); // Met à jour le chapitre
@@ -76,14 +75,14 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
           Introduction :
         </h2>
         <CodeArea
-          value={intro}
-          onChange={(e) => setIntro(e.target.value)}
+          value={chapters[0]}
+          onChange={(e) => updateChapter(0, e.target.value)}
           classname="border border-gray-300 flex flex-row gap-5 bg-white rounded-3xl justify-center items-center shadow-md"
         />
       </div>
       <div className="w-full max-w-md flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-4 text-center">Chapitres :</h2>
-        {chapters.map((chapter, index) => (
+        {chapters.slice(1).map((chapter, index) => (
           <div
             key={index}
             className="mb-4 border border-gray-200 p-4 rounded-2xl bg-white shadow-md w-full "
@@ -93,7 +92,7 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
             </h3>
             <CodeArea
               value={chapter}
-              onChange={(e) => updateChapter(index, e.target.value)}
+              onChange={(e) => updateChapter(index+1, e.target.value)}
               classname="w-full resize-none border border-gray-400 rounded-2xl p-2 bg-gray-100 overflow-y-auto overflow-x-hidden break-words shadow-xl"
             />
             <div className="w-full flex justify-center mt-8">
@@ -113,10 +112,9 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
           onPress={addChapter}>Ajouter un chapitre</Button>
       </div>
       {/* Bouton pour ouvrir le modal en haut à droite */}
-      <div className="flex">
+      <div className="fixed bottom-4 right-4 z-50">
         <IAModalApp
           title = {title}
-          intro={intro}
           chapters={chapters}
           onIaResponse={handleIaResponse}
         />

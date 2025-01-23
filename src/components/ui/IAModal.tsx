@@ -10,8 +10,9 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { useState } from "react";
+import Image from "next/image";
 
-export default function IAModalApp({ title, intro, chapters, onIaResponse}) {
+export default function IAModalApp({ title, chapters, onIaResponse}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [userPrompt, setUserPrompt] = useState(""); // Stocke le prompt
   const [targetSection, setTargetSection] = useState("title"); // Section ciblée
@@ -27,20 +28,20 @@ export default function IAModalApp({ title, intro, chapters, onIaResponse}) {
       fullPrompt += `\nJ'aimerai que tu m'aides pour trouver une intro  et donne moi que l'intro`;
     } else if (targetSection.startsWith("chapter")) {
       const chapterIndex = parseInt(targetSection.split("-")[1], 10);
-      fullPrompt += `\nJ'aimerai que tu m'aides pour écrire le chapitre ${chapterIndex + 1} et donne moi que le texte`;
+      fullPrompt += `\nJ'aimerai que tu m'aides pour écrire le chapitre ${chapterIndex} et donne moi que le texte`;
     }
   
     if (title) {
       fullPrompt += `\n Voici le titre actuel : ${title}`;
     }
     
-    if (intro) {
-      fullPrompt += `\n Voici l'introduction actuelle : ${intro}`;
+    if (chapters[0]) {
+      fullPrompt += `\n Voici l'introduction actuelle : ${chapters[0]}`;
     }
     
-    chapters.forEach((chapter, index) => {
+    chapters.slice(1).forEach((chapter, index) => {
       if (chapter) {
-        fullPrompt += `\n Voici le chapitre ${index + 1} : ${chapter}`;
+        fullPrompt += `\n Voici le chapitre ${index+1} : ${chapter}`;
       }
     });
     
@@ -79,7 +80,13 @@ export default function IAModalApp({ title, intro, chapters, onIaResponse}) {
         className="text-white rounded-xl bg-darkBlueBg hover:bg-darkBlueHoverBg"
         
       >
-        Aide IA
+          <Image
+    src="/IA.png"
+    alt="Aide IA"
+    width={50} 
+    height={30}
+    className="mx-auto"
+  />
       </Button>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -106,9 +113,9 @@ export default function IAModalApp({ title, intro, chapters, onIaResponse}) {
                   >
                     <option value="title">Titre</option>
                     <option value="intro">Introduction</option>
-                    {chapters.map((_, index) => (
-                      <option key={index} value={`chapter-${index}`}>
-                      Chapitre {index + 1}
+                    {chapters.slice(1).map((_, index) => (
+                      <option key={index} value={`chapter-${index+1}`}>
+                      Chapitre {index+1}
                       </option>
                     ))}
                   </select>
