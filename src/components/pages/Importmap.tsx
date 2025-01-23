@@ -143,7 +143,7 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
                                         Annuler
                                     </Button>
                                     <IAModalHintApp onIaResponse={handleIaResponse}/>
-                                    <Button color="primary" onPress={handleAddMarker}>
+                                    <Button color="primary" onPress={handleAddMarker} className="rounded-xl text-white bg-darkBlueBg hover:bg-darkBlueHoverBg">
                                         Ajouter
                                     </Button>
                                 </ModalFooter>

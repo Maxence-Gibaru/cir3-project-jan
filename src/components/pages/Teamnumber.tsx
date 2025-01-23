@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 import { Dispatch, SetStateAction } from "react";
-import { Button } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 interface TeamnumberProps {
-  Numberindice: number;
+  Numberindice:number;
   numTeams:number;
   setNumTeams: Dispatch<SetStateAction<number>>;
   playersPerTeam:number;
@@ -23,36 +23,38 @@ export default function Teamnumber({Numberindice,numTeams, setNumTeams,playersPe
     Sélection du nombre d'équipes
   </h1>
 
-  <div className="mb-6 w-full max-w-xs mt-8">
-    <label htmlFor="numTeams" className="text-gray-700 text-xl font-semibold flex justify-center">
+  <div> 
+    {/* NE PAS SUPPRIMER, PERMETS DE SUPPRIMER UN BUG */}
+  </div>
+  <div className="mb-8 w-full mt-6 max-w-xs">
+    <label
+      htmlFor="playersPerTeam" className="text-gray-700 text-xl font-semibold flex justify-center"
+    >
       Nombre d'équipes :
     </label>
-    <input
+    <Input
       id="numTeams"
       type="number"
       min="1"
-      max={Numberindice}
-      value={numTeams}
+      defaultValue="1"
       onChange={(e) => setNumTeams(Number(e.target.value))}
-      className="text-center py-3 px-2 border border-gray-300 flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md w-full"
+      className=" text-center py-3 border border-gray-300 flex flex-row gap-5 bg-white rounded-full justify-center items-center shadow-md w-full"
     />
   </div>
 
-
-  <div className="mb-8 w-full max-w-xs">
+  <div className="mb-16 w-full mt-6 max-w-xs">
     <label
-      htmlFor="playersPerTeam"
-      className="text-gray-700 text-xl font-semibold flex justify-center"
+      htmlFor="playersPerTeam" className="text-gray-700 text-xl font-semibold flex justify-center"
     >
       Joueurs maximum par équipe :
     </label>
-    <input
+    <Input
       id="playersPerTeam"
       type="number"
       min="0"
-      value="5"
+      defaultValue="5"
       onChange={(e) => setPlayersPerTeam(Number(e.target.value))}
-      className=" text-center py-3 px-2 border border-gray-300 flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md w-full focus:bg-yellow-500"
+      className=" text-center py-3 border border-gray-300 flex flex-row gap-5 bg-white rounded-full justify-center items-center shadow-md w-full"
     />
   </div>
 
