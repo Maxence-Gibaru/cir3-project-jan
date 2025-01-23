@@ -38,7 +38,7 @@ export default function creation_qrcode({ hunt }: qr_codeProps) {
       if(i === 0) {
         doc.text(`Trésor`, 30, 30);
         } else {
-        doc.text(`Indice ${key}`, 30, 30);
+        doc.text(`Indice ${key-1}`, 30, 30);
         }
       try {
         const qrCodeDataURL = await QRCode.toDataURL(value, {
