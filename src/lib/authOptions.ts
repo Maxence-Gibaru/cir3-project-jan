@@ -3,7 +3,6 @@ import dbConnect from "@/lib/dbConnect";
 import { OrganizerModel } from "@/models/Organizer";
 import bcrypt from "bcrypt";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { NextRequest } from "next/server";
 import { v4 as uuidv4 } from 'uuid';
 import { fetchApi } from "./api";
 
@@ -15,7 +14,7 @@ export const authOptions = {
                 email: { label: "Email", type: "text" },
                 password: { label: "Password", type: "password" },
             },
-            async authorize(credentials, req: NextRequest) {
+            async authorize(credentials) {
                 try {
                     await dbConnect();
                     if (!credentials) return null;

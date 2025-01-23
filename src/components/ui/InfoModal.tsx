@@ -19,7 +19,7 @@ import {
     borderRadius: "0.5rem", // Arrondi des coins (équivalent à rounded-lg)
   }}>Informations</Button>
         <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-          <ModalContent className="bg-opacity-90 bg-gray-300 rounded-lg ">
+          <ModalContent className=" bg-gray-300 rounded-lg ">
             {(onClose) => (
               <>
                 <ModalHeader className="flex flex-col gap-1">Informations</ModalHeader>
@@ -37,7 +37,7 @@ import {
                   </p>
                 </ModalBody>
                 <ModalFooter>
-                  <Button className="bg-red-500 rounded-lg " variant="light" onPress={onClose}>
+                  <Button className="bg-red rounded-lg " variant="light" onPress={onClose}>
                     Close
                   </Button>
                 </ModalFooter>

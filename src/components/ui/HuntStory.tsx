@@ -5,7 +5,13 @@ import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from
 import { useEffect } from "react";
 
 
-export default function HuntDetails({ isOpen, onOpenChange, hintsRevealed, selectedMarker }) {
+
+export default function HuntStory({ isOpen, onOpenChange, hintsRevealed, selectedMarker, stories }) {
+
+
+    useEffect(() => {
+        console.log(stories)
+    }, [stories])
 
 /*     useEffect(() => {
         console.log(selectedMarker);
@@ -18,14 +24,19 @@ export default function HuntDetails({ isOpen, onOpenChange, hintsRevealed, selec
                 <ModalContent className="bg-white p-6 rounded-lg text-black">
                     {(onClose) => (
                         <>
-                            <ModalHeader className="text-xl font-bold">Indice Details</ModalHeader>
+                            <ModalHeader className="text-xl font-bold"><h1 className="text-3xl font-bold text-center text-black mb-6">Histoire de la Chasse au Trésor</h1></ModalHeader>
                             <ModalBody className="text-base">
-                                {selectedMarker && (
-                                    <>
-                                        <strong>Indice</strong>
-                                        <p>{hintsRevealed[selectedMarker]}</p>
-                                    </>
-                                )}
+                            <div className="mb-8 p-4 border border-gray-300 rounded-lg shadow-lg bg-lightBlueBg">
+                                    <h2 className="text-xl font-semibold text-black mb-2">Introduction</h2>
+                                   {stories.map((story) => {
+                                        <>
+                                         <p className="text-black">
+                                            {story}
+                                            </p>
+                                        </>
+                                    }) }
+                                </div>
+
                             </ModalBody>
                             <ModalFooter>
                                 <Button
@@ -43,3 +54,7 @@ export default function HuntDetails({ isOpen, onOpenChange, hintsRevealed, selec
         </>
     );
 }
+
+
+
+

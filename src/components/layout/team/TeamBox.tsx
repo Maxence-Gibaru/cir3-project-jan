@@ -62,7 +62,7 @@ export default function TeamBox({ huntId, index, guests, maxGuests, goNext }: Te
                             <ModalHeader className="flex flex-col gap-1">Attention !</ModalHeader>
                             <ModalBody>
                                 <p>
-                                    Vous avez sélectionné l'équipe n°{index + 1}, êtes-vous sûr ?
+                                    Vous avez sélectionné l&apos;équipe n°{index + 1}, êtes-vous sûr ?
                                 </p>
                             </ModalBody>
                             <ModalFooter>

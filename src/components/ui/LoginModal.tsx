@@ -5,14 +5,14 @@ import {
     ModalBody,
     ModalFooter,
     Button,
-    useDisclosure,
+
 } from "@heroui/react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import LoginForm from "../forms/LoginForm";
 import RegisterForm from "../forms/RegisterForm";
 
-export default function ModalApp({ isOpen, onOpenChange }: any) {
+export default function ModalApp({ isOpen, onOpenChange }) {
 
     const [mode, setMode] = useState("guest"); // "guest", "login", "register"
 
@@ -36,7 +36,7 @@ export default function ModalApp({ isOpen, onOpenChange }: any) {
                             </ModalHeader>
                             <ModalBody>
                                 {mode === "guest" && (
-                                    <p>Vous pouvez rejoindre la chasse au trésor en tant qu'invité ou vous connecter pour organiser votre propre chasse.</p>
+                                    <p>Vous pouvez rejoindre la chasse au trésor en tant qu&apos;invité ou vous connecter pour organiser votre propre chasse.</p>
                                 )}
                                 {mode === "login" && <LoginForm onClose={onClose} />}
                                 {mode === "register" && <RegisterForm onClose={onClose} />}
@@ -45,7 +45,7 @@ export default function ModalApp({ isOpen, onOpenChange }: any) {
                                 {mode === "guest" && (
                                     <>
                                         <Button onPress={() => setMode("login")} className="bg-darkBlueBg rounded-lg text-white">Se connecter</Button>
-                                        <Button onPress={() => setMode("register")} variant="flat">S'inscrire</Button>
+                                        <Button onPress={() => setMode("register")} variant="flat">S&apos;inscrire</Button>
                                         <Button onPress={() => {
 
                                             handleGuest();

@@ -24,6 +24,10 @@ const [hunt, setHunt] = useState<Hunt>();
     createHunt();
   }, []);
 
+/* 
+  if (!hunt || !hunts) {
+    return <div>Loading...</div>;
+} */
 
   const renderComponent = () => {
     switch(currentComponent) {

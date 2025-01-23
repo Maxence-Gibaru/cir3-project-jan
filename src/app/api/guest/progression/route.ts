@@ -5,6 +5,9 @@ import { Hunt, HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
+
+
+
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.next({ status: 401 });
@@ -16,7 +19,7 @@ export async function GET(req: NextRequest) {
         const lobbyCode = urlSearch.get("lobby_code");
 
         let progression = "not_started";
-        let data: any = {};
+        let data = {};
         if (lobbyCode) {
             const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: { $ne: "closed" } });
             if (hunt) {
@@ -36,7 +39,7 @@ export async function GET(req: NextRequest) {
                 } else if (team) {
                     data = getInitData(hunt);
                     const current_hint_index = team.current_hint_index;
-                    for (var i = 0; i <= current_hint_index; i++) {
+                    for (let i = 0; i <= current_hint_index; i++) {
                         data.stories.push(hunt.stories[i]);
 
                         const position = (i == 0) ? {} : hunt.markers[team.hints_order[i - 1]].position;
@@ -44,7 +47,7 @@ export async function GET(req: NextRequest) {
 
                         const markerHint = (current_hint_index === hunt.markers.length - 1)
                             ? hunt.markers[0].hint
-                            : hunt.markers[team.hints_order[i + 1]].hint;
+                            : hunt.markers[team.hints_order[i ]].hint;
                         data.hintsRevealed.push(markerHint);
                     }
 
@@ -67,7 +70,7 @@ export async function GET(req: NextRequest) {
             }
         }
 
-        console.log("data :", data)
+        /* console.log("data :", data) */
 
         return NextResponse.json({ progression, data }, { status: 200 });
     } catch (error) {
