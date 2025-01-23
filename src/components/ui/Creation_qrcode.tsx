@@ -3,13 +3,16 @@
 import React from 'react';
 import { jsPDF } from 'jspdf';
 import QRCode from 'qrcode';
+import { Hunt } from '@/models/Hunt';
 
 const mockData = {
   " 1": "dadzaz",
   " 2": "azsdazdad"
 };
-
-export default function creation_qrcode() {
+interface qr_codeProps {
+  hunt: Hunt;
+}
+export default function creation_qrcode( {hunt}:qr_codeProps) {
   const generatePDF = async () => {
     const doc = new jsPDF();
     const indices = Object.entries(mockData);

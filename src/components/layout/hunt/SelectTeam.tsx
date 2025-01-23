@@ -10,6 +10,7 @@ interface SelectTeamData {
 }
 
 export default function SelectTeam({ huntId, name, maxGuests, teams, goNext }: SelectTeamData & { goNext: () => void }) {
+    console.log("teams : ", teams)
     return (
         <div className="h-screen bg-greyBg">
             <h1 className="flex justify-center text-4xl py-5 font-bold text-center items-center align-middle uppercase">{name}</h1>
