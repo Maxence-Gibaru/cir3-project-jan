@@ -21,6 +21,7 @@ type Marker = {
         lng: number;
     };
     hint: string;
+    istreasure: boolean; 
 }
 interface ImportmapPageProps {
     chapters: string[];
@@ -55,17 +56,27 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
                 alert(`Limite de ${MAX_MARKERS} indices atteinte.`)
                 return
             }
-            if(currentTrésor==true){
-                //ajouter au première élément du tableau
-                setMarkers(prev => [{
-                    position: currentPosition,
-                    hint: markerText.trim()
-                },...prev])
-            }
+            if (currentTrésor === true) {
+                // Ajouter au premier élément du tableau tout en modifiant les anciens trésors
+                setMarkers((prev) =>
+                  [
+                    {
+                      position: currentPosition,
+                      hint: markerText.trim(),
+                      istreasure: true,
+                    },
+                    ...prev.map((marker) => ({
+                      ...marker,
+                      istreasure: false, // Remplacer tous les `tresor` existants par `false`
+                    })),
+                  ]
+                );
+              }              
             else{
                 setMarkers(prev => [...prev, {
                     position: currentPosition,
-                    hint: markerText.trim()
+                    hint: markerText.trim(),
+                    istreasure:false
                 }])
             }
             onClose()
