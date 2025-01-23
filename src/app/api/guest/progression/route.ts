@@ -43,11 +43,11 @@ export async function GET(req: NextRequest) {
                         data.markers.push(position);
 
                         const markerHint = (current_hint_index === hunt.markers.length - 1)
-                        ? hunt.markers[0].hint
-                        : hunt.markers[team.hints_order[i + 1]].hint;
+                            ? hunt.markers[0].hint
+                            : hunt.markers[team.hints_order[i + 1]].hint;
                         data.hintsRevealed.push(markerHint);
                     }
-                    
+
                     if (hunt.status === "started") {
                         // Chasse en cours
                         if (!team.win_at) {
@@ -66,6 +66,8 @@ export async function GET(req: NextRequest) {
                 }
             }
         }
+
+        console.log("data :", data)
 
         return NextResponse.json({ progression, data }, { status: 200 });
     } catch (error) {

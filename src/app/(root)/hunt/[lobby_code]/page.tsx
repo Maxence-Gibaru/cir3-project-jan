@@ -26,11 +26,22 @@ export default function HuntPage({
 
     const fetchProgression = async (lobby_code: string | null) => {
         if (!lobby_code) return;
-        const response = await fetchApi("guest/progression", { method: "GET", params: {
-            lobby_code
-        }});
-        setPageStatus(response.progression);
-        setHuntData(response.data);
+        const response = await fetchApi("guest/progression", {
+            method: "GET", params: {
+                lobby_code
+            }
+        });
+        // Vérifier si le contenu des données a changé avant de mettre à jour
+        if (JSON.stringify(response.data) !== JSON.stringify(huntData)) {
+            console.log("Ancienne donnée : ", huntData)
+            console.log("Données mises à jour :", response.data);
+            setHuntData(response.data); // Met à jour uniquement si les données sont différentes
+        }
+
+        // Met à jour le statut de la page indépendamment de huntData
+        if (response.progression !== pageStatus) {
+            setPageStatus(response.progression);
+        }
     }
 
     useEffect(() => {
@@ -38,10 +49,15 @@ export default function HuntPage({
             const interval = setInterval(() => {
                 fetchProgression(lobbyCode)
             }, 2000)
-    
+
             return () => clearInterval(interval);
         }
     }, [lobbyCode])
+
+
+    useEffect(() => {
+        console.log("huntData a été mis à jour :", huntData);
+    }, [huntData]);
 
 
     if (!huntData) {
