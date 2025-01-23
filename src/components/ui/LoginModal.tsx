@@ -38,13 +38,13 @@ export default function ModalApp({ isOpen, onOpenChange }: any) {
                                 {mode === "guest" && (
                                     <p>Vous pouvez rejoindre la chasse au trésor en tant qu'invité ou vous connecter pour organiser votre propre chasse.</p>
                                 )}
-                                {mode === "login" && <LoginForm />}
-                                {mode === "register" && <RegisterForm />}
+                                {mode === "login" && <LoginForm onClose={onClose} />}
+                                {mode === "register" && <RegisterForm onClose={onClose} />}
                             </ModalBody>
                             <ModalFooter>
                                 {mode === "guest" && (
                                     <>
-                                        <Button onPress={() => setMode("login")} color="primary">Se connecter</Button>
+                                        <Button onPress={() => setMode("login")} className="bg-darkBlueBg rounded-lg text-white">Se connecter</Button>
                                         <Button onPress={() => setMode("register")} variant="flat">S'inscrire</Button>
                                         <Button onPress={() => {
 
