@@ -3,6 +3,7 @@
 import HuntMap from "@/components/layout/hunt/HuntMap";
 import SelectTeam from "@/components/layout/hunt/SelectTeam";
 import WaitStart from "@/components/layout/hunt/WaitStart";
+import WinScreen from "@/components/layout/hunt/WinScreen";
 import { HuntInit } from "@/definitions";
 import { fetchApi } from "@/lib/api";
 import { useEffect, useState } from "react";
@@ -15,9 +16,9 @@ export default function HuntPage({
     }>;
 }>) {
     const [lobbyCode, setLobbyCode] = useState<string | null>(null);
-    const [pageStatus, setPageStatus] = useState("loading");
+    const [pageStatus, setPageStatus] = useState("hunting");
     const [huntInit, setHuntInit] = useState<HuntInit | null>(null);
-    const [first_hint, setFirstHint] = useState<string | null>(null);
+    const [firstHint, setFirstHint] = useState<string | null>(null);
 
     useEffect(() => {
         params.then((resolvedParams) => {
@@ -26,12 +27,17 @@ export default function HuntPage({
     }, [params]);
 
     useEffect(() => {
+        const response = fetchApi("guest/progression", { method: "GET", params: { lobby_code: lobbyCode } })
+    })
+
+
+    useEffect(() => {
         if (lobbyCode) {
             fetchApi("guest/join_lobby", { method: "GET", params: { lobby_code: lobbyCode } })
                 .then((data) => {
                     if (data) {
                         setHuntInit(data.huntInit);
-                        setPageStatus("selection");
+                        /* setPageStatus("selection"); */
                     }
                 })
                 .catch((error) => {
@@ -69,6 +75,7 @@ export default function HuntPage({
                 teams={huntInit.teams}
                 goNext={() => setPageStatus("waiting")}
             />;
+
         case "waiting":
             return <WaitStart
                 huntId={huntInit.id}
@@ -79,7 +86,9 @@ export default function HuntPage({
                     setPageStatus("hunting")
                 }}
             />;
+
         case "hunting":
+            const first_hint = "coucou";
             if (first_hint) {
                 return <HuntMap
                     map={huntInit.map}
@@ -88,7 +97,10 @@ export default function HuntPage({
                 />;
             }
 
+        case "win":
+            return <WinScreen team_time={null} treasure_position={null} team={null} />;
+
         default:
-            return <div>Erreur</div>;
+            return <div className="h-screen flex flex-col justify-center items-center">Erreur</div>;
     }
 }
