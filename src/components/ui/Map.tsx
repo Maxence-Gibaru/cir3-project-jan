@@ -5,7 +5,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaf
 import L from 'leaflet'
 import { Button } from '@nextui-org/react'
 import 'leaflet/dist/leaflet.css'
-
+import clsx from 'clsx'
 // Configuration de l'icône des marqueurs
 const icon = L.icon({
   iconUrl: '/marker-icon.png',
@@ -49,7 +49,9 @@ const Map = ({ markers, onMarkerAdd, onMarkerRemove }) => {
           >
             <Popup>
               <div className="p-2">
-                <h2>Indice {index}</h2>
+                <h2 className={clsx({ "font-bold text-green-500": marker.istreasure === true})}>
+                {marker.istreasure === true ? 'Position trésor' : `Indice ${index}`}
+              </h2>
                 <p className="text-black mb-2">{marker.hint}</p>
                 <Button 
                   
