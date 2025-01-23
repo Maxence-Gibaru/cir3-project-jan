@@ -55,6 +55,7 @@ export default function HomePage() {
             case 1:
                 return (
                     <Importmap
+                        chapters={chapters}
                         markers={markers}
                         setMarkers={setMarkers}
                         onNext={() => setIndex(2)}
@@ -83,7 +84,7 @@ export default function HomePage() {
             body: gameData,
         }).then(() => {
             alert("Chasse au trésor créée avec succès !");
-            router.push('/organizer/event');
+            router.push('/organizer/events');
         }
         ).catch((errorMessage: string) => {
             setError(errorMessage);

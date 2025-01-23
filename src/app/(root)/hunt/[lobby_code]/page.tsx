@@ -17,7 +17,7 @@ export default function HuntPage({
 }>) {
     const [lobbyCode, setLobbyCode] = useState<string | null>(null);
     const [pageStatus, setPageStatus] = useState("loading");
-    const [huntData, setHuntData] = useState(null);
+    const [huntData, setHuntData] = useState<any>(null);
 
 
     useEffect(() => {
@@ -36,8 +36,16 @@ export default function HuntPage({
 
 
     useEffect(() => {
-        fetchProgression()
+
+        const interval = setInterval(() => {
+            fetchProgression()
+
+        }, 2000)
+
+        return () => clearInterval(interval);
+
     }, [lobbyCode])
+
 
 
 
@@ -73,14 +81,15 @@ export default function HuntPage({
             />;
 
         case "hunting":
-            const first_hint = "coucou";
-            if (first_hint) {
-                return <HuntMap
-                    map={huntData.map}
-                    introduction_story={huntData.introduction_story}
-                    first_hint={first_hint}
-                />;
-            }
+
+            return <HuntMap
+                map={huntData.map}
+                introduction_story={huntData.introduction_story}
+                firstHint={huntData.first_hint}
+                markers={huntData.markers}
+
+            />;
+
 
         case "win":
             return <WinScreen team_time={null} treasure_position={null} team={null} />;

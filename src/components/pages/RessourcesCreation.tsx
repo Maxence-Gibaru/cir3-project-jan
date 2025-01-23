@@ -20,16 +20,16 @@ export default function RessourcesCreationPage({ chapters, title, setChapters, s
 
   // Ajouter un nouveau chapitre
   const addChapter = () => {
-    setChapters([...chapters, ""]); 
+    setChapters([...chapters, ""]);
   };
-  
+
 
 
   // Supprimer un chapitre
   const removeChapter = (index: number) => {
     setChapters(chapters.filter((_, i) => i !== index));
   };
-  
+
 
   // Mettre à jour le texte d'un chapitre
   const updateChapter = (index: number, newText: string) => {
@@ -44,7 +44,7 @@ export default function RessourcesCreationPage({ chapters, title, setChapters, s
     if (section === "title") {
       setTitle(response);
     } else if (section === "intro") {
-      updateChapter(0,response);
+      updateChapter(0, response);
     } else if (section.startsWith("chapter")) {
       const chapterIndex = parseInt(section.split("-")[1], 10); // Correspond à l'index
       updateChapter(chapterIndex, response); // Met à jour le chapitre
@@ -92,20 +92,20 @@ export default function RessourcesCreationPage({ chapters, title, setChapters, s
             </h3>
             <CodeArea
               value={chapter}
-              onChange={(e) => updateChapter(index+1, e.target.value)}
+              onChange={(e) => updateChapter(index + 1, e.target.value)}
               classname="w-full resize-none border border-gray-400 rounded-2xl p-2 bg-gray-100 overflow-y-auto overflow-x-hidden break-words shadow-xl"
             />
             <div className="w-full flex justify-center mt-8">
               <Button
 
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-300"
+                className="bg-red text-white px-4 py-2 rounded hover:bg-red-300"
                 onPress={() => removeChapter(index)}
               >Supprimer</Button>
             </div>
           </div>
         ))}
       </div>
-      
+
       <div className="w-full max-w-md flex justify-center">
         <Button
           className="bg-darkBlueBg text-white rounded-2xl px-6 py-3 shadow-xl hover:bg-darkBlueHoverBg"
@@ -114,7 +114,7 @@ export default function RessourcesCreationPage({ chapters, title, setChapters, s
       {/* Bouton pour ouvrir le modal en haut à droite */}
       <div className="fixed bottom-4 right-4 z-50">
         <IAModalApp
-          title = {title}
+          title={title}
           chapters={chapters}
           onIaResponse={handleIaResponse}
         />

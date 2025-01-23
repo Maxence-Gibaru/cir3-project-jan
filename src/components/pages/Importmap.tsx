@@ -3,7 +3,8 @@
 import React, { useState } from 'react'
 import dynamic from "next/dynamic"
 import { Dispatch, SetStateAction } from "react";
-import { Input, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react'
+import { Input, Button, Modal, Checkbox, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react'
+import IAModalHintApp from '../ui/IAHintModal';
 // Import dynamique du composant Map pour éviter les erreurs SSR
 const Map = dynamic(() => import("@/components/ui/Map"), {
     ssr: false,
@@ -13,7 +14,7 @@ const Map = dynamic(() => import("@/components/ui/Map"), {
         </div>
     )
 })
-const MAX_MARKERS = 10 // Limite maximale de marqueurs
+
 type Marker = {
     position: {
         lat: number;
@@ -22,16 +23,19 @@ type Marker = {
     hint: string;
 }
 interface ImportmapPageProps {
+    chapters: string[];
     markers: Marker[];
     setMarkers: Dispatch<SetStateAction<string>>;
     onNext: () => void; // Nouvelle prop
 }
-export default function Importmap({ markers, setMarkers, onNext }: ImportmapPageProps) {
+export default function Importmap({ chapters, markers, setMarkers, onNext }: ImportmapPageProps) {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [markerText, setMarkerText] = useState('')
     const [currentPosition, setCurrentPosition] = useState({})
+    const [currentTrésor, setCurrentTrésor] = useState(); // Nouvelle state pour le trésor
 
+    const MAX_MARKERS=chapters.length;
 
     const addMarker = (position) => {
         if (markers.length >= MAX_MARKERS) {
@@ -51,10 +55,19 @@ export default function Importmap({ markers, setMarkers, onNext }: ImportmapPage
                 alert(`Limite de ${MAX_MARKERS} indices atteinte.`)
                 return
             }
-            setMarkers(prev => [...prev, {
-                position: currentPosition,
-                hint: markerText.trim()
-            }])
+            if(currentTrésor==true){
+                //ajouter au première élément du tableau
+                setMarkers(prev => [{
+                    position: currentPosition,
+                    hint: markerText.trim()
+                },...prev])
+            }
+            else{
+                setMarkers(prev => [...prev, {
+                    position: currentPosition,
+                    hint: markerText.trim()
+                }])
+            }
             onClose()
             setMarkerText('')
         }
@@ -63,22 +76,25 @@ export default function Importmap({ markers, setMarkers, onNext }: ImportmapPage
         setMarkers(prev => prev.filter((_, i) => i !== index))
     }
 
+    const handleIaResponse = ( response) => {
+        setMarkerText(response);
+      };
+
     return (
-      <div className="flex flex-col gap-6 p-6 bg-greyBg min-h-screen">
-        <div className="flex justify-center items-center">
-          <div className="bg-primary text-white rounded-lg p-4 shadow-md">
+      <div className="flex flex-col bg-greyBg min-h-screen">
+          <div className="absolute top-4 right-4 z-20 bg-primary text-white rounded-lg p-4 shadow-md">
             <h3 className="text-lg font-bold text-center">
               Indices sur la carte : {markers.length}/{MAX_MARKERS}
             </h3>
           </div>
-        </div>
             <div className="z-10">
-                <Map className="z-10 h-[600px] w-full bg-gray-100 rounded-lg shadow-lg"
+                <Map className="z-10 h-full w-full bg-gray-100"
                     markers={markers}
                     onMarkerAdd={addMarker}
                     onMarkerRemove={removeMarker}
                 />
             </div>
+            <div className='z-20 absolute bottom-4 right-4'>
             {markers.length > 0 && (
                 <Button
                     color="primary"
@@ -88,6 +104,7 @@ export default function Importmap({ markers, setMarkers, onNext }: ImportmapPage
                     Enregistrer les indices ({markers.length})
                 </Button>
             )}
+            </div>
             <div className='z-30'>
                 <Modal className="z-30" isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()}>
                     <ModalContent className="bg-white p-6 rounded-lg text-black">
@@ -95,17 +112,20 @@ export default function Importmap({ markers, setMarkers, onNext }: ImportmapPage
                             <>
                                 <ModalHeader>Ajouter un indice ({markers.length + 1}/{MAX_MARKERS})</ModalHeader>
                                 <ModalBody>
+                                    <h2>Donner un texte qui permet de découvrir la position de l'indice</h2>
                                     <Input
                                         placeholder="Entrez votre indice ici"
                                         value={markerText}
                                         onChange={(e) => setMarkerText(e.target.value)}
                                         autoFocus
                                     />
+                                    <Checkbox onChange={(e) => setCurrentTrésor(e.target.checked)}>Ceci est la position du trésor</Checkbox>
                                 </ModalBody>
                                 <ModalFooter>
                                     <Button color="danger" variant="light" onPress={onClose}>
                                         Annuler
                                     </Button>
+                                    <IAModalHintApp onIaResponse={handleIaResponse}/>
                                     <Button color="primary" onPress={handleAddMarker}>
                                         Ajouter
                                     </Button>
