@@ -4,7 +4,6 @@ import HuntMap from "@/components/layout/hunt/HuntMap";
 import SelectTeam from "@/components/layout/hunt/SelectTeam";
 import WaitStart from "@/components/layout/hunt/WaitStart";
 import WinScreen from "@/components/layout/hunt/WinScreen";
-import { HuntInit } from "@/definitions";
 import { fetchApi } from "@/lib/api";
 import { useEffect, useState } from "react";
 
@@ -19,35 +18,30 @@ export default function HuntPage({
     const [pageStatus, setPageStatus] = useState("loading");
     const [huntData, setHuntData] = useState<any>(null);
 
-
     useEffect(() => {
         params.then((resolvedParams) => {
             setLobbyCode(resolvedParams.lobby_code);
         });
     }, [params]);
 
-
-
-    const fetchProgression = async () => {
-        const response = await fetchApi("guest/progression", { method: "GET", params: { lobby_code: lobbyCode } })
-        setPageStatus(response.progression)
+    const fetchProgression = async (lobby_code: string | null) => {
+        if (!lobby_code) return;
+        const response = await fetchApi("guest/progression", { method: "GET", params: {
+            lobby_code
+        }});
+        setPageStatus(response.progression);
         setHuntData(response.data);
     }
 
-
     useEffect(() => {
-
-        const interval = setInterval(() => {
-            fetchProgression()
-
-        }, 2000)
-
-        return () => clearInterval(interval);
-
+        if (lobbyCode) {
+            const interval = setInterval(() => {
+                fetchProgression(lobbyCode)
+            }, 2000)
+    
+            return () => clearInterval(interval);
+        }
     }, [lobbyCode])
-
-
-
 
 
     if (!huntData) {
@@ -65,7 +59,7 @@ export default function HuntPage({
                 maxGuests={huntData.max_guests}
                 teams={huntData.teams}
                 goNext={() =>
-                    fetchProgression()
+                    fetchProgression(lobbyCode)
                 }
             />;
 
@@ -73,15 +67,13 @@ export default function HuntPage({
             return <WaitStart
                 huntId={huntData.id}
                 name={huntData.name}
-                introduction_story={huntData.introduction_story}
+                introduction_story={huntData.stories[0]}
                 goNext={() => {
-                    fetchProgression()
-
+                    fetchProgression(lobbyCode)
                 }}
             />;
 
         case "hunting":
-
             return <HuntMap
                 map={huntData.map}
                 stories={huntData.stories}
@@ -89,8 +81,8 @@ export default function HuntPage({
                 markers={huntData.markers}
             />;
 
-
         case "win":
+        case "lose":
             return <WinScreen team_time={null} treasure_position={null} team={null} />;
 
         default:
