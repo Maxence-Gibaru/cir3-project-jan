@@ -9,10 +9,10 @@ import "./wait.css";
 interface WaitStartData {
     huntId: string;
     name: string;
-    intro: string;
+    introduction_story: string;
 }
 
-export default function WaitStart({ huntId, name, intro, goNext }: WaitStartData & { goNext: () => void }) {
+export default function WaitStart({ huntId, name, introduction_story, goNext }: WaitStartData & { goNext: (_: string) => void }) {
     const [dots, setDots] = useState(""); // État pour les points
     const [error, setError] = useState(""); // État pour les erreurs
 
@@ -27,12 +27,12 @@ export default function WaitStart({ huntId, name, intro, goNext }: WaitStartData
     }, []);
 
     const ckeck_start = async () => {
-        await fetchApi("/api/guest/check_is_started", {
+        await fetchApi("guest/check_is_started", {
             method: "GET",
             params: { id: huntId },
         }).then((data) => {
             if (data.isStarted) {
-                goNext();
+                goNext(data.firstHint);
             }
         }
         ).catch((errorMessage: string) => {

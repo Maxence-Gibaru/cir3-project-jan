@@ -28,8 +28,21 @@ export async function GET(req: NextRequest) {
             );
         }
 
+        // Check if the user is in a team
+        const guestId = session.user.id;
+        const team = hunt.teams.find((team) => team.guests.find((guest) => guest.id === guestId));
+        if (!team) {
+            return NextResponse.json(
+                { error: "Vous n'êtes pas dans une équipe." },
+                { status: 400 }
+            );
+        }
+
+        const selected_hint: number = team.hints_order[0];
+        const firstHint: string = hunt.markers[selected_hint].hint; // Indice du lieu qu'on cherche
+        
         const isStarted = hunt.status === "started";
-        return NextResponse.json({ isStarted }, { status: 200 });
+        return NextResponse.json({ isStarted, firstHint }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(

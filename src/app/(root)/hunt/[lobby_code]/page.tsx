@@ -1,5 +1,6 @@
 "use client";
 
+import HuntMap from "@/components/layout/hunt/HuntMap";
 import SelectTeam from "@/components/layout/hunt/SelectTeam";
 import WaitStart from "@/components/layout/hunt/WaitStart";
 import { HuntInit } from "@/definitions";
@@ -16,6 +17,7 @@ export default function HuntPage({
     const [lobbyCode, setLobbyCode] = useState<string | null>(null);
     const [pageStatus, setPageStatus] = useState("loading");
     const [huntInit, setHuntInit] = useState<HuntInit | null>(null);
+    const [first_hint, setFirstHint] = useState<string | null>(null);
 
     useEffect(() => {
         params.then((resolvedParams) => {
@@ -29,13 +31,25 @@ export default function HuntPage({
                 .then((data) => {
                     if (data) {
                         setHuntInit(data.huntInit);
-                        setPageStatus("selection");
+                        // setPageStatus("selection");
                     }
                 })
                 .catch((error) => {
                     console.error(error);
                     setPageStatus("error");
                 });
+
+            /*
+            fetchApi("guest/progression", { method: "GET", params: { lobby_code: lobbyCode } })
+                .then((data) => {
+                    console.log(data);
+                    setPageStatus(data.progression);
+                })
+                .catch((error) => {
+                    console.error(error);
+                    setPageStatus("error");
+                });
+            */
         }
     }, [lobbyCode]);
 
@@ -59,20 +73,22 @@ export default function HuntPage({
             return <WaitStart
                 huntId={huntInit.id}
                 name={huntInit.name}
-                intro={huntInit.introduction_story}
-                goNext={() => setPageStatus("hunting")}
+                introduction_story={huntInit.introduction_story}
+                goNext={(firstHint: string) => {
+                    setFirstHint(firstHint);
+                    setPageStatus("hunting")
+                }}
             />;
         case "hunting":
-            // return <HuntMap />;
+            if (first_hint) {
+                return <HuntMap
+                    map={huntInit.map}
+                    introduction_story={huntInit.introduction_story}
+                    first_hint={first_hint}
+                />;
+            }
+
         default:
             return <div>Erreur</div>;
     }
 }
-
-/*
-/
-/hunt :
-SelectTeam
-WaitStart
-Map
-*/
