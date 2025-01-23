@@ -7,6 +7,7 @@ import { z } from "zod";
 import { getparsedBody } from "../../utils";
 
 const ReqZodSchema = z.object({
+    huntId: z.string(),
     teamIndex: z.number(),
 });
 
@@ -25,12 +26,11 @@ export async function PUT(req: NextRequest) {
                 { status: 400 }
             );
         } 
+        
+        const huntId = result.huntId;
         const teamIndex = result.teamIndex;       
 
-        const guestId = session.user.id;
-        const huntId = session.user.huntId;
         const hunt = await HuntModel.findById(huntId);
-
         if (!hunt) {
             return NextResponse.json(
                 { error: "Aucune chasse au trésor trouvée avec ce code." },
@@ -38,10 +38,25 @@ export async function PUT(req: NextRequest) {
             );
         }
 
+        const guestId = session.user.id;
+        const findIfExists = hunt.teams.find((team) => team.guests.find((guest) => guest.id === guestId));
+        if (findIfExists) {
+            return NextResponse.json(
+                { error: "Vous avez déjà rejoint une équipe." },
+                { status: 400 }
+            );
+        }
+
         const newGuest = {
             id: guestId,
-            name: `Guest-${guestId}`
+            name: session.user.name,
         };
+        if (hunt.teams[teamIndex].guests.length >= hunt.max_guests) {
+            return NextResponse.json(
+                { error: "Équipe pleine." },
+                { status: 400 }
+            );
+        }
         hunt.teams[teamIndex].guests.push(newGuest);
 
         await HuntModel.findOneAndUpdate({ _id: huntId, status: "opened" }, {
@@ -49,7 +64,7 @@ export async function PUT(req: NextRequest) {
         });
 
 
-        return NextResponse.json({ hunt }, { status: 200 });
+        return NextResponse.json({ isValid: true }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(

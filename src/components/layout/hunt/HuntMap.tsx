@@ -1,23 +1,13 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import "leaflet/dist/leaflet.css";
-import dynamic from "next/dynamic";
-import L from "leaflet";
-import { useSession } from "next-auth/react";
 import { fetchApi } from "@/lib/api";
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-} from "@heroui/react";
-
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/react";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const icon = L.icon({
   iconUrl: '/marker-icon.png',
@@ -43,7 +33,13 @@ const Marker = dynamic(
   { ssr: false }
 );
 
-export default function Map() {
+interface HuntMapData {
+  map: { lat: number; lng: number; zoom: number };
+  introduction_story: string;
+  first_hint: string;
+}
+
+export default function Map({map, introduction_story, first_hint }: HuntMapData) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenSecondModal,
@@ -61,25 +57,6 @@ export default function Map() {
 
 
   const { data: session } = useSession();
-
-  if (session) {
-    console.log(session);
-  }
-
-  const data1 = {
-    map: [
-      { lat: 51.50235101912438, lng: -0.13131603921719526, zoom: 13 },
-    ],
-    text: "Bienvenue dans cette aventure mystérieuse. Suivez les indices pour découvrir un trésor caché.",
-    hint: "L'arrrdad dadazdaz dadadadaz",
-  };
-
-  const data2 = {
-    position: { lat: 51.50235101912438, lng: -0.13131603921719526 },
-    hint: "À l'entrée de la grotte, des symboles étranges pointent vers un passage secret derrière une cascade.",
-    text: "Bienvenue dans cette aventure mystérieuse. Suivez les indices pour découvrir un trésor caché.",
-    team_time: "1h 30min",
-  };
 
   const handleMarkerClick = (markerData) => {
     setSelectedMarker(markerData);
@@ -102,7 +79,7 @@ export default function Map() {
       await fetchApi("guest/markers", {
         method: "GET",
         params: { markersCount: markers.length }
-      }).then((data) => setMarkers(data)).catch((err) => console.error(err), 5000);
+      }).then((data) => setMarkers(data)).catch((err) => console.error(err));
       // const newMarker = await new Promise((resolve) =>
       //   setTimeout(() => resolve(data2), 500)
       // );
@@ -136,8 +113,8 @@ export default function Map() {
 
         <div className="z-10 flex-grow">
           <MapContainer
-            center={[data1.map[0].lat, data1.map[0].lng]}
-            zoom={data1.map[0].zoom}
+            center={[map.lat, map.lng]}
+            zoom={map.zoom}
             scrollWheelZoom={true}
             style={{ height: "100%", width: "100%" }}
           >
@@ -193,8 +170,8 @@ export default function Map() {
               Bienvenue dans l'aventure
             </ModalHeader>
             <ModalBody className="text-base">
-              <p>{data1.text}</p>
-              <p>{data1.hint}</p>
+              <p>{introduction_story}</p>
+              <p>{first_hint}</p>
             </ModalBody>
             <ModalFooter>
               <Button

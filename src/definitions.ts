@@ -3,9 +3,13 @@ export type Position = {
     lng: number
 }
 
-export type HuntIntro = {
-    text: string,
-    hint: string,
+export type HuntInit = {
+    id: string,
+    name: string,
+    teams: string[][],
+    introduction_story: string,
+    max_guests: number,
+    max_teams: number,
     map: Position & { zoom: number },
 }
 
