@@ -115,6 +115,8 @@ export default function RessourcesCreationPage({ chapters, title, intro, setChap
       {/* Bouton pour ouvrir le modal en haut à droite */}
       <div className="flex">
         <IAModalApp
+          title = {title}
+          intro={intro}
           chapters={chapters}
           onIaResponse={handleIaResponse}
         />

@@ -31,11 +31,9 @@ export async function POST(req: NextRequest) {
 
         body.markers.map((marker: Marker) => {
             marker.id = uuidv4().slice(0, 8);
-            /* marker.position = { lat: marker.position.lat, lng: marker.position.lng } */
-            console.log(marker.position)
         });
 
-        /* console.log("body :", body.markers); */
+
 
         const result = getparsedBody(HuntZodSchema, body);
         if (typeof result === "string") {
@@ -45,10 +43,8 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        /* result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject()); */
+        result.teams = Array.from({ length: result.max_teams }, () => new TeamModel().toObject());
 
-        result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject());
-        console.log("result : ", result);
 
         const newHunt: Hunt = await HuntModel.create(result);
         return NextResponse.json(newHunt, { status: 201 });

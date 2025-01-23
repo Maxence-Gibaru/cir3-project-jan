@@ -119,6 +119,21 @@ export default function NavbarHeader({ status, onOpen }) {
                                     My Profile
                                 </Link>
                             </DropdownItem> */}
+                            {session?.user?.role === "organizer" ?
+                                (
+                                    <>
+                                        <DropdownItem key="settings">
+                                            <Link
+                                                href={{
+                                                    pathname: `/organizer/events`,
+
+                                                }}
+                                            >
+                                                Consulter mes évènements
+                                            </Link>
+                                        </DropdownItem>
+                                    </>
+                                ) : (<></>)}
 
                             {/* <DropdownItem key="team_settings">My Settings</DropdownItem>
               <DropdownItem key="configurations">

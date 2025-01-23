@@ -43,6 +43,10 @@ export async function GET(req: NextRequest) {
             map: hunt.map,
         };
 
+        console.log("hunt : ", hunt);
+
+        console.log("huntInit :", huntInit);
+
         return NextResponse.json({ huntInit }, { status: 200 });
     } catch (error) {
         console.error(error);
