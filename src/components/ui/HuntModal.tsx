@@ -11,20 +11,22 @@ export default function HuntModal({ isOpen, hunt, setHunt, onNext, onClose }: { 
 
   const start_game = async () => {
 
-    await fetchApi("organizer/open", {
-      method: "PUT",
-      body: { huntId: hunt._id },
-    }).then((data) => {
-      console.log("good_open");
-      setHunt(data.hunt); // Crée une copie pour déclencher un re-render
-      onNext();
-    }
-    ).catch((err) => console.error(err));
-  }
-  const dashboard_game = () => {
-    setHunt(hunt); // Crée une copie pour déclencher un re-render
-    onNext();
-  }
+        await fetchApi("organizer/open", {
+          method: "PUT",
+          body: { huntId: hunt._id },
+        }).then((data) =>{
+         console.log("good_open");
+         setHunt(data.hunt); // Crée une copie pour déclencher un re-render
+         onNext();}
+      ).catch((err) => console.error(err));
+      }
+      const dashboard_game = () => {
+        setHunt(hunt); // Crée une copie pour déclencher un re-render
+        if(hunt.status === 'started'){
+          
+        }
+        onNext();
+      }
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">

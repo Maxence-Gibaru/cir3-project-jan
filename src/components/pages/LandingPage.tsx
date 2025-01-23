@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import Footer from "../layout/Footer";
 import NavbarHeader from "../layout/NavbarHeader";
 import LoginModal from "../ui/LoginModal";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/react";
+import Link from "next/link";
 
 export default function LandingPage() {
     const [lobbyCode, setLobbyCode] = useState("");

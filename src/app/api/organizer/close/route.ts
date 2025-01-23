@@ -24,24 +24,24 @@ export async function PUT(req: NextRequest) {
                 { status: 400 }
             );
         }
-        
+
         const guestId = session.user.id;
-        const hunt = await HuntModel.findOneAndUpdate({ _id: result.huntId, organizer_id: guestId, status: 'closed' }, {
-            status: "opened",
+        const hunt = await HuntModel.findOneAndUpdate({ _id: result.huntId, organizer_id: guestId, status: 'started' }, {
+            status: "ended",
         });
         if (!hunt) {
             return NextResponse.json(
-                { error: "Hunt not found" },
+                { error: "Aucune chasse au trésor trouvée avec cet identifiant." },
                 { status: 404 }
             );
         }
-        hunt.status = "opened";
+        hunt.status = "ended";
 
         return NextResponse.json({ hunt }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(
-            { error: "Echec lors de l'actualisation du status" },
+            { error: "Echec lors de l'actualisation du status"},
             { status: 500 }
         );
     }
