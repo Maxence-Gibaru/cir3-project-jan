@@ -139,7 +139,7 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
           <Creation_qrcode hunt={hunt}/>
 
           <Button className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg">
-            Générer le code
+            Code : {hunt.code}
           </Button>
            {/* Bouton Lancer */}
             <Button 
