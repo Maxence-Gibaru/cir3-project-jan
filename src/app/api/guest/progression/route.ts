@@ -67,7 +67,7 @@ export async function GET(req: NextRequest) {
             }
         }
 
-        console.log("data :", data)
+        //console.log("data :", data)
 
         return NextResponse.json({ progression, data }, { status: 200 });
     } catch (error) {

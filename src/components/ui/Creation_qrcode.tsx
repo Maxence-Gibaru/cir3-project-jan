@@ -37,7 +37,13 @@ export default function creation_qrcode( {hunt}:qr_codeProps) {
       }
       
       doc.setFontSize(16);
-      doc.text(`Indice ${key}`, 20, 20);
+      if(i==0){
+        doc.text(`Trésor`, 20, 20);
+      }
+      else{
+        doc.text(`Indice ${key}`, 20, 20);
+      }
+     
       
       try {
         const qrCodeDataURL = await QRCode.toDataURL(value, {

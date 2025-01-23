@@ -22,7 +22,7 @@ function  Qrcode({ isOpen, onOpenChange,lobbyCode}: QrcodeProps) {
         method: 'GET', 
         params: { lobby_code : lobbyCode, qr_code : decodedText }, 
       });
-  
+      console.log(response);
       // Gestion de la réponse
       if (response === true) {
         onClose(); 
