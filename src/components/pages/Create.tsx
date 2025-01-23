@@ -21,7 +21,6 @@ function HuntButtons({hunts,setHunts,hunt,setHunt,onNext}: FirstComponentProps) 
 
   const openModal = (hunt: Hunt) => {
     setCurrentHunt(hunt);
-    setHunt(hunt);
     setIsModalOpen(true);
   };
 
@@ -47,7 +46,7 @@ function HuntButtons({hunts,setHunts,hunt,setHunt,onNext}: FirstComponentProps) 
           {hunt.name}
         </Button>
       ))}
-      <HuntModal isOpen={isModalOpen} hunt={currentHunt} onNext={onNext} onClose={closeModal} />
+      <HuntModal isOpen={isModalOpen} hunt={currentHunt} setHunt={setHunt} onNext={onNext} onClose={closeModal} />
     </div>
   );
 }

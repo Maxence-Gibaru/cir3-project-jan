@@ -13,7 +13,7 @@ export default function HomePage() {
     //Page ressourcesCreation.tsx
     const [title, setTitle] = useState(""); // État pour le titre
     const [intro, setIntro] = useState(""); // État pour l'introduction
-    const [chapters, setChapters] = useState<string[]>([]); // Liste des chapitres
+    const [chapters, setChapters] = useState<string[]>([""]); // Liste des chapitres
     //Page importmap.tsx
     const [markers, setMarkers] = useState([])
 

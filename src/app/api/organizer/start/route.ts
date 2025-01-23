@@ -26,13 +26,15 @@ export async function PUT(req: NextRequest) {
         }
 
         // Get hunt by Id and check if status is opened
-        const hunt = await HuntModel.findById(result.huntId, { status: 'opened' });
+        const hunt = await HuntModel.findOne({ _id: result.huntId, status: 'opened' });
         if (!hunt) {
             return NextResponse.json(
                 { error: "Aucune chasse au trésor trouvée avec cet identifiant." },
                 { status: 404 }
             );
         }
+
+        console.log("hunttr", hunt, hunt.teams);
 
         // Count for each team if team.guest is different empty
         const teamWithMember =  hunt.teams.filter(team => team.guests.length > 0);

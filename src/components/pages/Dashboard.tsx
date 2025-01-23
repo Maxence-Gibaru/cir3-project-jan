@@ -10,6 +10,7 @@ import Creation_qrcode from "@/components/ui/Creation_qrcode";
 import { Hunt } from "@/models/Hunt";
 import { fetchApi } from "@/lib/api";
 import clsx from 'clsx';
+import { set } from "mongoose";
 interface SecondComponentProps {
   hunts: Hunt[];
   setHunts: (hunts: Hunt[]) => void;
@@ -29,6 +30,7 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
   const [teamData, setTeamData] = useState(initialTeams);
 
   const [startTime] = useState(new Date().toISOString());
+  const [start, setStart] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,28 +49,52 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
     return () => clearInterval(interval);
   }, []);
 
-  const stop_game = async () => {
+  useEffect(() => {
+    if (start === true) {
+      const fetchHunts = async () => {
+        await fetchApi("organizer/hunt", { method: "GET", params: { huntId: hunt._id } })
+          .then((data) => {
+            setHunt(data);
+          })
+          .catch((err) => console.error(err)); 
+      };
+  
+      fetchHunts(); // Exécution immédiate
+  
+      // Définir un intervalle qui s'exécute toutes les 5 secondes
+      const intervalId = setInterval(fetchHunts, 5000);
+  
+      // Nettoyer l'intervalle lors du démontage du composant
+      return () => clearInterval(intervalId);
+    }
+  }, [start]); // Dépendance ajoutée pour réagir aux changements de 'start'
 
+
+  const stop_game = async () => {
         await fetchApi("organizer/stop", {
           method: "PUT",
           body: { huntId: hunt._id },
         }).then(() =>{
          console.log("good_stop");
+         setStart(false);
          }
       ).catch((err) => console.error(err));
       }
 
     const start_game = async () => {
-
       await fetchApi("organizer/start", {
         method: "PUT",
         body: { huntId: hunt._id },
       }).then(() =>{
         console.log("good_start");
+        hunt.status = 'started';
+        setHunt(hunt);
+        setStart(true);
         }
     ).catch((err) => console.error(err));
     }
 
+  console.log(hunt.status);
 
   return (
     <div className="flex flex-col h-screen text-dark">
@@ -117,9 +143,12 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
           </Button>
            {/* Bouton Lancer */}
             <Button 
-            onPress={hunt.status === 'opened' ? start_game : stop_game  }
+            onPress={hunt.status === 'opened' ? start_game : stop_game }
             className={clsx(
-              "px-4 py-2 rounded bg-green-500 hover:bg-gray text-white",
+              "px-4 py-2 rounded text-white",
+              hunt.status === 'opened' 
+                ? "bg-green hover:bg-green-600" 
+                : "bg-red hover:bg-blue-600"
             )}
             >
             {hunt.status === 'opened' ? 'Lancer' : 'Stop'}

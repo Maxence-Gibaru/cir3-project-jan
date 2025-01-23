@@ -29,7 +29,14 @@ export async function PUT(req: NextRequest) {
         const hunt = await HuntModel.findByIdAndUpdate(result.huntId, {
             status: "opened",
         });
-
+        if (!hunt) {
+            return NextResponse.json(
+                { error: "Hunt not found" },
+                { status: 404 }
+            );
+        }
+        hunt.status = "opened";
+        console.log("hunt", hunt);
         return NextResponse.json({ hunt }, { status: 200 });
     } catch (error) {
         console.error(error);
