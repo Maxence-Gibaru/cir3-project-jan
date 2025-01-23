@@ -162,7 +162,7 @@ export default function HuntMap({ map, introduction_story, firstHint, markers }:
             </ModalHeader>
             <ModalBody className="text-base">
               <p>{introduction_story}</p>
-              <p>{first_hint}</p>
+              <p>{firstHint}</p>
             </ModalBody>
             <ModalFooter>
               <Button

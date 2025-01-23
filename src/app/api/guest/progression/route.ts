@@ -88,7 +88,7 @@ function getHuntingData(hunt: Hunt, team: Team) {
     const current_hint_index = team.current_hint_index;
     for (let i = 0; i <= current_hint_index; i++) {
         const marker = hunt.markers[team.hints_order[i]];
-        /* console.log("marker :", team) */
+        console.log("marker :", team)
         const position = marker.position;
         const hint = (current_hint_index === hunt.markers.length - 1)
             ? hunt.markers[0].hint
