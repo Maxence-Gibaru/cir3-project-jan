@@ -22,6 +22,9 @@ export default function HuntModal({ isOpen, hunt,setHunt, onNext, onClose } : { 
       }
       const dashboard_game = () => {
         setHunt(hunt); // Crée une copie pour déclencher un re-render
+        if(hunt.status === 'started'){
+          
+        }
         onNext();
       }
   return (
