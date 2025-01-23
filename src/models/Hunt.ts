@@ -13,7 +13,7 @@ export const HuntZodSchema = z.object({
     code: z.string(),
     status: z.enum(['closed', 'opened', 'started', 'ended']).default('closed'),
     max_guests: z.number(),
-    max_teams: z.number(),
+    max_teams: z.number().optional(),
     map: z.object({
         lat: z.number(),
         lng: z.number(),
@@ -58,10 +58,6 @@ const HuntSchema = new Schema({
         default: 'closed'
     },
     max_guests: {
-        type: Number,
-        required: true
-    },
-    max_teams: {
         type: Number,
         required: true
     },
