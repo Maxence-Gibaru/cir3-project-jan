@@ -36,10 +36,11 @@ const Marker = dynamic(
 interface HuntMapData {
   map: { lat: number; lng: number; zoom: number };
   introduction_story: string;
-  first_hint: string;
+  firstHint: string;
+  markers: any
 }
 
-export default function Map({map, introduction_story, first_hint }: HuntMapData) {
+export default function HuntMap({ map, introduction_story, firstHint, markers }: HuntMapData) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenSecondModal,
@@ -53,10 +54,10 @@ export default function Map({map, introduction_story, first_hint }: HuntMapData)
   } = useDisclosure();
 
   const [selectedMarker, setSelectedMarker] = useState(null);
-  const [markers, setMarkers] = useState([]);
 
 
-  const { data: session } = useSession();
+
+  /* const { data: session } = useSession(); */
 
   const handleMarkerClick = (markerData) => {
     setSelectedMarker(markerData);
@@ -64,36 +65,26 @@ export default function Map({map, introduction_story, first_hint }: HuntMapData)
   };
 
   // Vérification de la première visite via localStorage
-  useEffect(() => {
-    const hasVisited = localStorage.getItem("hasVisited");
+  /* useEffect(() => { */
+  /* const hasVisited = localStorage.getItem("hasVisited"); */
 
-    if (!hasVisited) {
-      onOpenSecondModal();
-      localStorage.setItem("hasVisited", "true");
-    }
-  }, [onOpenSecondModal]);
+  /* if (!hasVisited) {
+    onOpenSecondModal();
+    localStorage.setItem("hasVisited", "true");
+  }
+}, [onOpenSecondModal]); */
 
-  // Ajoute un marqueur (simulation d'une récupération via API)
-  useEffect(() => {
-    const addMarker = async () => {
-      await fetchApi("guest/markers", {
-        method: "GET",
-        params: { markersCount: markers.length }
-      }).then((data) => setMarkers(data)).catch((err) => console.error(err));
-      // const newMarker = await new Promise((resolve) =>
-      //   setTimeout(() => resolve(data2), 500)
-      // );
-      // console.log(newMarker);
-      // if (newMarker?.close) {
-      //   console.log("Trésor trouvé");
-      //   setSelectedMarker(newMarker);
-      //   onOpenthirdModal();
-      // } else {
-      //   setMarkers((prevMarkers) => [...prevMarkers, newMarker]);
-      // }
-    };
-    addMarker();
-  }, [onOpenthirdModal]);
+
+  /*   useEffect(() => {
+      const addMarker = async () => {
+        await fetchApi("guest/markers", {
+          method: "GET",
+          params: { markersCount: markers.length }
+        }).then((data) => setMarkers(data)).catch((err) => console.error(err));
+  
+      };
+      addMarker();
+    }, [onOpenthirdModal]); */
 
   return (
     <div className="w-full text-black">
@@ -171,7 +162,7 @@ export default function Map({map, introduction_story, first_hint }: HuntMapData)
             </ModalHeader>
             <ModalBody className="text-base">
               <p>{introduction_story}</p>
-              <p>{first_hint}</p>
+              <p>{firstHint}</p>
             </ModalBody>
             <ModalFooter>
               <Button

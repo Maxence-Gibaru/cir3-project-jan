@@ -69,7 +69,7 @@ export async function PUT(req: NextRequest) {
         console.error(error);
         return NextResponse.json(
             { error: "Échec de la recherche de la chasse au trésor." },
-                { status: 500 }
-            );
+            { status: 500 }
+        );
     }
 }

@@ -1,13 +1,14 @@
 import React from 'react';
 
-const ProgressDashboard = ({ data }) => {
+const ProgressDashboard = ({ hunt ,trouve, setTrouve }) => {
   return (
     <div className="text-gray-700">
       <h2 className="text-gray-700">Tableau de pourcentage d'avancement par équipe :</h2>
       <ul className="list-disc list-inside">
-        {data.map((team, index) => (
+        {trouve.map((team, index) => (
           <li key={index} className="text-gray-700">
-            <strong>{team.equipe}</strong>: {((team.indicesFaits / team.totalIndices) * 100).toFixed(2)}%
+            <strong>Equipe {team.teamId} :</strong>
+            <p>Pourcentage : {team.foundHints/team.totalHints*100} %{}</p> 
           </li>
         ))}
       </ul>

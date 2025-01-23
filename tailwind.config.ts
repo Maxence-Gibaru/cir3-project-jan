@@ -41,9 +41,12 @@ export default {
         secondary: "#00b4d8",     // Couleur secondaire : Aqua vif
         accent: "#90e0ef",        // Couleur d'accentuation : Bleu ciel doux
         background: "#caf0f8",    // Couleur de fond : Bleu pâle
-        dark: "#03045e",          // Couleur sombre : Bleu marine très profond
+        dark: "#03045e", 
+        red:"#ff0000",
+        green:"#00FF00",     // Couleur sombre : Bleu marine très profond
         sand: "#e1c881",          // Couleur sable
-        blue: "#a6fffe",          // Couleur bleu ciel
+        blue: "#a6fffe", 
+        yellow:"#FFD70099",        // Couleur bleu ciel
         grey: "#e0deda",          // Couleur gris clair
         oceanBlue:"#0066cc", // Bleu Ocean
         greyBg: "#F2EFE7",

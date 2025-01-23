@@ -4,12 +4,14 @@ import TeamProgressContainer from "@/components/pages/leaderboard";
 import ProgressDashboard from "@/components/pages/pourcent";
 import ElapsedTime from "@/components/pages/timer";
 import { Button } from "@heroui/react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import Image from "next/image";
 import Creation_qrcode from "@/components/ui/Creation_qrcode";
 import { Hunt } from "@/models/Hunt";
 import { fetchApi } from "@/lib/api";
 import clsx from 'clsx';
+import { set } from "mongoose";
+import { useRouter } from "next/navigation";
 interface SecondComponentProps {
   hunts: Hunt[];
   setHunts: (hunts: Hunt[]) => void;
@@ -25,10 +27,12 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
     { equipe: "Equipe C", indicesFaits: 7, totalIndices: 10 },
   ];
 
-  
+  const Router = useRouter();
   const [teamData, setTeamData] = useState(initialTeams);
 
-  const [startTime] = useState(new Date().toISOString());
+  const [startTime, setStartTime] = useState('00:00:00');
+  const [start, setStart] = useState(false);
+  const[trouve,setTrouve] = useState([]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -47,24 +51,96 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
     return () => clearInterval(interval);
   }, []);
 
-  const stop_game = async () => {
+  useEffect(() => {
+    if (start === true) {
+      const fetchHunts = async () => {
+        await fetchApi("organizer/hunt", { method: "GET", params: { huntId: hunt._id } })
+          .then((data) => {
+            setHunt(data);           
+          })
+          .catch((err) => console.error(err)); 
+      };
+  
+      fetchHunts(); // Exécution immédiate
+  
+      // Définir un intervalle qui s'exécute toutes les 5 secondes
+      const intervalId = setInterval(fetchHunts, 5000);
+  
+      // Nettoyer l'intervalle lors du démontage du composant
+      return () => clearInterval(intervalId);
+    }
+  }, [start]); // Dépendance ajoutée pour réagir aux changements de 'start'
 
+  useEffect(() => {
+    let interval;
+  
+    console.log("Status:", hunt.status);
+  
+    if (hunt.status === 'started') {
+      // Convertir le temps de départ en millisecondes depuis le début de la partie
+      const startTimeInMs = new Date(hunt.started_at).getTime();
+  
+      interval = setInterval(() => {
+        const now = new Date().getTime();
+        const elapsedTime = Math.floor((now - startTimeInMs) / 1000);
+  
+        // Convertir en heures, minutes, secondes
+        const hours = Math.floor(elapsedTime / 3600);
+        const minutes = Math.floor((elapsedTime % 3600) / 60);
+        const seconds = elapsedTime % 60;
+  
+        // Formater avec zéros de padding
+        const formattedTime = `${hours.toString().padStart(2, '0')}:${
+          minutes.toString().padStart(2, '0')
+        }:${seconds.toString().padStart(2, '0')}`;
+        setStartTime(formattedTime); // Mettre à jour le state
+      }, 1000);
+    } else {
+      setStartTime('00:00:00'); // Réinitialiser le compteur si le statut n'est pas 'started'
+    }
+  
+    // Nettoyage de l'intervalle
+    return () => {
+      //console.log("Cleaning interval...");
+      clearInterval(interval);
+    };
+  }, [hunt.status, hunt.started_at]);
+  
+  
+
+  const stop_game = async () => {
         await fetchApi("organizer/stop", {
           method: "PUT",
           body: { huntId: hunt._id },
         }).then(() =>{
          console.log("good_stop");
+         setStart(false);
          }
       ).catch((err) => console.error(err));
       }
 
     const start_game = async () => {
-
       await fetchApi("organizer/start", {
         method: "PUT",
         body: { huntId: hunt._id },
       }).then(() =>{
         console.log("good_start");
+        hunt.status = 'started';
+        setHunt(hunt);
+
+        setStart(true);
+        }
+    ).catch((err) => console.error(err));
+    }
+
+    const reset_game = async () => {
+      await fetchApi("organizer/reset", {
+        method: "PUT",
+        body: { huntId: hunt._id },
+      }).then(() =>{
+        console.log("good_reset");
+        setHunt(hunt);
+        Router.push('/dashboard');
         }
     ).catch((err) => console.error(err));
     }
@@ -91,19 +167,19 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
           {/* Temps écoulé */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold text-gray-700 mb-4">Temps écoulé</h2>
-            <ElapsedTime startTime={startTime} />
+            <p>{startTime}</p>
           </div>
 
           {/* Classement */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold text-gray-700 mb-4">Classement</h2>
-            <TeamProgressContainer data={teamData} />
+            <TeamProgressContainer hunt={hunt} trouve={trouve} setTrouve={setTrouve} />
           </div>
 
           {/* Pourcentage */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold text-gray-700 mb-4">Pourcentage</h2>
-            <ProgressDashboard data={teamData} />
+            <ProgressDashboard data={teamData} trouve={trouve} setTrouve={setTrouve}/>
           </div>
         </div>
 
@@ -113,17 +189,33 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
           <Creation_qrcode hunt={hunt}/>
 
           <Button className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg">
-            Générer le code
+            Code : {hunt.code}
           </Button>
            {/* Bouton Lancer */}
-            <Button 
-            onPress={hunt.status === 'opened' ? start_game : stop_game  }
-            className={clsx(
-              "px-4 py-2 rounded bg-green-500 hover:bg-gray text-white",
-            )}
-            >
-            {hunt.status === 'opened' ? 'Lancer' : 'Stop'}
-            </Button>
+           <Button  
+          onPress={
+            hunt.status === 'opened'
+              ? start_game
+              : hunt.status === 'started'
+              ? stop_game
+              : reset_game
+          }
+          className={clsx(
+            "px-4 py-2 rounded text-white",
+            hunt.status === 'opened'
+              ? "bg-green hover:bg-green-600"
+              : hunt.status === 'started'
+              ? "bg-yellow hover:bg-yellow-600"
+              : "bg-red hover:bg-red-600"
+          )}
+        >
+          {hunt.status === 'opened'
+            ? 'Lancer'
+            : hunt.status === 'started'
+            ? 'Arrêter la chasse'
+            : 'Reset la chasse'}
+        </Button>
+
         </div>
       </main>
     </div>

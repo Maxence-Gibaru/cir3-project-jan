@@ -12,18 +12,22 @@ export async function GET(req: NextRequest) {
         await dbConnect();
         // Get from URl search
         const urlSearch = new URLSearchParams(req.nextUrl.search);
-        const qr_code = urlSearch.get("markers_count");
-        if (!qr_code) {
+        const qrCode = urlSearch.get("qr_code");
+        const lobbyCode = urlSearch.get("lobby_code");
+        if (!qrCode) {
             return NextResponse.json(
-                { error: "Markers count missing" },
+                { error: "QR code is missing" },
+                { status: 400 }
+            );
+        }
+        if (!lobbyCode) {
+            return NextResponse.json(
+                { error: "Lobby code is missing" },
                 { status: 400 }
             );
         }
 
-        const huntId = session.user.huntId;
-        const teamIndex = session.user.teamIndex;
-
-        const hunt: Hunt | null = await HuntModel.findById(huntId);
+        const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: "started" });
         if (!hunt) {
             return NextResponse.json(
                 { error: "Hunt not found" },
@@ -31,7 +35,8 @@ export async function GET(req: NextRequest) {
             );
         }
 
-        const team = hunt.teams[teamIndex];
+        const guestId = await session.user.id;
+        const team = hunt.teams.find((team) => team.guests.find((guest) => guest.id === guestId));
         if (!team) {
             return NextResponse.json(
                 { error: "Team not found" },
@@ -39,9 +44,8 @@ export async function GET(req: NextRequest) {
             );
         }
 
-        const attending_code = hunt.markers[team.hints_order[team.current_hint_index]].id;
-
-        return NextResponse.json({isCorrect: attending_code === qr_code}, { status: 201 });
+        const attendingCode = hunt.markers[team.hints_order[team.current_hint_index]].id;
+        return NextResponse.json({isCorrect: attendingCode === qrCode}, { status: 201 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(

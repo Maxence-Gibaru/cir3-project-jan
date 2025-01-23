@@ -49,12 +49,13 @@ const Map = ({ markers, onMarkerAdd, onMarkerRemove }) => {
           >
             <Popup>
               <div className="p-2">
-                <p className="mb-2">{marker.text}</p>
+                <h2>Indice {index}</h2>
+                <p className="text-black mb-2">{marker.hint}</p>
                 <Button 
-                  color="danger" 
+                  
                   size="sm" 
                   onPress={() => onMarkerRemove(index)}
-                  className="w-full"
+                  className="w-full bg-red"
                 >
                   Supprimer
                 </Button>
