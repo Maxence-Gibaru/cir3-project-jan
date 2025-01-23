@@ -28,7 +28,7 @@ export default function Page() {
 
     const ckeck_start = async () => {
 
-        await fetchApi("/api/guest/check_is_started", {
+        await fetchApi("guest/check_is_started", {
             method: "GET",
         }).then((data) => {
 
