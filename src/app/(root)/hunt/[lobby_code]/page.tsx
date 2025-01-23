@@ -7,6 +7,18 @@ import WinScreen from "@/components/layout/hunt/WinScreen";
 import { fetchApi } from "@/lib/api";
 import { useEffect, useState } from "react";
 
+interface HuntData {
+    id: string;
+    name: string;
+    teams: string[][];
+    stories: string[];
+    markers: { lat: number; lng: number }[]; // Corrected type for markers
+    hintsRevealed: string[];
+    max_guests: number;
+    map: { lat: number; lng: number; zoom: number }; // Corrected type for map
+}
+
+
 export default function HuntPage({
     params
 }: Readonly<{
@@ -16,7 +28,8 @@ export default function HuntPage({
 }>) {
     const [lobbyCode, setLobbyCode] = useState<string | null>(null);
     const [pageStatus, setPageStatus] = useState("loading");
-    const [huntData, setHuntData] = useState<unknown>(null);
+    const [huntData, setHuntData] = useState<HuntData | null>(null);
+
 
     useEffect(() => {
         params.then((resolvedParams) => {
@@ -95,7 +108,7 @@ export default function HuntPage({
                 stories={huntData.stories}
                 hintsRevealed={huntData.hintsRevealed}
                 markers={huntData.markers}
-                lobbyCode={lobbyCode}
+                lobbyCode={lobbyCode || ""}
             />;
 
         case "win":

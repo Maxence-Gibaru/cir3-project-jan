@@ -13,6 +13,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Input } from "@heroui/react"
 import { useEffect, useState } from "react";
+import HuntStory from "@/components/ui/HuntStory";
 
 const icon = L.icon({
   iconUrl: '/marker-icon.png',
@@ -49,7 +50,8 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
   const { isOpen: isWelcomeOpen, onOpen: onWelcomeOpen, onOpenChange: onWelcomeOpenChange } = useDisclosure();
   const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onOpenChange: onDetailsOpenChange } = useDisclosure();
   const { isOpen: isscanQcode, onOpen: onscanQcode, onOpenChange: scanQcodeChange } = useDisclosure();
-  const [qrCode, setQrCode] = useState("")
+  const { isOpen: isStoryOpen, onOpen: onStoryOpen, onOpenChange: onStoryOpenChange } = useDisclosure();
+  /* const [qrCode, setQrCode] = useState("") */
 
   /* console.log("rerender"); */
 
@@ -104,7 +106,7 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
             <Button className="text-black bg-white rounded-md" variant="bordered">Menu</Button>
           </DropdownTrigger>
           <DropdownMenu className="text-black bg-white rounded-md" aria-label="Example with disabled actions" disabledKeys={["edit", "delete"]}>
-            <DropdownItem key="new"><Link href="/ressources">Histoire</Link></DropdownItem>
+            <DropdownItem key="new" onPress={onStoryOpen}>Histoire</DropdownItem>
             <DropdownItem key="copy"><Link href="/playerrules">Régles</Link></DropdownItem>
             <DropdownItem key="HomePage" onPress={() => {
               signOut()
@@ -162,6 +164,9 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
           hintsRevealed={hintsRevealed}
           stories={stories}
         />
+
+        <HuntStory isOpen={isStoryOpen} onOpenChange={onStoryOpenChange} hintsRevealed={hintsRevealed} selectedMarker={selectedMarker} stories={stories} />
+
         <Qrcode isOpen={isscanQcode} onOpenChange={scanQcodeChange} lobbyCode={lobbyCode} />
 
      
