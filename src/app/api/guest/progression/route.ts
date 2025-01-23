@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
         const lobbyCode = urlSearch.get("lobby_code");
 
         let progression = "not_started";
-        let data: data = {};
+        let data = {};
         if (lobbyCode) {
             const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: { $ne: "closed" } });
             if (hunt) {
