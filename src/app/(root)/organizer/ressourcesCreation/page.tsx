@@ -83,7 +83,7 @@ export default function HomePage() {
             body: gameData,
         }).then(() => {
             alert("Chasse au trésor créée avec succès !");
-            router.push('/create');
+            router.push('/organizer/event');
         }
         ).catch((errorMessage: string) => {
             setError(errorMessage);
