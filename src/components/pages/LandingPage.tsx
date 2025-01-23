@@ -44,7 +44,7 @@ export default function LandingPage() {
         const response = await fetchApi("guest/join_lobby", { method: "GET", params: { lobby_code: lobbyCode } });
 
         if (response) {
-            if (response.huntInit) router.push(`/hunt/${lobbyCode}`);
+            if (response.isValid) router.push(`/hunt/${lobbyCode}`);
 
             // TODO : Gérer les erreurs
         }

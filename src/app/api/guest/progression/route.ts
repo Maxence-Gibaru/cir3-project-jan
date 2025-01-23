@@ -15,16 +15,16 @@ export async function GET(req: NextRequest) {
         // Get from URl search
         const urlSearch = new URLSearchParams(req.nextUrl.search);
         const lobbyCode = urlSearch.get("lobby_code");
-        
+
         let progression = "not_started";
         let data: any = {};
         if (lobbyCode) {
-            const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: { $ne: "closed" } });            
+            const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: { $ne: "closed" } });
             if (hunt) {
                 // Check if the user is in a team
                 const guestId = session.user.id;
                 const team = hunt.teams.find((team) => team.guests.find((guest) => guest.id === guestId));
-                
+
                 if (hunt.status === "opened") {
                     if (!team) {
                         // Page de lobby
@@ -55,7 +55,9 @@ export async function GET(req: NextRequest) {
             }
         }
 
-       return NextResponse.json({ progression, data }, { status: 200 });
+        console.log("data : ", data);
+
+        return NextResponse.json({ progression, data }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(
@@ -81,11 +83,12 @@ function getInitData(hunt: Hunt): HuntInit {
 function getHuntingData(hunt: Hunt, team: Team) {
     const data: any = getInitData(hunt);
     data.first_hint = hunt.markers[0].hint;
-    
+
     const markers = [];
     const current_hint_index = team.current_hint_index;
     for (let i = 0; i <= current_hint_index; i++) {
         const marker = hunt.markers[team.hints_order[i]];
+        /* console.log("marker :", team) */
         const position = marker.position;
         const hint = (current_hint_index === hunt.markers.length - 1)
             ? hunt.markers[0].hint
@@ -97,7 +100,7 @@ function getHuntingData(hunt: Hunt, team: Team) {
             story: hunt.stories[i + 1] // Décalé d'un car il y a l'intro
         });
     }
-    
+
     data.markers = markers;
     return data;
 }

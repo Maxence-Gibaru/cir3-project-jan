@@ -26,27 +26,27 @@ export default function WaitStart({ huntId, name, introduction_story, goNext }: 
         return () => clearInterval(interval);
     }, []);
 
-    const ckeck_start = async () => {
-        await fetchApi("guest/check_is_started", {
-            method: "GET",
-            params: { id: huntId },
-        }).then((data) => {
-            if (data.isStarted) {
-                goNext(data.firstHint);
+    /*     const ckeck_start = async () => {
+            await fetchApi("guest/check_is_started", {
+                method: "GET",
+                params: { id: huntId },
+            }).then((data) => {
+                if (data.isStarted) {
+                    goNext(data.firstHint);
+                }
             }
-        }
-        ).catch((errorMessage: string) => {
-            setError(errorMessage);
-        });
-    };
-
-    useEffect(() => {
-        const intervalStart = setInterval(() => {
-            ckeck_start();
-        }, 5000);
-
-        return () => clearInterval(intervalStart);
-    }, []);
+            ).catch((errorMessage: string) => {
+                setError(errorMessage);
+            });
+        };
+     */
+    /*   useEffect(() => {
+          const intervalStart = setInterval(() => {
+              ckeck_start();
+          }, 5000);
+  
+          return () => clearInterval(intervalStart);
+      }, []); */
 
     return (
         <div className="flex flex-col bg-greyBg h-screen">
