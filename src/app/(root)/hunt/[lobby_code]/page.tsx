@@ -72,7 +72,7 @@ export default function HuntPage({
             return <SelectTeam
                 huntId={huntData.id}
                 name={huntData.name}
-                maxGuests={huntData.max_guests}
+                maxGuests={huntData.maxGuests}
                 teams={huntData.teams}
                 goNext={() =>
                     fetchProgression(lobbyCode)
