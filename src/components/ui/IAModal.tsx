@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import { useState } from "react";
 
-export default function IAModalApp({ chapters, onIaRespons}) {
+export default function IAModalApp({ chapters, onIaResponse}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [userPrompt, setUserPrompt] = useState(""); // Stocke le prompt
   const [targetSection, setTargetSection] = useState("title"); // Section ciblée
