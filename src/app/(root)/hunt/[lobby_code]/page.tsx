@@ -16,7 +16,7 @@ export default function HuntPage({
 }>) {
     const [lobbyCode, setLobbyCode] = useState<string | null>(null);
     const [pageStatus, setPageStatus] = useState("loading");
-    const [huntData, setHuntData] = useState<any>(null);
+    const [huntData, setHuntData] = useState<unknown>(null);
 
     useEffect(() => {
         params.then((resolvedParams) => {
@@ -52,7 +52,7 @@ export default function HuntPage({
 
             return () => clearInterval(interval);
         }
-    }, [lobbyCode])
+    }, [lobbyCode, fetchProgression])
 
 
     useEffect(() => {

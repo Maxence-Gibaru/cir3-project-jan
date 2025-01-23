@@ -13,14 +13,11 @@ import {
     Button
 } from "@nextui-org/react";
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
-import { useRouter } from "next/navigation"
-import Menu from "./menu/Menu";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 
 export default function NavbarHeader({ status, onOpen }) {
-    const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
@@ -29,7 +26,7 @@ export default function NavbarHeader({ status, onOpen }) {
         } else {
             setIsAuthenticated(false)
         }
-    })
+    }, [status])
 
     const { data: session } = useSession();
 

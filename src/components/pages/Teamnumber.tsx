@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import { Dispatch, SetStateAction } from "react";
 import { Button, Input } from "@heroui/react";
 interface TeamnumberProps {
@@ -20,7 +18,7 @@ export default function Teamnumber({Numberindice,numTeams, setNumTeams,playersPe
     <div className="flex flex-col items-center justify-center min-h-screen bg-greyBg px-8 py-10">
 
   <h1 className="text-gray-800 text-4xl font-bold text-center mb-10">
-    Sélection du nombre d'équipes
+    Sélection du nombre d&apos;équipes
   </h1>
 
   <div> 
@@ -30,7 +28,7 @@ export default function Teamnumber({Numberindice,numTeams, setNumTeams,playersPe
     <label
       htmlFor="playersPerTeam" className="text-gray-700 text-xl font-semibold flex justify-center"
     >
-      Nombre d'équipes :
+      Nombre d&apos;équipes :
     </label>
     <Input
       id="numTeams"

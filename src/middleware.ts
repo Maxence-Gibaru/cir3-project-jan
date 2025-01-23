@@ -1,7 +1,6 @@
-import { getServerSession } from 'next-auth';
-import type { NextRequest } from 'next/server';
+
 import { NextResponse } from 'next/server';
-import { authOptions } from './lib/authOptions';
+
 import { withAuth } from "next-auth/middleware";
 
 export default withAuth(

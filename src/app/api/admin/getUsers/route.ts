@@ -1,10 +1,10 @@
 export const dynamic = 'force-static'
-import clientPromise from '@/lib/dbConnect'
 
 
-export async function GET(request: Request) {
+
+export async function GET() {
     try {
-        const client = await clientPromise;
+        /* const client = await clientPromise;
         const db = client.db('sample_mflix');
         const collection = db.collection('users');
         const data = await collection.find({}).toArray();
@@ -14,7 +14,7 @@ export async function GET(request: Request) {
             headers: { 'Content-Type': 'application/json' },
         });
 
-
+ */
     } catch (error) {
         console.error('Erreur dans la récupération des données en bdd :', error);
         return new Response(JSON.stringify({ error: 'Erreur lors de la récupération des données' }), {
