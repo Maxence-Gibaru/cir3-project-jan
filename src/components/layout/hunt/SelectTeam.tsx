@@ -1,6 +1,6 @@
 "use client";
 
-import TeamBox from "../team/TeamBox";
+import TeamBox from "@/components/layout/team/TeamBox";
 
 interface SelectTeamData {
     huntId: string;
@@ -22,3 +22,4 @@ export default function SelectTeam({ huntId, name, maxGuests, teams, goNext }: S
         </div>
     );
 }
+
