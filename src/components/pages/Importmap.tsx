@@ -93,11 +93,17 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
 
     return (
       <div className="flex flex-col bg-greyBg min-h-screen">
-          <div className="absolute top-4 right-4 z-20 bg-primary text-white rounded-lg p-4 shadow-md">
-            <h3 className="text-lg font-bold text-center">
-              Indices sur la carte : {markers.length}/{MAX_MARKERS}
-            </h3>
-          </div>
+         {markers.length == 0 && (
+              <h1 className='absolute z-20 w-full py-4 bg-white text-2xl text-center'>Cliquez sur la map pour indiquer la position des différents lieux de la Chasse au trésor</h1>
+            )}
+            {markers.length > 0 && (
+            <div className="absolute top-4 right-4 z-20 bg-primary text-white rounded-lg p-4 shadow-md">
+                <h3 className="text-lg font-bold text-center">
+                Indices sur la carte : {markers.length}/{MAX_MARKERS}
+                </h3>
+           
+            </div>
+           )}
             <div className="z-10">
                 <Map className="z-10 h-full w-full bg-gray-100"
                     markers={markers}
