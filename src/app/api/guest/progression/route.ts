@@ -14,12 +14,12 @@ export async function GET(req: NextRequest) {
         await dbConnect();
         // Get from URl search
         const urlSearch = new URLSearchParams(req.nextUrl.search);
-        const lobby_code = urlSearch.get("lobby_code");
+        const lobbyCode = urlSearch.get("lobby_code");
         
         let progression = "not_started";
-        let data = {};
-        if (lobby_code) {
-            const hunt = await HuntModel.findOne({ lobby_code });
+        let data: any = {};
+        if (lobbyCode) {
+            const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: { $ne: "closed" } });            
             if (hunt) {
                 // Check if the user is in a team
                 const guestId = session.user.id;
@@ -27,14 +27,30 @@ export async function GET(req: NextRequest) {
                 
                 if (hunt.status === "opened") {
                     if (!team) {
+                        // Page de lobby
                         progression = "selection";
                     } else {
+                        // Page d'attente de la formation des equipe
                         progression = "waiting";
                     }
                     data = getInitData(hunt);
                 } else if (hunt.status === "started" && team) {
-                    progression = "hunting";
-                    data = getHuntingData(hunt, team as Team);
+                    // Chasse en cours
+                    if (!team.win_at) {
+                        progression = "hunting";
+                        data = getHuntingData(hunt, team as Team);
+                    } else {
+                        // Chasse gagnée
+                        progression = "win";
+                        data = getInitData(hunt);
+                        data.position = hunt.markers[0].position
+                        data.win_at = team.win_at;
+                    }
+                } else if (hunt.status === "ended" && team) {
+                    // Chasse perdue
+                    progression = "lose";
+                    data = getInitData(hunt);
+                    data.position = hunt.markers[0].position
                 }
             }
         }

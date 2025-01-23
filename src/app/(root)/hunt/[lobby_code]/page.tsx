@@ -3,6 +3,7 @@
 import HuntMap from "@/components/layout/hunt/HuntMap";
 import SelectTeam from "@/components/layout/hunt/SelectTeam";
 import WaitStart from "@/components/layout/hunt/WaitStart";
+import WinScreen from "@/components/layout/hunt/WinScreen";
 import { HuntInit } from "@/definitions";
 import { fetchApi } from "@/lib/api";
 import { useEffect, useState } from "react";
@@ -16,8 +17,8 @@ export default function HuntPage({
 }>) {
     const [lobbyCode, setLobbyCode] = useState<string | null>(null);
     const [pageStatus, setPageStatus] = useState("loading");
-    const [huntInit, setHuntInit] = useState<HuntInit | null>(null);
-    const [first_hint, setFirstHint] = useState<string | null>(null);
+    const [huntData, setHuntData] = useState(null);
+
 
     useEffect(() => {
         params.then((resolvedParams) => {
@@ -25,35 +26,23 @@ export default function HuntPage({
         });
     }, [params]);
 
+
+
+    const fetchProgression = async () => {
+        const response = await fetchApi("guest/progression", { method: "GET", params: { lobby_code: lobbyCode } })
+        setPageStatus(response.progression)
+        setHuntData(response.data);
+    }
+
+
     useEffect(() => {
-        if (lobbyCode) {
-            fetchApi("guest/join_lobby", { method: "GET", params: { lobby_code: lobbyCode } })
-                .then((data) => {
-                    if (data) {
-                        setHuntInit(data.huntInit);
-                        setPageStatus("selection");
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                    setPageStatus("error");
-                });
+        fetchProgression()
+    }, [lobbyCode])
 
-            /*
-            fetchApi("guest/progression", { method: "GET", params: { lobby_code: lobbyCode } })
-                .then((data) => {
-                    console.log(data);
-                    setPageStatus(data.progression);
-                })
-                .catch((error) => {
-                    console.error(error);
-                    setPageStatus("error");
-                });
-            */
-        }
-    }, [lobbyCode]);
 
-    if (!huntInit) {
+
+
+    if (!huntData) {
         return <div>Chargement...</div>;
     }
 
@@ -63,32 +52,40 @@ export default function HuntPage({
             return <div>Chargement...</div>;
         case "selection":
             return <SelectTeam
-                huntId={huntInit.id}
-                name={huntInit.name}
-                maxGuests={huntInit.max_guests}
-                teams={huntInit.teams}
-                goNext={() => setPageStatus("waiting")}
+                huntId={huntData.id}
+                name={huntData.name}
+                maxGuests={huntData.max_guests}
+                teams={huntData.teams}
+                goNext={() =>
+                    fetchProgression()
+                }
             />;
+
         case "waiting":
             return <WaitStart
-                huntId={huntInit.id}
-                name={huntInit.name}
-                introduction_story={huntInit.introduction_story}
-                goNext={(firstHint: string) => {
-                    setFirstHint(firstHint);
-                    setPageStatus("hunting")
+                huntId={huntData.id}
+                name={huntData.name}
+                introduction_story={huntData.introduction_story}
+                goNext={() => {
+                    fetchProgression()
+
                 }}
             />;
+
         case "hunting":
+            const first_hint = "coucou";
             if (first_hint) {
                 return <HuntMap
-                    map={huntInit.map}
-                    introduction_story={huntInit.introduction_story}
+                    map={huntData.map}
+                    introduction_story={huntData.introduction_story}
                     first_hint={first_hint}
                 />;
             }
 
+        case "win":
+            return <WinScreen team_time={null} treasure_position={null} team={null} />;
+
         default:
-            return <div>Erreur</div>;
+            return <div className="h-screen flex flex-col justify-center items-center">Erreur</div>;
     }
 }
