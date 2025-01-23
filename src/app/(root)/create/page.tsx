@@ -4,8 +4,8 @@ import HuntModal from "@/components/ui/HuntModal";
 import { fetchApi } from "@/lib/api";
 import { Hunt } from "@/models/Hunt";
 import { Button } from "@heroui/react";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 
 function HuntButtons() {
@@ -17,7 +17,7 @@ function HuntButtons() {
 
   useEffect(() => {
     const createHunt = async () => {
-      await fetchApi("organizer/hunt",{method: "GET"})
+      await fetchApi("organizer/hunt", {method: "GET"})
         .then((data) => {setHunts(data);
           console.log(data);
         })
