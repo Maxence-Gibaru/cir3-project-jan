@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
 
                         const markerHint = (current_hint_index === hunt.markers.length - 1)
                             ? hunt.markers[0].hint
-                            : hunt.markers[team.hints_order[i + 1]].hint;
+                            : hunt.markers[team.hints_order[i ]].hint;
                         data.hintsRevealed.push(markerHint);
                     }
 

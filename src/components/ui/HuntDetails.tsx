@@ -7,11 +7,11 @@ import { useEffect } from "react";
 
 export default function HuntDetails({ isOpen, onOpenChange, hintsRevealed, selectedMarker }) {
 
-    useEffect(() => {
+/*     useEffect(() => {
         console.log(selectedMarker);
-    }, [selectedMarker])
+    }, [selectedMarker]) */
 
-    console.log("selectedMarker", hintsRevealed)
+    /* console.log("selectedMarker", hintsRevealed) */
     return (
         <>
             <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
