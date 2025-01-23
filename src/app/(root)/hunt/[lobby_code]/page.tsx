@@ -84,10 +84,9 @@ export default function HuntPage({
 
             return <HuntMap
                 map={huntData.map}
-                introduction_story={huntData.introduction_story}
-                firstHint={huntData.first_hint}
+                stories={huntData.stories}
+                hintsRevealed={huntData.hintsRevealed}
                 markers={huntData.markers}
-
             />;
 
 
