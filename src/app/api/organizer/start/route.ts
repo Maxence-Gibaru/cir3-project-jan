@@ -26,15 +26,14 @@ export async function PUT(req: NextRequest) {
         }
 
         // Get hunt by Id and check if status is opened
-        const hunt = await HuntModel.findOne({ _id: result.huntId, status: 'opened' });
+        const guestId = session.user.id;
+        const hunt = await HuntModel.findOne({ _id: result.huntId, organizer_id: guestId, status: 'opened' });
         if (!hunt) {
             return NextResponse.json(
                 { error: "Aucune chasse au trésor trouvée avec cet identifiant." },
                 { status: 404 }
             );
         }
-
-        console.log("hunttr", hunt, hunt.teams);
 
         // Count for each team if team.guest is different empty
         const teamWithMember =  hunt.teams.filter(team => team.guests.length > 0);
@@ -60,12 +59,13 @@ export async function PUT(req: NextRequest) {
         });
 
         // Find by id and update the started_at property and status at started
-        await HuntModel.findByIdAndUpdate(result.huntId, {
+        const newHunt = await HuntModel.findByIdAndUpdate(result.huntId, {
             status: "started",
             started_at: new Date(),
         });
+        
 
-        return NextResponse.json({ hunt }, { status: 200 });
+        return NextResponse.json({ hunt: newHunt }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(
