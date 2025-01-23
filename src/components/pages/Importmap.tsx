@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import dynamic from "next/dynamic"
 import { Dispatch, SetStateAction } from "react";
 import { Input, Button, Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from '@nextui-org/react'
+import IAModalHintApp from '../ui/IAHintModal';
 // Import dynamique du composant Map pour éviter les erreurs SSR
 const Map = dynamic(() => import("@/components/ui/Map"), {
     ssr: false,
@@ -63,6 +64,10 @@ export default function Importmap({ markers, setMarkers, onNext }: ImportmapPage
         setMarkers(prev => prev.filter((_, i) => i !== index))
     }
 
+    const handleIaResponse = ( response) => {
+        setMarkerText(response);
+      };
+
     return (
       <div className="flex flex-col gap-6 p-6 bg-greyBg min-h-screen">
         <div className="flex justify-center items-center">
@@ -106,6 +111,7 @@ export default function Importmap({ markers, setMarkers, onNext }: ImportmapPage
                                     <Button color="danger" variant="light" onPress={onClose}>
                                         Annuler
                                     </Button>
+                                    <IAModalHintApp onIaResponse={handleIaResponse}/>
                                     <Button color="primary" onPress={handleAddMarker}>
                                         Ajouter
                                     </Button>
