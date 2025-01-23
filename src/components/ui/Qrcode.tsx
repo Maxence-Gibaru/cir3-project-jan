@@ -22,11 +22,13 @@ function  Qrcode({ isOpen, onOpenChange,lobbyCode}: QrcodeProps) {
         method: 'GET', 
         params: { lobby_code : lobbyCode, qr_code : decodedText }, 
       });
+
+      console.log("response", response)
   
       // Gestion de la réponse
-      if (response === true) {
-        onClose(); 
-      } else if (response === false) {
+      if (response.isCorrect === true) {
+        onOpenChange()
+      } else if (response.isCorrect === false) {
         alert("Mauvais QR-code");
       }
     } catch (error) {

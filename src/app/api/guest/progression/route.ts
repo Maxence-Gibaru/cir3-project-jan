@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
 
                         const markerHint = (current_hint_index === hunt.markers.length - 1)
                             ? hunt.markers[0].hint
-                            : hunt.markers[team.hints_order[i + 1]].hint;
+                            : hunt.markers[team.hints_order[i ]].hint;
                         data.hintsRevealed.push(markerHint);
                     }
 
@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
             }
         }
 
-        console.log("data :", data)
+        /* console.log("data :", data) */
 
         return NextResponse.json({ progression, data }, { status: 200 });
     } catch (error) {
