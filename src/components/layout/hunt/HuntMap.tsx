@@ -2,6 +2,7 @@
 
 import HuntDetails from "@/components/ui/HuntDetails";
 import HuntWelcome from "@/components/ui/HuntWelcome";
+import Qrcode from "@/components/ui/Qrcode";
 import { Position } from "@/definitions";
 import { fetchApi } from "@/lib/api";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/react";
@@ -41,11 +42,13 @@ interface HuntMapData {
   stories: string[];
   hintsRevealed: string[];
   markers: Position[]
+  lobbyCode: string
 }
 
 export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCode }: HuntMapData) {
   const { isOpen: isWelcomeOpen, onOpen: onWelcomeOpen, onOpenChange: onWelcomeOpenChange } = useDisclosure();
   const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onOpenChange: onDetailsOpenChange } = useDisclosure();
+  const { isOpen: isscanQcode, onOpen: onscanQcode, onOpenChange: scanQcodeChange } = useDisclosure();
   const [qrCode, setQrCode] = useState("")
 
   console.log("rerender");
@@ -80,17 +83,18 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
   };
 
 
-  const handleQrCode = async () => {
-    await fetchApi("guest/qr_code", { method: "GET", params: { lobby_code: lobbyCode, qr_code: qrCode } })
-  }
+  // const handleQrCode = async () => {
+  //   await fetchApi("guest/qr_code", { method: "GET", params: { lobby_code: lobbyCode, qr_code: qrCode } })
+  // }
 
 
-  const handleChange = (e: any) => {
-    setQrCode(e.target.value);
-  }
+  // const handleChange = (e: any) => {
+  //   setQrCode(e.target.value);
+  // }
 
 
   return (
+    
     <div className="w-full text-black">
       <div className="absolute z-30 top-4 right-4">
         <Dropdown>
@@ -152,35 +156,27 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
           hintsRevealed={hintsRevealed}
           stories={stories}
         />
+        <Qrcode isOpen={isscanQcode} onOpenChange={scanQcodeChange} lobbyCode={lobbyCode} />
 
-      </section >
+     
       {/* Bouton sticky */}
-      < div className="absolute z-30 bottom-4 right-4" >
-        <Input
-          className="bg-white rounded-full"
-          value={qrCode}
-          onChange={handleChange}
-
-        />
-
-
-        <Button className="bg-white" onPress={handleQrCode}>
-          test
-        </Button>
-        {/*   <Link
-          href="/qr-code"
-          className="bg-white text-vibrantPlum w-16 h-16 flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-gray-200 transition"
+      <div className="absolute z-30 bottom-4 right-4">
+      <Button
+        onPress={onscanQcode}
+        className="bg-white text-vibrantPlum w-16 h-16 flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-gray-200 transition"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 448 512"
+          className="w-6 h-6"
+          fill="black"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            className="w-6 h-6"
-            fill="black"
-          >
-            <path d="M0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 96l0 64 64 0 0-64L64 96zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zm64 16l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zm80 64l-64 0 0 64 64 0 0-64zM256 304c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16l0 96c0 8.8-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16l0 64c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-160zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z" />
-          </svg>
-        </Link> */}
-      </div >
-    </div >
+          <path d="M0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 96l0 64 64 0 0-64L64 96zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zm64 16l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zm80 64l-64 0 0 64 64 0 0-64zM256 304c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16l0 96c0 8.8-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16l0 64c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-160zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z" />
+        </svg>
+      </Button>
+      </div>
+      </section >
+    </div>
+
   );
 }

@@ -71,7 +71,7 @@ export default function RessourcesCreationPage({ chapters, title, setChapters, s
       updateChapter(chapterIndex, response); // Met à jour le chapitre
     }
   };
-
+  
   // Fermer la notification
   const closeNotification = () => {
     setNotification("");
