@@ -5,7 +5,6 @@ import { Hunt, HuntModel, HuntZodSchema } from "@/models/Hunt";
 import { TeamModel } from "@/models/Team";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { Marker } from "react-leaflet";
 import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
@@ -31,11 +30,9 @@ export async function POST(req: NextRequest) {
 
         body.markers.map((marker: Marker) => {
             marker.id = uuidv4().slice(0, 8);
-            /* marker.position = { lat: marker.position.lat, lng: marker.position.lng } */
-            console.log(marker.position)
         });
 
-        /* console.log("body :", body.markers); */
+
 
         const result = getparsedBody(HuntZodSchema, body);
         if (typeof result === "string") {
@@ -45,10 +42,13 @@ export async function POST(req: NextRequest) {
             );
         }
 
-        /* result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject()); */
-
-        result.teams = Array.from({ length: 5 }, () => new TeamModel().toObject());
-        console.log("result : ", result);
+        if (!result.max_teams) {
+            return NextResponse.json(
+                { error: "max_teams is required" },
+                { status: 400 }
+            );
+        }
+        result.teams = Array.from({ length: result.max_teams }, () => new TeamModel().toObject());
 
         const newHunt: Hunt = await HuntModel.create(result);
         return NextResponse.json(newHunt, { status: 201 });

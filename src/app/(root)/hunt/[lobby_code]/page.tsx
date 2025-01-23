@@ -3,7 +3,7 @@
 import HuntMap from "@/components/layout/hunt/HuntMap";
 import SelectTeam from "@/components/layout/hunt/SelectTeam";
 import WaitStart from "@/components/layout/hunt/WaitStart";
-import { HuntInit } from "@/definitions";
+import WinScreen from "@/components/layout/hunt/WinScreen";
 import { fetchApi } from "@/lib/api";
 import { useEffect, useState } from "react";
 
@@ -16,8 +16,7 @@ export default function HuntPage({
 }>) {
     const [lobbyCode, setLobbyCode] = useState<string | null>(null);
     const [pageStatus, setPageStatus] = useState("loading");
-    const [huntInit, setHuntInit] = useState<HuntInit | null>(null);
-    const [first_hint, setFirstHint] = useState<string | null>(null);
+    const [huntData, setHuntData] = useState<any>(null);
 
     useEffect(() => {
         params.then((resolvedParams) => {
@@ -25,35 +24,43 @@ export default function HuntPage({
         });
     }, [params]);
 
+    const fetchProgression = async (lobby_code: string | null) => {
+        if (!lobby_code) return;
+        const response = await fetchApi("guest/progression", {
+            method: "GET", params: {
+                lobby_code
+            }
+        });
+        // Vérifier si le contenu des données a changé avant de mettre à jour
+        if (JSON.stringify(response.data) !== JSON.stringify(huntData)) {
+            console.log("Ancienne donnée : ", huntData)
+            console.log("Données mises à jour :", response.data);
+            setHuntData(response.data); // Met à jour uniquement si les données sont différentes
+        }
+
+        // Met à jour le statut de la page indépendamment de huntData
+        if (response.progression !== pageStatus) {
+            setPageStatus(response.progression);
+        }
+    }
+
     useEffect(() => {
         if (lobbyCode) {
-            fetchApi("guest/join_lobby", { method: "GET", params: { lobby_code: lobbyCode } })
-                .then((data) => {
-                    if (data) {
-                        setHuntInit(data.huntInit);
-                        setPageStatus("selection");
-                    }
-                })
-                .catch((error) => {
-                    console.error(error);
-                    setPageStatus("error");
-                });
+            const interval = setInterval(() => {
+                fetchProgression(lobbyCode)
+            }, 2000)
 
-            /*
-            fetchApi("guest/progression", { method: "GET", params: { lobby_code: lobbyCode } })
-                .then((data) => {
-                    console.log(data);
-                    setPageStatus(data.progression);
-                })
-                .catch((error) => {
-                    console.error(error);
-                    setPageStatus("error");
-                });
-            */
+            return () => clearInterval(interval);
         }
-    }, [lobbyCode]);
+    }, [lobbyCode])
 
-    if (!huntInit) {
+
+    useEffect(() => {
+        console.log("huntData a été mis à jour :", huntData);
+    }, [huntData]);
+
+
+    if (!huntData) {
         return <div>Chargement...</div>;
     }
 
@@ -63,32 +70,39 @@ export default function HuntPage({
             return <div>Chargement...</div>;
         case "selection":
             return <SelectTeam
-                huntId={huntInit.id}
-                name={huntInit.name}
-                maxGuests={huntInit.max_guests}
-                teams={huntInit.teams}
-                goNext={() => setPageStatus("waiting")}
+                huntId={huntData.id}
+                name={huntData.name}
+                maxGuests={huntData.max_guests}
+                teams={huntData.teams}
+                goNext={() =>
+                    fetchProgression(lobbyCode)
+                }
             />;
+
         case "waiting":
             return <WaitStart
-                huntId={huntInit.id}
-                name={huntInit.name}
-                introduction_story={huntInit.introduction_story}
-                goNext={(firstHint: string) => {
-                    setFirstHint(firstHint);
-                    setPageStatus("hunting")
+                huntId={huntData.id}
+                name={huntData.name}
+                introduction_story={huntData.stories[0]}
+                goNext={() => {
+                    fetchProgression(lobbyCode)
                 }}
             />;
+
         case "hunting":
-            if (first_hint) {
-                return <HuntMap
-                    map={huntInit.map}
-                    introduction_story={huntInit.introduction_story}
-                    first_hint={first_hint}
-                />;
-            }
+            return <HuntMap
+                map={huntData.map}
+                stories={huntData.stories}
+                hintsRevealed={huntData.hintsRevealed}
+                markers={huntData.markers}
+                lobbyCode={lobbyCode}
+            />;
+
+        case "win":
+        case "lose":
+            return <WinScreen team_time={null} treasure_position={null} team={null} />;
 
         default:
-            return <div>Erreur</div>;
+            return <div className="h-screen flex flex-col justify-center items-center">Erreur</div>;
     }
 }

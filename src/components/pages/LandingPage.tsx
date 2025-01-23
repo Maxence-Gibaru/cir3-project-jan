@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import Footer from "../layout/Footer";
 import NavbarHeader from "../layout/NavbarHeader";
 import LoginModal from "../ui/LoginModal";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/react";
+import Link from "next/link";
 
 export default function LandingPage() {
     const [lobbyCode, setLobbyCode] = useState("");
@@ -44,7 +46,7 @@ export default function LandingPage() {
         const response = await fetchApi("guest/join_lobby", { method: "GET", params: { lobby_code: lobbyCode } });
 
         if (response) {
-            if (response.huntInit) router.push(`/hunt/${lobbyCode}`);
+            if (response.isValid) router.push(`/hunt/${lobbyCode}`);
 
             // TODO : Gérer les erreurs
         }
@@ -57,7 +59,7 @@ export default function LandingPage() {
                 <div className="relative h-screen  flex flex-col bg-greyBg ">
                     {/* Barre supérieure */}
                     <div className="h-[10vh]">
-                        <NavbarHeader status={status} />
+                        <NavbarHeader onOpen={onOpen} status={status} />
                     </div>
 
                     {/* Contenu principal */}

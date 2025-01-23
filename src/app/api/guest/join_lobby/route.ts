@@ -1,4 +1,3 @@
-import { HuntInit } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { HuntModel } from "@/models/Hunt";
@@ -31,19 +30,7 @@ export async function GET(req: NextRequest) {
             );
         }
 
-        const teams: string[][] = hunt.teams.map((team) => team.guests.map((guest) => guest.name));
-
-        const huntInit: HuntInit = {
-            id: hunt._id,
-            name: hunt.name,
-            teams,
-            introduction_story: hunt.stories[0],
-            max_guests: hunt.max_guests,
-            max_teams: hunt.max_teams,
-            map: hunt.map,
-        };
-
-        return NextResponse.json({ huntInit }, { status: 200 });
+        return NextResponse.json({ isValid: true }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(

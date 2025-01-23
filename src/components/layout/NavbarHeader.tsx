@@ -19,7 +19,7 @@ import Menu from "./menu/Menu";
 import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 
-export default function NavbarHeader({ status }) {
+export default function NavbarHeader({ status, onOpen }) {
     const router = useRouter();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -109,7 +109,7 @@ export default function NavbarHeader({ status }) {
                                 </p>
                             </DropdownItem>
                             <DropdownItem key="divider" />
-                            <DropdownItem key="settings">
+                            {/*    <DropdownItem key="settings">
                                 <Link
                                     href={{
                                         pathname: `/profile`,
@@ -118,7 +118,22 @@ export default function NavbarHeader({ status }) {
                                 >
                                     My Profile
                                 </Link>
-                            </DropdownItem>
+                            </DropdownItem> */}
+                            {session?.user?.role === "organizer" ?
+                                (
+                                    <>
+                                        <DropdownItem key="settings">
+                                            <Link
+                                                href={{
+                                                    pathname: `/organizer/events`,
+
+                                                }}
+                                            >
+                                                Consulter mes évènements
+                                            </Link>
+                                        </DropdownItem>
+                                    </>
+                                ) : (<></>)}
 
                             {/* <DropdownItem key="team_settings">My Settings</DropdownItem>
               <DropdownItem key="configurations">
@@ -138,7 +153,7 @@ export default function NavbarHeader({ status }) {
 
                 ) : (
                     <Button onPress={() => {
-                        router.push("/sign-in");
+                        onOpen()
                     }}
                         className="text-gray-700 font-medium bg-customPurple400 font-poppins border border-customPurple400 px-4 py-2 rounded-xl ">
                         Connexion

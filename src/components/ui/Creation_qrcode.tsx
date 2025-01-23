@@ -3,16 +3,31 @@
 import React from 'react';
 import { jsPDF } from 'jspdf';
 import QRCode from 'qrcode';
+import { Hunt } from '@/models/Hunt';
 
 const mockData = {
   " 1": "dadzaz",
   " 2": "azsdazdad"
 };
-
-export default function creation_qrcode() {
+interface qr_codeProps {
+  hunt: Hunt;
+}
+export default function creation_qrcode( {hunt}:qr_codeProps) {
+  const [index, setIndex] = React.useState(1);
   const generatePDF = async () => {
     const doc = new jsPDF();
-    const indices = Object.entries(mockData);
+    const newMockData = hunt.markers.reduce((acc, marker, index) => {
+      acc[index + 1] = marker.id;
+      return acc;
+    }, {});
+    
+    // Résultat potentiel :
+    // {
+    //   "1": "ecdfd631", 
+    //   "2": "da6fcfbe"
+    // }
+    console.log(newMockData);
+    const indices = Object.entries(newMockData);
     
     for (let i = 0; i < indices.length; i++) {
       const [key, value] = indices[i];

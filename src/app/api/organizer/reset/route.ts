@@ -26,8 +26,8 @@ export async function PUT(req: NextRequest) {
         }
         
         const guestId = session.user.id;
-        const hunt = await HuntModel.findOneAndUpdate({ _id: result.huntId, organizer_id: guestId, status: 'closed' }, {
-            status: "opened",
+        const hunt = await HuntModel.findOneAndUpdate({ _id: result.huntId, organizer_id: guestId, status: 'ended' }, {
+            status: "closed",
         });
         if (!hunt) {
             return NextResponse.json(
@@ -35,9 +35,8 @@ export async function PUT(req: NextRequest) {
                 { status: 404 }
             );
         }
-        hunt.status = "opened";
 
-        return NextResponse.json({ hunt }, { status: 200 });
+        return NextResponse.json({ isValid: true }, { status: 200 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(

@@ -3,22 +3,30 @@
 import { Hunt } from "@/models/Hunt";
 import { Button } from "@heroui/react";
 import { fetchApi } from "@/lib/api";
-import { useRouter } from "next/navigation";
 import clsx from 'clsx';
-export default function HuntModal({ isOpen, hunt, onClose } : { isOpen: boolean, hunt: Hunt | null, onClose: () => void }) {
+
+
+export default function HuntModal({ isOpen, hunt, setHunt, onNext, onClose }: { isOpen: boolean, hunt: Hunt | null, onClose: () => void }) {
   if (!isOpen || !hunt) return null; // Ne pas afficher si le modal est fermé ou aucun événement n'est sélectionné
-  const router = useRouter();
+
   const start_game = async () => {
-        await fetchApi("organizer/open", {
-          method: "PUT",
-          body: { huntId: hunt._id },
-        }).then(() =>{
-         console.log("good_open");
-         router.push("/dashboard")}
-      ).catch((err) => console.error(err));
-      }
-  const go_to_dashboard = () => {
-    router.push("/dashboard");
+
+    await fetchApi("organizer/open", {
+      method: "PUT",
+      body: { huntId: hunt._id },
+    }).then((data) => {
+      console.log("good_open");
+      setHunt(data.hunt); // Crée une copie pour déclencher un re-render
+      onNext();
+    }
+    ).catch((err) => console.error(err));
+  }
+  const dashboard_game = () => {
+    setHunt(hunt); // Crée une copie pour déclencher un re-render
+    if (hunt.status === 'started') {
+
+    }
+    onNext();
   }
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center z-50">
@@ -28,18 +36,18 @@ export default function HuntModal({ isOpen, hunt, onClose } : { isOpen: boolean,
         </h2>
         <div className="flex justify-between">
           {/* Bouton Lancer */}
-          <Button 
-          onPress={hunt.status === 'closed' ? start_game : go_to_dashboard}
-          className={clsx(
-            "px-4 py-2 rounded bg-green-500 hover:bg-green-600 text-white",
-          )}
+          <Button
+            onPress={hunt.status === 'closed' ? start_game : dashboard_game}
+            className={clsx(
+              "px-4 py-2 rounded bg-green hover:bg-gray text-white",
+            )}
           >
-          {hunt.status === 'closed' ? 'Lancer' : 'Dashboard'}
+            {hunt.status === 'closed' ? 'Ouvrir' : 'Dashboard'}
           </Button>
 
           {/* Bouton Annuler */}
           <button
-            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            className="bg-red text-white px-4 py-2 rounded hover:bg-red"
             onClick={onClose}
           >
             Annuler
