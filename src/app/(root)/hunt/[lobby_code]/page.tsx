@@ -95,6 +95,7 @@ export default function HuntPage({
                 stories={huntData.stories}
                 hintsRevealed={huntData.hintsRevealed}
                 markers={huntData.markers}
+                lobbyCode={lobbyCode}
             />;
 
         case "win":

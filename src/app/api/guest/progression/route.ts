@@ -39,7 +39,7 @@ export async function GET(req: NextRequest) {
                     for (var i = 0; i <= current_hint_index; i++) {
                         data.stories.push(hunt.stories[i]);
 
-                        const position = (i == 0) ? [] : hunt.markers[team.hints_order[i - 1]].position;
+                        const position = (i == 0) ? {} : hunt.markers[team.hints_order[i - 1]].position;
                         data.markers.push(position);
 
                         const markerHint = (current_hint_index === hunt.markers.length - 1)

@@ -46,7 +46,7 @@ export async function PUT(req: NextRequest) {
 
         // For each team update hints_order
         hunt.teams.forEach((team, index) => {
-            const hints_order = Array.from({ length: hunt.markers.length }, (_, i) => i);
+            const hints_order = Array.from({ length: hunt.markers.length - 1}, (_, i) => i + 1);
             /* team.hints_order = */
             console.log("team", team)
             // Passe de [0, 1, 2] à [1, 2, 0] si index = 1
