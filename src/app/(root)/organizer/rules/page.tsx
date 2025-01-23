@@ -20,7 +20,7 @@ export default function CenteredTextPage() {
       </p>
 
       <Link
-        href="/ressourcesCreation"
+        href="/organizer/ressourcesCreation"
         className="mt-8 px-6 py-3 bg-gray-700 text-white text-lg font-semibold rounded-lg hover:bg-black transition-all duration-200"
       >
         Suivant

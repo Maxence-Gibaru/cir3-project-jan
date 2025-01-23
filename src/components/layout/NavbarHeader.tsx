@@ -125,7 +125,7 @@ export default function NavbarHeader({ status, onOpen }) {
                                         <DropdownItem key="settings">
                                             <Link
                                                 href={{
-                                                    pathname: `/organisateur/events`,
+                                                    pathname: `/organizer/events`,
 
                                                 }}
                                             >
