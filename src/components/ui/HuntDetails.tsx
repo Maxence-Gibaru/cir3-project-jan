@@ -1,15 +1,15 @@
 "use client";
 
-import { Hunt } from "@/models/Hunt";
+
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
-import { fetchApi } from "@/lib/api";
-import clsx from 'clsx';
 import { useEffect } from "react";
 
 
 export default function HuntDetails({ isOpen, onOpenChange, hintsRevealed, selectedMarker }) {
 
-
+    useEffect(() => {
+        console.log(selectedMarker);
+    }, [selectedMarker])
 
     console.log("selectedMarker", hintsRevealed)
     return (

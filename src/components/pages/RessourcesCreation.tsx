@@ -81,12 +81,12 @@ export default function RessourcesCreationPage({ chapters, title, setChapters, s
     <div className="min-h-screen bg-greyBg flex flex-col items-center gap-6 py-8 px-4">
       {/* Titre principal */}
       <h1 className="text-3xl font-bold text-center">
-        Créer l'histoire de la chasse au trésor
+        Créer l&apos;histoire de la chasse au trésor
       </h1>
 
       <div className="w-1/2 max-w-sm flex flex-col items-center">
         <h2 className="text-xl font-semibold mb-2 text-center">
-          Nom de l'histoire :
+          Nom de l&apos;histoire :
         </h2>
         <CodeArea
           value={title}

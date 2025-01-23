@@ -1,10 +1,7 @@
 "use client";
 
-import { Hunt } from "@/models/Hunt";
-import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
-import { fetchApi } from "@/lib/api";
-import clsx from 'clsx';
 
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
 
 export default function HuntWelcome({ isOpen, onOpenChange, hintsRevealed, stories }) {
 
@@ -18,7 +15,7 @@ export default function HuntWelcome({ isOpen, onOpenChange, hintsRevealed, stori
                     {(onClose) => (
                         <>
                             <ModalHeader className="text-xl font-bold">
-                                Bienvenue dans l'aventure
+                                Bienvenue dans l&apos;aventure
                             </ModalHeader>
                             <ModalBody className="text-base">
                                 <p>{stories[0]}</p>
@@ -30,7 +27,7 @@ export default function HuntWelcome({ isOpen, onOpenChange, hintsRevealed, stori
                                     color="primary"
                                     onPress={onClose}
                                 >
-                                    Commencer l'aventure
+                                    Commencer l&apos;aventure
                                 </Button>
                             </ModalFooter>
                         </>)}

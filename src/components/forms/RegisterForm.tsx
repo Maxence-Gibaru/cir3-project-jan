@@ -1,8 +1,8 @@
-import { fetchApi, FetchOptions } from "@/lib/api";
+import { fetchApi } from "@/lib/api";
 import { useSession, signIn } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-export default function RegisterForm({ onClose }) {
+export default function RegisterForm({ onClose } ) {
     const [signupData, setSignupData] = useState({
 
         email: "",
@@ -54,7 +54,7 @@ export default function RegisterForm({ onClose }) {
         fetchSignup();
 
 
-        const result = await signIn("credentials", {
+        await signIn("credentials", {
             redirect: false,
             email: signupData.email,
             password: signupData.password,
@@ -118,7 +118,7 @@ export default function RegisterForm({ onClose }) {
                         type="submit"
                         className="w-full bg-darkBlueBg text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
-                        S'inscrire
+                        S&apos;inscrire
                     </button>
                 </form>
             </div>

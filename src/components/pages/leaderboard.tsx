@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 const TeamProgressContainer = ({ hunt ,trouve, setTrouve}) => {
   useEffect(() => {
     if (hunt && hunt.teams && hunt.markers) {
@@ -18,7 +18,7 @@ const TeamProgressContainer = ({ hunt ,trouve, setTrouve}) => {
       console.log("Progression des équipes:", progress);
       setTrouve(progress);
     }
-    }, [hunt]);
+    }, [hunt, setTrouve]);
 
   return (
     <div className="text-gray-700">

@@ -6,8 +6,8 @@ import Teamnumber from "@/components/pages/Teamnumber";
 import { useState } from "react";
 import { useRouter } from 'next/navigation'
 import { fetchApi } from "@/lib/api";
-import { map } from "zod";
-import { send } from "process";
+/* import { map } from "zod";
+import { send } from "process"; */
 
 export default function HomePage() {
     //Page ressourcesCreation.tsx
