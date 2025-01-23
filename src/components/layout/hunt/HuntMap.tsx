@@ -1,10 +1,13 @@
 "use client";
 
+import HuntDetails from "@/components/ui/HuntDetails";
+import HuntWelcome from "@/components/ui/HuntWelcome";
+import { Position } from "@/definitions";
 import { fetchApi } from "@/lib/api";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/react";
-import L from "leaflet";
+import L, { marker } from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -19,7 +22,6 @@ const icon = L.icon({
   shadowSize: [41, 41]
 })
 
-// Charge les composants de la carte uniquement côté client
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
   { ssr: false }
@@ -35,56 +37,46 @@ const Marker = dynamic(
 
 interface HuntMapData {
   map: { lat: number; lng: number; zoom: number };
-  introduction_story: string;
-  firstHint: string;
-  markers: any
+  stories: string[];
+  hintsRevealed: string[];
+  markers: Position[]
 }
 
-export default function HuntMap({ map, introduction_story, firstHint, markers }: HuntMapData) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isOpenSecondModal,
-    onOpen: onOpenSecondModal,
-    onClose: onCloseSecondModal,
-  } = useDisclosure();
-  const {
-    isOpen: isOpenthirdModal,
-    onOpen: onOpenthirdModal,
-    onClose: onClosethirdModal,
-  } = useDisclosure();
+export default function HuntMap({ map, stories, hintsRevealed, markers }: HuntMapData) {
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  console.log("rerender");
+
+  /* const {
+    isOpen: isOpenSecond,
+    onOpen: onOpenSecond,
+    onOpenChange: onOpenChange
+  } = useDisclosure(); */
+  /* const {
+    isOpen: isOpenthird,
+    onOpen: onOpenthird,
+    onClose: onClosethird,
+  } = useDisclosure(); */
 
   const [selectedMarker, setSelectedMarker] = useState(null);
 
+  useEffect(() => {
+    onOpen();
+  }, [])
 
+  useEffect(() => {
+    console.log(markers)
+  }, [markers])
 
   /* const { data: session } = useSession(); */
 
-  const handleMarkerClick = (markerData) => {
+  const handleMarkerClick = ({ markerData }: any) => {
     setSelectedMarker(markerData);
     onOpen();
   };
 
-  // Vérification de la première visite via localStorage
-  /* useEffect(() => { */
-  /* const hasVisited = localStorage.getItem("hasVisited"); */
-
-  /* if (!hasVisited) {
-    onOpenSecondModal();
-    localStorage.setItem("hasVisited", "true");
-  }
-}, [onOpenSecondModal]); */
 
 
-  /*   useEffect(() => {
-      const addMarker = async () => {
-        await fetchApi("guest/markers", {
-          method: "GET",
-          params: { markersCount: markers.length }
-        }).then((data) => setMarkers(data)).catch((err) => console.error(err));
-  
-      };
-      addMarker();
-    }, [onOpenthirdModal]); */
 
   return (
     <div className="w-full text-black">
@@ -94,9 +86,11 @@ export default function HuntMap({ map, introduction_story, firstHint, markers }:
             <Button className="text-black bg-white rounded-md" variant="bordered">Menu</Button>
           </DropdownTrigger>
           <DropdownMenu className="text-black bg-white rounded-md" aria-label="Example with disabled actions" disabledKeys={["edit", "delete"]}>
-            <DropdownItem key="new"><Link href="/ressources">Récapitulatif histoire</Link></DropdownItem>
+            <DropdownItem key="new"><Link href="/ressources">Histoire</Link></DropdownItem>
             <DropdownItem key="copy"><Link href="/playerrules">Régles</Link></DropdownItem>
-            <DropdownItem key="HomePage"><Link href="/" className="text-red-500 underline">Déconnexion</Link></DropdownItem>
+            <DropdownItem key="HomePage" onPress={() => {
+              signOut()
+            }}>Déconnexion</DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
@@ -114,94 +108,36 @@ export default function HuntMap({ map, introduction_story, firstHint, markers }:
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {markers.map((indice, index) => (
-              <Marker
-                icon={icon}
-                key={index}
-                position={[indice.position.lat, indice.position.lng]}
-                eventHandlers={{
-                  click: () => handleMarkerClick(indice),
-                }}
-              />
-            ))}
+
+            {markers.map((position, index) => {
+              if (index !== 0) {
+                return <Marker
+                  icon={icon}
+                  key={index}
+                  position={[position.lat, position.lng]}
+                  eventHandlers={{
+                    click: () => handleMarkerClick(index),
+                  }}
+                />
+              }
+            })}
+
           </MapContainer>
         </div>
 
-        {/* Modal pour afficher les détails des indices */}
-        <Modal isOpen={isOpen} onOpenChange={(isOpen) => !isOpen && onClose()}>
-          <ModalContent className="bg-white p-6 rounded-lg text-black">
-            <ModalHeader className="text-xl font-bold">Indice Details</ModalHeader>
-            <ModalBody className="text-base">
-              {selectedMarker && (
-                <>
-                  <strong>Indice</strong>
-                  <p>{selectedMarker.hint}</p>
-                </>
-              )}
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                color="primary"
-                onPress={onClose}
-              >
-                Fermer
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+
+        {/* <HuntDetails isOpen={isOpen} onOpenChange={onOpenChange} hintsRevealed={hintsRevealed} selectedMarker={selectedMarker} /> */}
+
+
+
 
         {/* Modal pour la première visite */}
-        <Modal
-          isOpen={isOpenSecondModal}
-          onOpenChange={(isOpen) => !isOpen && onCloseSecondModal()}
-        >
-          <ModalContent className="bg-white p-6 rounded-lg text-black">
-            <ModalHeader className="text-xl font-bold">
-              Bienvenue dans l'aventure
-            </ModalHeader>
-            <ModalBody className="text-base">
-              <p>{introduction_story}</p>
-              <p>{firstHint}</p>
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                color="primary"
-                onPress={onCloseSecondModal}
-              >
-                Commencer l'aventure
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+        <HuntWelcome isOpen={isOpen} onOpenChange={onOpenChange} hintsRevealed={hintsRevealed} stories={stories} />
 
-        {/* Modal pour la fin de l'aventure */}
-        <Modal
-          isOpen={isOpenthirdModal}
-          onOpenChange={(isOpen) => !isOpen && onClosethirdModal()}
-        >
-          <ModalContent className="bg-white p-6 rounded-lg text-black">
-            <ModalHeader className="text-xl font-bold">
-              Vous avez trouvé le trésor
-            </ModalHeader>
-            <ModalBody className="text-base">
-              {selectedMarker && <p>Temps de réalisation : {selectedMarker.team_time}</p>}
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                color="primary"
-                onPress={onClosethirdModal}
-              >
-                Sortir de l'aventure
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </section>
+
+      </section >
       {/* Bouton sticky */}
-      <div className="absolute z-30 bottom-4 right-4">
+      < div className="absolute z-30 bottom-4 right-4" >
         <Link
           href="/qr-code"
           className="bg-white text-vibrantPlum w-16 h-16 flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-gray-200 transition"
@@ -215,7 +151,7 @@ export default function HuntMap({ map, introduction_story, firstHint, markers }:
             <path d="M0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 96l0 64 64 0 0-64L64 96zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zm64 16l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zm80 64l-64 0 0 64 64 0 0-64zM256 304c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16l0 96c0 8.8-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16l0 64c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-160zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z" />
           </svg>
         </Link>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

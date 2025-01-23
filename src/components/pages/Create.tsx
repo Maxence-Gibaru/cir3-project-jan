@@ -38,28 +38,30 @@ function HuntButtons({ hunts, setHunts, hunt, setHunt, onNext }: FirstComponentP
               alt="Logo de One P'ISEN"
               width={72}
               height={72}
-              className="mx-auto rounded-full"
+              className="rounded-full"
             />
           </Link>
         </div>
       </nav>
-      <Link
-        href="/organizer/rules"
-        className="m-3 py-5 px-1 rounded-2xl flex justify-center bg-darkBlueBg text-white w-11/12 h-1/8 hover:shadow-lg font-bold lg:max-w-xl"
-      >
-        Créer un nouvel événement
-      </Link>
-
-      {hunts.map(hunt => (
-        <Button
-          key={hunt._id}
+      <div className="mt-10">
+        <Link
+          href="/organizer/rules"
           className="m-3 py-5 px-1 rounded-2xl flex justify-center bg-darkBlueBg text-white w-11/12 h-1/8 hover:shadow-lg font-bold lg:max-w-xl"
-          onPress={() => openModal(hunt)}
         >
-          {hunt.name}
-        </Button>
-      ))}
-      <HuntModal isOpen={isModalOpen} hunt={currentHunt} setHunt={setHunt} onNext={onNext} onClose={closeModal} />
+          Créer un nouvel événement
+        </Link>
+
+        {hunts.map(hunt => (
+          <Button
+            key={hunt._id}
+            className="m-3 py-5 px-1 rounded-2xl flex justify-center bg-darkBlueBg text-white w-11/12 h-1/8 hover:shadow-lg font-bold lg:max-w-xl"
+            onPress={() => openModal(hunt)}
+          >
+            {hunt.name}
+          </Button>
+        ))}
+        <HuntModal isOpen={isModalOpen} hunt={currentHunt} setHunt={setHunt} onNext={onNext} onClose={closeModal} />
+      </div>
     </div>
   );
 }

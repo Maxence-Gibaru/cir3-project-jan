@@ -37,7 +37,7 @@ const [hunt, setHunt] = useState<Hunt>();
   };
 
   return (
-    <div className="container mx-auto ">
+    <div>
       {renderComponent()}
     </div>
   );
