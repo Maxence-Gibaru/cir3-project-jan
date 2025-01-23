@@ -7,14 +7,25 @@ import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Creation_qrcode from "@/components/ui/Creation_qrcode";
-export default function Dashboard() {
+import { Hunt } from "@/models/Hunt";
+import { fetchApi } from "@/lib/api";
+import clsx from 'clsx';
+interface SecondComponentProps {
+  hunts: Hunt[];
+  setHunts: (hunts: Hunt[]) => void;
+  onNext: () => void;
+  hunt: Hunt;
+  setHunt: (hunts: Hunt) => void;
+}
+
+export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondComponentProps) {
   const initialTeams = [
     { equipe: "Equipe A", indicesFaits: 8, totalIndices: 10 },
     { equipe: "Equipe B", indicesFaits: 5, totalIndices: 10 },
     { equipe: "Equipe C", indicesFaits: 7, totalIndices: 10 },
   ];
 
-
+  
   const [teamData, setTeamData] = useState(initialTeams);
 
   const [startTime] = useState(new Date().toISOString());
@@ -36,8 +47,31 @@ export default function Dashboard() {
     return () => clearInterval(interval);
   }, []);
 
+  const stop_game = async () => {
+
+        await fetchApi("organizer/stop", {
+          method: "PUT",
+          body: { huntId: hunt._id },
+        }).then(() =>{
+         console.log("good_stop");
+         }
+      ).catch((err) => console.error(err));
+      }
+
+    const start_game = async () => {
+
+      await fetchApi("organizer/start", {
+        method: "PUT",
+        body: { huntId: hunt._id },
+      }).then(() =>{
+        console.log("good_start");
+        }
+    ).catch((err) => console.error(err));
+    }
+
+
   return (
-    <div className="flex flex-col h-screen bg-greyBg  text-dark">
+    <div className="flex flex-col h-screen text-dark">
       {/* Header */}
       <header className="bg-white p-6 text-center shadow-lg">
         <h1 className="text-3xl font-bold text-gray-700">Dashboard</h1>
@@ -76,11 +110,20 @@ export default function Dashboard() {
         {/* Actions */}
         <div className="flex gap-4 mt-8 justify-center">
 
-          <Creation_qrcode />
+          <Creation_qrcode hunt={hunt}/>
 
           <Button className="bg-darkBlueBg text-white px-6 py-3 rounded-lg hover:bg-blueBg">
             Générer le code
           </Button>
+           {/* Bouton Lancer */}
+            <Button 
+            onPress={hunt.status === 'opened' ? start_game : stop_game  }
+            className={clsx(
+              "px-4 py-2 rounded bg-green-500 hover:bg-gray text-white",
+            )}
+            >
+            {hunt.status === 'opened' ? 'Lancer' : 'Stop'}
+            </Button>
         </div>
       </main>
     </div>

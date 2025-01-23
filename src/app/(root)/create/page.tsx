@@ -1,20 +1,17 @@
 "use client";
+import React, { useState } from 'react';
+import Create from '@/components/pages/Create';
+import Dashboard from '@/components/pages/Dashboard';
+import { useEffect } from 'react';
+import { Hunt } from '@/models/Hunt';
+import { fetchApi } from '@/lib/api';   
 
-import HuntModal from "@/components/ui/HuntModal";
-import { fetchApi } from "@/lib/api";
-import { Hunt } from "@/models/Hunt";
-import { Button } from "@heroui/react";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-
-
-function HuntButtons() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentHunt, setCurrentHunt] = useState<Hunt | null>(null);
-  const [hunts, setHunts] = useState<Hunt[]>([]);
+export default function Home() {
+const [currentComponent, setCurrentComponent] = useState(1);
+const [hunts, setHunts] = useState<Hunt[]>([]);
+const [hunt, setHunt] = useState<Hunt>();
 
   
-
   useEffect(() => {
     const createHunt = async () => {
       await fetchApi("organizer/hunt", {method: "GET"})
@@ -27,36 +24,21 @@ function HuntButtons() {
     createHunt();
   }, []);
 
-  const openModal = (hunt: Hunt) => {
-    setCurrentHunt(hunt);
-    setIsModalOpen(true);
-  };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setCurrentHunt(null);
+  const renderComponent = () => {
+    switch(currentComponent) {
+      case 1:
+        return <Create hunts={hunts} setHunts={setHunts} hunt={hunt} setHunt={setHunt} onNext={() => setCurrentComponent(2)} />;
+      case 2:
+        return <Dashboard hunts={hunts} setHunts={setHunts} hunt={hunt} setHunt={setHunt} onNext={() => setCurrentComponent(1)} />;
+      default:
+        return <Create hunts={hunts} setHunts={setHunts} onNext={() => setCurrentComponent(2)} />;
+    }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-greyBg text-gray-700">
-        <Link href="/rules"
-        className=" m-3 py-5 px-1 rounded-2xl flex justify-center bg-darkBlueBg text-white w-11/12 h-1/8 hover:shadow-lg font-bold lg:max-w-xl"
-        >
-          Créer un nouvel événement
-        </Link>
-      
-      {hunts.map(hunt => (
-        <Button
-          key={hunt._id}
-          className="m-3 py-5 px-1 rounded-2xl flex justify-center bg-darkBlueBg text-white w-11/12 h-1/8 hover:shadow-lg font-bold lg:max-w-xl"
-          onPress={() => openModal(hunt)}
-        >
-          {hunt.name}
-        </Button>
-      ))}
-      <HuntModal isOpen={isModalOpen} hunt={currentHunt} onClose={closeModal} />
+    <div className="container mx-auto ">
+      {renderComponent()}
     </div>
   );
 }
-
-export default HuntButtons;
