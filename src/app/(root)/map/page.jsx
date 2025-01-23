@@ -17,7 +17,7 @@ import {
   Button,
   useDisclosure,
 } from "@heroui/react";
-
+import Qrcode from "../qr-code/page";
 
 const icon = L.icon({
   iconUrl: '/marker-icon.png',
@@ -117,6 +117,8 @@ export default function Map() {
     };
     addMarker();
   }, [onOpenthirdModal]);
+
+  const { isOpen: isOpenQrModal, onOpen: onOpenQrModal, onClose: onCloseQrModal } = useDisclosure();
 
   return (
     <div className="w-full text-black">
@@ -234,8 +236,8 @@ export default function Map() {
       </section>
       {/* Bouton sticky */}
       <div className="absolute z-30 bottom-4 right-4">
-        <Link
-          href="/qr-code"
+        <button
+          onClick={onOpenQrModal}
           className="bg-white text-vibrantPlum w-16 h-16 flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-gray-200 transition"
         >
           <svg
@@ -246,8 +248,36 @@ export default function Map() {
           >
             <path d="M0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 96l0 64 64 0 0-64L64 96zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zm64 16l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zm80 64l-64 0 0 64 64 0 0-64zM256 304c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16l0 96c0 8.8-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16l0 64c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-160zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z" />
           </svg>
-        </Link>
+        </button>
       </div>
+
+      {/* Modal pour QR Code */}
+      <Modal
+    isOpen={isOpenQrModal}
+    onOpenChange={(isOpen) => {
+        if (!isOpen) {
+            onCloseQrModal();
+        }
+    }}
+    motionpreset="slideInBottom"
+>
+    <ModalContent className="bg-white p-6 rounded-lg text-black">
+        <ModalHeader className="text-xl font-bold">QR Code</ModalHeader>
+        <ModalBody className="text-base">
+            <Qrcode />
+        </ModalBody>
+        <ModalFooter>
+            <Button
+                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                color="primary"
+                onPress={onCloseQrModal}
+            >
+                Fermer
+            </Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
     </div>
   );
 }

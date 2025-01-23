@@ -6,30 +6,31 @@ import Link from 'next/link';
 import { fetchApi } from "@/lib/api";
 
 
-
-
-
 export default function Qrcode() {
   const router = useRouter();
+
+
   const onNewScanResult = (decodedText: string) => {
     // handle decoded results here
     const jsondata = JSON.stringify(decodedText);
     console.log(`Scan result: ${jsondata}`);
     // requete api avec la valeur du qr code
 
-    fetchApi('qr-code', { method: 'POST', body: jsondata })
-      .then((data) => {
-        console.log(data); // Traitement des données reçues
-        if (data == true) {
-          router.push('/map'); // Redirige vers "/nouvelle-page"
-        }
-        else if (data == false) {
-          alert("Mauvaise Qr-code");
-        }
-      })
-      .catch((error) => {
-        console.error('Erreur lors de la requête :', error);
-      });
+    const ckeck_start = async () => {
+      fetchApi('qr-code', { method: 'POST', body: jsondata })
+        .then((data) => {
+          console.log(data); // Traitement des données reçues
+          if (data == true) {
+            router.push('/map'); // Redirige vers "/nouvelle-page"
+          }
+          else if (data == false) {
+            alert("Mauvais Qr-code");
+          }
+        })
+        .catch((error) => {
+          console.error('Erreur lors de la requête :', error);
+        });
+    };
 
   };
 
@@ -57,8 +58,9 @@ export default function Qrcode() {
           <Qr_code
             fps={10}
             qrbox={250}
-            disableFlip={false}
+            disableFlip={true}
             qrCodeSuccessCallback={onNewScanResult}
+            shouldCreate={true}
           />
         </div>
       </div>

@@ -30,6 +30,7 @@ export default function Page() {
 
         await fetchApi("guest/check_is_started", {
             method: "GET",
+            
         }).then((data) => {
 
             if (data.isStarted) {
