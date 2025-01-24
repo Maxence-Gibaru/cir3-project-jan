@@ -1,7 +1,6 @@
 // @ts-nocheck
 "use client";
 
-
 import HuntDetails from "@/components/ui/HuntDetails";
 import HuntStory from "@/components/ui/HuntStory";
 import HuntWelcome from "@/components/ui/HuntWelcome";
@@ -57,51 +56,12 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
   const { isOpen: isscanQcode, onOpen: onscanQcode, onOpenChange: scanQcodeChange } = useDisclosure();
   const { isOpen: isRules, onOpen: onRules, onOpenChange: scanRules } = useDisclosure();
   const { isOpen: isStoryOpen, onOpen: onStoryOpen, onOpenChange: onStoryOpenChange } = useDisclosure();
-  /* const [qrCode, setQrCode] = useState("") */
-
-  /* console.log("rerender"); */
-
-
-  /* const {
-    isOpen: isOpenSecond,
-    onOpen: onOpenSecond,
-    onOpenChange: onOpenChange
-  } = useDisclosure(); */
-  /* const {
-    isOpen: isOpenthird,
-    onOpen: onOpenthird,
-    onClose: onClosethird,
-  } = useDisclosure(); */
 
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   useEffect(() => {
     onWelcomeOpen();
   }, [onWelcomeOpen])
-
-/*   useEffect(() => {
-    console.log("hintsRevealed", hintsRevealed)
-    console.log(markers)
-  }, [markers, hintsRevealed]) */
-
-  /* const { data: session } = useSession(); */
-
-/*   const handleMarkerClick = ({ markerData }: any) => {
-    console.log("markerData :", markerData);
-    setSelectedMarker(markerData);
-    onDetailsOpen();
-  }; */
-
-
-  // const handleQrCode = async () => {
-  //   await fetchApi("guest/qr_code", { method: "GET", params: { lobby_code: lobbyCode, qr_code: qrCode } })
-  // }
-
-
-  // const handleChange = (e: any) => {
-  //   setQrCode(e.target.value);
-  // }
-
 
   return (
     
@@ -121,7 +81,6 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
         </Dropdown>
       </div>
       <section className="h-screen bg-vibrantPlum flex relative">
-
         <div className="z-10 flex-grow">
           <MapContainer
             center={[map.lat, map.lng]}
@@ -173,13 +132,21 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
         />
 
         <Rules
-        isOpen={isRules}
-        onOpenChange={scanRules}
+          isOpen={isRules}
+          onOpenChange={scanRules}
         />
 
-        <HuntStory isOpen={isStoryOpen} onOpenChange={onStoryOpenChange} stories={stories} />
+        <HuntStory
+          isOpen={isStoryOpen}
+          onOpenChange={onStoryOpenChange}
+          stories={stories}
+        />
 
-        <Qrcode isOpen={isscanQcode} onOpenChange={scanQcodeChange} lobbyCode={lobbyCode} />
+        <Qrcode
+          isOpen={isscanQcode}
+          onOpenChange={scanQcodeChange}
+          lobbyCode={lobbyCode}
+        />
 
      
       {/* Bouton sticky */}

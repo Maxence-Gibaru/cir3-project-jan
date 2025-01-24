@@ -5,10 +5,10 @@
 
 import HuntModal from "@/components/ui/HuntModal";
 import { Hunt } from "@/models/Hunt";
-import { Button, Card, CardBody, CardFooter, CardHeader, Divider } from "@heroui/react";
+import { Button, Card, CardBody, CardHeader, Divider } from "@heroui/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import Image from "next/image";
 
 interface FirstComponentProps {
   onNext: () => void;
@@ -71,9 +71,8 @@ function HuntButtons({ hunts, setHunts, hunt, setHunt, onNext }: FirstComponentP
         </div>
         
         <div className="flex flex-row flew-wrap w-full justify-evenly flex-wrap">
-          {hunts.map(hunt => (
-            
-            <Card className="min-w-[300px] bg-[#146AFF1A] rounded-lg m-2" >
+          {hunts.map((hunt) => (
+            <Card className="min-w-[300px] bg-[#146AFF1A] rounded-lg m-2" key={hunt._id}>
               <CardHeader className="text-xl font-bold flex flex-row justify-center items-center pb-0">
                   <h1>{hunt.name}</h1>
               </CardHeader>
