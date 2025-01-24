@@ -24,6 +24,8 @@ function  Qrcode({ isOpen, onOpenChange,lobbyCode}: QrcodeProps) {
       console.log("response", response)
       if (response.isCorrect) {
         onOpenChange()
+      } else {
+        alert("Mauvais QR-code");
       }
     }).catch((error) => {
       alert("Mauvais QR-code");
