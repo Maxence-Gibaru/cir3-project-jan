@@ -35,20 +35,23 @@ export async function GET(req: NextRequest) {
                     data = getInitData(hunt);
                 } else if (team) {
                     data = getInitData(hunt);
-                    const current_hint_index = team.current_hint_index;
-                    const hintsOrder = team.hints_order;
-                    for (let i = 0; i <= current_hint_index; i++) {
-                        data.stories.push(hunt.stories[i]);
+                    if (!team.win_at) {
+                        const current_hint_index = team.current_hint_index;
+                        const hintsOrder = team.hints_order;
+                        for (let i = 0; i <= current_hint_index; i++) {
+                            data.stories.push(hunt.stories[i]);
 
-                        const position = (i == 0) ? {} : hunt.markers[hintsOrder[i - 1]].position;
-                        data.markers.push(position);
+                            const position = (i == 0) ? {} : hunt.markers[hintsOrder[i - 1]].position;
+                            data.markers.push(position);
 
-                        const hintOrder = hintsOrder[i];
-                        const markerHint = (current_hint_index === hunt.markers.length - 1)
-                            ? hunt.markers[0].hint
-                            : hunt.markers[hintOrder].hint;
-                        data.hintsRevealed.push(markerHint);
+                            const hintOrder = hintsOrder[i];
+                            const markerHint = (current_hint_index === hunt.markers.length - 1)
+                                ? hunt.markers[0].hint
+                                : hunt.markers[hintOrder].hint;
+                            data.hintsRevealed.push(markerHint);
+                        }
                     }
+
 
                     if (hunt.status === "started") {
                         // Chasse en cours
