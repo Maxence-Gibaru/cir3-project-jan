@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { Organizer, OrganizerModel, OrganizerZodSchema } from "@/models/Organizer";

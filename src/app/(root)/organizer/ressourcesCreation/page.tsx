@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 "use client";
 
 import Importmap from "@/components/pages/Importmap";

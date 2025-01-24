@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { HuntInit } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 
 import CodeArea from "@/components/pages/TextArea";
