@@ -113,7 +113,9 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
           body: { huntId: hunt._id },
         }).then(() =>{
          console.log("good_stop");
+         hunt.status = 'ended';
          setStart(false);
+         setHunt(hunt);
          }
       ).catch((err) => console.error(err));
       }
@@ -139,7 +141,7 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
       }).then(() =>{
         console.log("good_reset");
         setHunt(hunt);
-        Router.push('/dashboard');
+        window.location.reload();
         }
     ).catch((err) => console.error(err));
     }
