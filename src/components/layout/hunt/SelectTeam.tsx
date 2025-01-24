@@ -1,6 +1,6 @@
 "use client";
 
-import TeamBox from "@/components/layout/team/TeamBox";
+import TeamBox from "@/components/layout/team/teamBox";
 
 interface SelectTeamData {
     huntId: string;
