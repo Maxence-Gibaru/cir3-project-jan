@@ -95,7 +95,7 @@ function updateEndData(data: any, hunt: Hunt, team: Team) {
 
     data.treasurePosition = hunt.markers[0].position;
     data.team = team.guests.map((guest) => guest.name);
-    const currentDate = new Date();
+    const currentDate = (team.win_at) ? team.win_at : hunt.closed_at;
     data.teamTime = currentDate.getTime() - startedAt.getTime();
     
     const leaderBoard: LeaderBoard[] = hunt.map((team, index) => {

@@ -20,6 +20,7 @@ export const HuntZodSchema = z.object({
         zoom: z.number()
     }),
     started_at: z.date().optional(),
+    closed_at: z.date().optional(),
     created: z.date().default(new Date())
 });
 
@@ -76,6 +77,9 @@ const HuntSchema = new Schema({
         }
     },
     started_at: {
+        type: Date
+    },
+    closed_at: {
         type: Date
     },
     created: {
