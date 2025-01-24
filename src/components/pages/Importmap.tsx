@@ -9,7 +9,7 @@ import IAModalHintApp from '../ui/IAHintModal';
 const Map = dynamic(() => import("@/components/ui/Map"), {
     ssr: false,
     loading: () => (
-        <div className="h-[600px] w-full flex items-center justify-center bg-gray-100 rounded-lg">
+        <div className="h-full w-full items-center justify-center bg-gray-100 rounded-lg">
             Chargement de la carte...
         </div>
     )
@@ -114,8 +114,8 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
 
                 </div>
             )}
-            <div className="z-10">
-                <Map className="z-10 h-full w-full bg-gray-100"
+            <div className="z-10 h-screen w-screen absolute x-0 y-0">
+                <Map className="flex z-10 h-screen bg-gray-100"
                     markers={markers}
                     onMarkerAdd={addMarker}
                     onMarkerRemove={removeMarker}
