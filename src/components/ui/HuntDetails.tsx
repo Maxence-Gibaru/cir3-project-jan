@@ -6,7 +6,7 @@ import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from
 
 
 
-export default function HuntDetails({ isOpen, onOpenChange, hintsRevealed, selectedMarker }) {
+export default function HuntDetails({ isOpen, onOpenChange, hintsRevealed, selectedMarker, stories }) {
 
 /*     useEffect(() => {
         console.log(selectedMarker);
@@ -25,6 +25,9 @@ export default function HuntDetails({ isOpen, onOpenChange, hintsRevealed, selec
                                     <>
                                         <strong>Indice</strong>
                                         <p>{hintsRevealed[selectedMarker]}</p>
+
+                                        <strong>Histoire</strong>
+                                        <p>{stories[selectedMarker]}</p>
                                     </>
                                 )}
                             </ModalBody>

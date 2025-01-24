@@ -121,6 +121,7 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
           onOpenChange={onDetailsOpenChange}
           hintsRevealed={hintsRevealed}
           selectedMarker={selectedMarker}
+          stories={stories}
         />
 
         {/* Modal de Bienvenue */}
