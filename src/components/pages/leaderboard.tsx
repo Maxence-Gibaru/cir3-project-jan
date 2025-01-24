@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
+import clsx from 'clsx';
 const TeamProgressContainer = ({ hunt ,trouve, setTrouve}) => {
   useEffect(() => {
     if (hunt && hunt.teams && hunt.markers) {
@@ -27,7 +28,13 @@ const TeamProgressContainer = ({ hunt ,trouve, setTrouve}) => {
         {trouve.map((team, index) => (
           <li key={index} className="text-gray-700">
             <strong>Equipe {team.teamId} :</strong>
-            <p>Indices obtenus : {team.foundHints}/{team.totalHints}</p> 
+            <p
+            className={clsx({
+              'text-green': team.foundHints === team.totalHints, // Applique la couleur rouge si les indices sont tous trouvés
+            })}
+          >
+            Indices obtenus : {team.foundHints}/{team.totalHints}
+          </p>
           </li>
         ))}
       </ol>

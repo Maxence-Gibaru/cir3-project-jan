@@ -152,7 +152,7 @@ export default function Dashboard({hunt, setHunt}: SecondComponentProps) {
 
           {/* Pourcentage */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-gray-700 mb-4">Pourcentage</h2>
+            <h2 className="text-xl font-bold text-gray-700 mb-4">Joueurs</h2>
             <TeamMembers teams={hunt.teams} maxGuests={hunt.max_guests} />
           </div>
         </div>
