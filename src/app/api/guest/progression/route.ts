@@ -98,7 +98,7 @@ function updateEndData(data: any, hunt: Hunt, team: Team) {
     const currentDate = (team.win_at) ? team.win_at : hunt.closed_at;
     data.teamTime = currentDate.getTime() - startedAt.getTime();
     
-    const leaderBoard: LeaderBoard[] = hunt.map((team, index) => {
+    const leaderBoard: LeaderBoard[] = hunt.teams.map((team, index) => {
         if (team.win_at) {
             const teamTime = team.win_at.getTime() - hunt.started_at.getTime();
             return {

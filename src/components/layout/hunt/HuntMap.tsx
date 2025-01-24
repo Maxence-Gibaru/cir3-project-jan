@@ -25,6 +25,11 @@ const icon = L.icon({
   shadowSize: [41, 41]
 })
 
+const bigIcon = L.icon({
+  iconUrl: '/marker-icon.png',
+  iconSize: [35, 51], // Taille plus grande
+});
+
 const MapContainer = dynamic(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
   { ssr: false }
@@ -130,11 +135,12 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
             />
 
 
-            {markers.map((position, index) => {
+        {markers.map((position, index) => {
+              const isLastMarker = index === markers.length - 1; // Vérifier si c'est le dernier
               if (index !== 0) {
                 console.log("index : ", index);
                 return <Marker
-                  icon={icon}
+                icon={isLastMarker ? bigIcon : icon}
                   key={index}
                   position={[position.lat, position.lng]}
                   eventHandlers={{

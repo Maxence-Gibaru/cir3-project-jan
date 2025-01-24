@@ -5,8 +5,21 @@ import Link from "next/link";
 import "./wait.css";
 
 export default function WinScreen({ teamTime, treasurePosition, team, isWin, leaderBoard }: { teamTime: number, treasurePosition: Position, team: string[], isWin: boolean, leaderBoard: LeaderBoard[] }) {
+    function formatTime(teamTime) {
+        const totalSeconds = Math.floor(teamTime / 1000); // Convertir en secondes
+        const hours = Math.floor(totalSeconds / 3600); // Calculer les heures
+        const minutes = Math.floor((totalSeconds % 3600) / 60); // Calculer les minutes restantes
+        const seconds = totalSeconds % 60; // Calculer les secondes restantes
+    
+        // Ajouter un zéro devant si nécessaire pour les valeurs inférieures à 10
+        const formattedHours = hours.toString().padStart(2, "0");
+        const formattedMinutes = minutes.toString().padStart(2, "0");
+        const formattedSeconds = seconds.toString().padStart(2, "0");
+    
+        return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    }
     return (
-        <div className="h-screen bg-greyBg text-gray-700 flex flex-col">
+        <div className="min-h-screen bg-greyBg text-gray-700 flex flex-col">
             {/* Header */}
             <header className="bg-white p-4 flex items-center shadow-md">
                 <Link href="/" className="hover:opacity-80 transition-opacity flex items-center">
@@ -32,7 +45,7 @@ export default function WinScreen({ teamTime, treasurePosition, team, isWin, lea
                 <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md transform transition-transform hover:scale-105">
                     <p className="text-lg font-semibold mb-4">
                         <span className="block text-sm text-gray-500 uppercase tracking-wider">Durée de la partie :</span>
-                        <span className="text-gray-700">{teamTime} secondes</span>
+                        <span className="text-gray-700">{formatTime(teamTime)}</span>
                     </p>
                     <p className="text-lg font-semibold mb-4">
                         <span className="block text-sm text-gray-500 uppercase tracking-wider">Coordonnées du trésor :</span>
@@ -55,7 +68,7 @@ export default function WinScreen({ teamTime, treasurePosition, team, isWin, lea
                                     2
                                 </div>
                                 <p className="mt-2 text-sm md:text-base">{leaderBoard[1].teamIndex}</p>
-                                <p className="text-sm md:text-base">{leaderBoard[1].teamTime} sec</p>
+                                <p className="text-sm md:text-base">{formatTime(leaderBoard[1].teamTime)}</p>
                             </div>
                         )}
 
@@ -66,7 +79,7 @@ export default function WinScreen({ teamTime, treasurePosition, team, isWin, lea
                                     1
                                 </div>
                                 <p className="mt-2 text-sm md:text-base">{leaderBoard[0].teamIndex}</p>
-                                <p className="text-sm md:text-base">{leaderBoard[0].teamTime} sec</p>
+                                <p className="text-sm md:text-base">{formatTime(leaderBoard[0].teamTime)}</p>
                             </div>
                         )}
 
@@ -77,7 +90,7 @@ export default function WinScreen({ teamTime, treasurePosition, team, isWin, lea
                                     3
                                 </div>
                                 <p className="mt-2 text-sm md:text-base">{leaderBoard[2].teamIndex}</p>
-                                <p className="text-sm md:text-base">{leaderBoard[2].teamTime} sec</p>
+                                <p className="text-sm md:text-base">{formatTime(leaderBoard[2].teamTime)} </p>
                             </div>
                         )}
                     </div>
@@ -86,7 +99,7 @@ export default function WinScreen({ teamTime, treasurePosition, team, isWin, lea
                         <ul className="list-decimal mt-4 mx-auto text-sm md:text-base">
                             {leaderBoard.slice(3).map((entry, index) => (
                                 <li key={index} className="mt-1">
-                                    {index + 4} : {entry.teamIndex} - {entry.teamTime} sec
+                                    {index + 4} : {entry.teamIndex} - {formatTime(entry.teamTime)} 
                                 </li>
                             ))}
                         </ul>
