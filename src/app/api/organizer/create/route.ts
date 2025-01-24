@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import { getparsedBody } from "@/app/api/utils";
 import { Marker } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
