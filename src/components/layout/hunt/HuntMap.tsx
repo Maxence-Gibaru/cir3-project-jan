@@ -1,8 +1,10 @@
+// @ts-nocheck
 "use client";
 
 
 import HuntDetails from "@/components/ui/HuntDetails";
 import HuntWelcome from "@/components/ui/HuntWelcome";
+import Rules from "@/components/ui/Rules";
 import Qrcode from "@/components/ui/Qrcode";
 import { Position } from "@/definitions";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
@@ -49,6 +51,7 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
   const { isOpen: isWelcomeOpen, onOpen: onWelcomeOpen, onOpenChange: onWelcomeOpenChange } = useDisclosure();
   const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onOpenChange: onDetailsOpenChange } = useDisclosure();
   const { isOpen: isscanQcode, onOpen: onscanQcode, onOpenChange: scanQcodeChange } = useDisclosure();
+  const { isOpen: isRules, onOpen: onRules, onOpenChange: scanRules } = useDisclosure();
   const { isOpen: isStoryOpen, onOpen: onStoryOpen, onOpenChange: onStoryOpenChange } = useDisclosure();
   /* const [qrCode, setQrCode] = useState("") */
 
@@ -105,8 +108,8 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
             <Button className="text-black bg-white rounded-md" variant="bordered">Menu</Button>
           </DropdownTrigger>
           <DropdownMenu className="text-black bg-white rounded-md" aria-label="Example with disabled actions" disabledKeys={["edit", "delete"]}>
+            <DropdownItem key="copy"onPress={onRules}> Régles</DropdownItem>
             <DropdownItem key="new" onPress={onStoryOpen}>Histoire</DropdownItem>
-            <DropdownItem key="copy"><Link href="/playerrules">Régles</Link></DropdownItem>
             <DropdownItem key="HomePage" onPress={() => {
               signOut()
             }}>Déconnexion</DropdownItem>
@@ -162,6 +165,11 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
           onOpenChange={onWelcomeOpenChange}
           hintsRevealed={hintsRevealed}
           stories={stories}
+        />
+
+        <Rules
+        isOpen={isRules}
+        onOpenChange={scanRules}
         />
 
         <HuntStory isOpen={isStoryOpen} onOpenChange={onStoryOpenChange} stories={stories} />

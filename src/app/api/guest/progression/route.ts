@@ -4,11 +4,9 @@ import { HuntInit } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel } from "@/models/Hunt";
+import { Team } from "@/models/Team";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-
-
-
 
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
@@ -21,7 +19,7 @@ export async function GET(req: NextRequest) {
         const lobbyCode = urlSearch.get("lobby_code");
 
         let progression = "not_started";
-        let data = {};
+        let data: any = {};
         if (lobbyCode) {
             const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: { $ne: "closed" } });
             if (hunt) {
@@ -40,18 +38,23 @@ export async function GET(req: NextRequest) {
                     data = getInitData(hunt);
                 } else if (team) {
                     data = getInitData(hunt);
-                    const current_hint_index = team.current_hint_index;
-                    for (let i = 0; i <= current_hint_index; i++) {
-                        data.stories.push(hunt.stories[i]);
+                    if (!team.win_at) {
+                        const current_hint_index = team.current_hint_index;
+                        const hintsOrder = team.hints_order;
+                        for (let i = 0; i <= current_hint_index; i++) {
+                            data.stories.push(hunt.stories[i]);
 
-                        const position = (i == 0) ? {} : hunt.markers[team.hints_order[i - 1]].position;
-                        data.markers.push(position);
+                            const position = (i == 0) ? {} : hunt.markers[hintsOrder[i - 1]].position;
+                            data.markers.push(position);
 
-                        const markerHint = (current_hint_index === hunt.markers.length - 1)
-                            ? hunt.markers[0].hint
-                            : hunt.markers[team.hints_order[i ]].hint;
-                        data.hintsRevealed.push(markerHint);
+                            const hintOrder = hintsOrder[i];
+                            const markerHint = (current_hint_index === hunt.markers.length - 1)
+                                ? hunt.markers[0].hint
+                                : hunt.markers[hintOrder].hint;
+                            data.hintsRevealed.push(markerHint);
+                        }
                     }
+
 
                     if (hunt.status === "started") {
                         // Chasse en cours
@@ -59,20 +62,21 @@ export async function GET(req: NextRequest) {
                             progression = "hunting";
                         } else {
                             // Chasse gagnée
+                            const startedAt = hunt.started_at;
+                            if (!startedAt) {
+                                throw new Error("La chasse au trésor a été commencée mais la date de début est manquante.");
+                            }
                             progression = "win";
-                            data.position = hunt.markers[0].position
-                            data.win_at = team.win_at;
+                            updateEndData(data, hunt, team as Team);
                         }
                     } else if (hunt.status === "ended") {
                         // Chasse perdue
-                        progression = "lose";
-                        data.position = hunt.markers[0].position
+                        progression = (team.win_at) ? "win" : "lose";
+                        updateEndData(data, hunt, team as Team);
                     }
                 }
             }
         }
-
-        /* console.log("data :", data) */
 
         return NextResponse.json({ progression, data }, { status: 200 });
     } catch (error) {
@@ -83,6 +87,19 @@ export async function GET(req: NextRequest) {
         );
     }
 }
+
+function updateEndData(data: any, hunt: Hunt, team: Team) {
+    const startedAt = hunt.started_at;
+    if (!startedAt) {
+        throw new Error("La chasse au trésor a été commencée mais la date de début est manquante.");
+    }
+
+    data.treasurePosition = hunt.markers[0].position;
+    data.team = team.guests.map((guest) => guest.name);
+    const currentDate = new Date();
+    data.teamTime = currentDate.getTime() - startedAt.getTime();
+}
+
 function getInitData(hunt: Hunt): HuntInit {
     const teams: string[][] = hunt.teams.map((team) => team.guests.map((guest) => guest.name));
 

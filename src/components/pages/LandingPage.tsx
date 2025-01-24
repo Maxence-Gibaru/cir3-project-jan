@@ -104,11 +104,11 @@ export default function LandingPage() {
                                     QRCode correspondants.
                                 </p>
 
-                                <p>
+                               {/*  <p>
                                     Une fois tous les indices obtenus dans l&apos;ordre, un indice final vous sera donné
                                     afin d&apos;indiquer l&apos;emplacement du trésor. Rentrez le code d&apos;accès fourni par votre organisateur afin
                                     de rejoindre la partie et <span className="font-bold">amusez-vous bien !</span>
-                                </p>
+                                </p> */}
                             </CardBody>
                         </Card>
                         {/* </div> */}

@@ -7,18 +7,6 @@ import WinScreen from "@/components/layout/hunt/WinScreen";
 import { fetchApi } from "@/lib/api";
 import { useEffect, useState } from "react";
 
-interface HuntData {
-    id: string;
-    name: string;
-    teams: string[][];
-    stories: string[];
-    markers: { lat: number; lng: number }[]; // Corrected type for markers
-    hintsRevealed: string[];
-    max_guests: number;
-    map: { lat: number; lng: number; zoom: number }; // Corrected type for map
-}
-
-
 export default function HuntPage({
     params
 }: Readonly<{
@@ -28,7 +16,7 @@ export default function HuntPage({
 }>) {
     const [lobbyCode, setLobbyCode] = useState<string | null>(null);
     const [pageStatus, setPageStatus] = useState("loading");
-    const [huntData, setHuntData] = useState<HuntData | null>(null);
+    const [huntData, setHuntData] = useState<any>(null);
 
 
     useEffect(() => {
@@ -85,7 +73,7 @@ export default function HuntPage({
             return <SelectTeam
                 huntId={huntData.id}
                 name={huntData.name}
-                maxGuests={huntData.max_guests}
+                maxGuests={huntData.maxGuests}
                 teams={huntData.teams}
                 goNext={() =>
                     fetchProgression(lobbyCode)
@@ -113,7 +101,7 @@ export default function HuntPage({
 
         case "win":
         case "lose":
-            return <WinScreen team_time={null} treasure_position={null} team={null} />;
+            return <WinScreen teamTime={huntData.teamTime} treasurePosition={huntData.treasurePosition} team={huntData.team} isWin={pageStatus == "win"} />;
 
         default:
             return <div className="h-screen flex flex-col justify-center items-center">Erreur</div>;

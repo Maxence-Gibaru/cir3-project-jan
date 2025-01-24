@@ -25,7 +25,7 @@ export default function ModalApp({ isOpen, onOpenChange }) {
 
     return (
         <>
-            <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
+            <Modal hideCloseButton isDismissable={false} backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
                 <ModalContent className=" bg-white rounded-lg">
                     {(onClose) => (
                         <>
