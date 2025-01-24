@@ -1,42 +1,19 @@
 // @ts-nocheck
 "use client";
 
-<<<<<<< HEAD
-import { fetchApi } from "@/lib/api";
-<<<<<<< HEAD:src/app/(root)/map/page.jsx
-import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem } from "@heroui/react";
-import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Button,
-  useDisclosure,
-} from "@heroui/react";
-import Qrcode from "../qr-code/page";
-=======
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/react";
-=======
 
 import HuntDetails from "@/components/ui/HuntDetails";
+import HuntStory from "@/components/ui/HuntStory";
 import HuntWelcome from "@/components/ui/HuntWelcome";
-import Rules from "@/components/ui/Rules";
 import Qrcode from "@/components/ui/Qrcode";
+import Rules from "@/components/ui/Rules";
 import { Position } from "@/definitions";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
->>>>>>> 9eb0241a9586e4c30d4fad6f8090d60e94b37f15
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { signOut} from "next-auth/react";
+import { signOut } from "next-auth/react";
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { useEffect, useState } from "react";
-<<<<<<< HEAD
->>>>>>> f768cd8c1131b92f195515f4a0284bb25a46b2eb:src/components/layout/hunt/HuntMap.tsx
-=======
-import HuntStory from "@/components/ui/HuntStory";
->>>>>>> 9eb0241a9586e4c30d4fad6f8090d60e94b37f15
 
 const icon = L.icon({
   iconUrl: '/marker-icon.png',
@@ -75,6 +52,21 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
   const { isOpen: isscanQcode, onOpen: onscanQcode, onOpenChange: scanQcodeChange } = useDisclosure();
   const { isOpen: isRules, onOpen: onRules, onOpenChange: scanRules } = useDisclosure();
   const { isOpen: isStoryOpen, onOpen: onStoryOpen, onOpenChange: onStoryOpenChange } = useDisclosure();
+  /* const [qrCode, setQrCode] = useState("") */
+
+  /* console.log("rerender"); */
+
+
+  /* const {
+    isOpen: isOpenSecond,
+    onOpen: onOpenSecond,
+    onOpenChange: onOpenChange
+  } = useDisclosure(); */
+  /* const {
+    isOpen: isOpenthird,
+    onOpen: onOpenthird,
+    onClose: onClosethird,
+  } = useDisclosure(); */
 
   const [selectedMarker, setSelectedMarker] = useState(null);
 
@@ -82,7 +74,29 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
     onWelcomeOpen();
   }, [onWelcomeOpen])
 
-  const { isOpen: isOpenQrModal, onOpen: onOpenQrModal, onClose: onCloseQrModal } = useDisclosure();
+/*   useEffect(() => {
+    console.log("hintsRevealed", hintsRevealed)
+    console.log(markers)
+  }, [markers, hintsRevealed]) */
+
+  /* const { data: session } = useSession(); */
+
+/*   const handleMarkerClick = ({ markerData }: any) => {
+    console.log("markerData :", markerData);
+    setSelectedMarker(markerData);
+    onDetailsOpen();
+  }; */
+
+
+  // const handleQrCode = async () => {
+  //   await fetchApi("guest/qr_code", { method: "GET", params: { lobby_code: lobbyCode, qr_code: qrCode } })
+  // }
+
+
+  // const handleChange = (e: any) => {
+  //   setQrCode(e.target.value);
+  // }
+
 
   return (
     
@@ -164,50 +178,6 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
      
       {/* Bouton sticky */}
       <div className="absolute z-30 bottom-4 right-4">
-<<<<<<< HEAD
-        <button
-          onClick={onOpenQrModal}
-          className="bg-white text-vibrantPlum w-16 h-16 flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-gray-200 transition"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 448 512"
-            className="w-6 h-6"
-            fill="black"
-          >
-            <path d="M0 80C0 53.5 21.5 32 48 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48L0 80zM64 96l0 64 64 0 0-64L64 96zM0 336c0-26.5 21.5-48 48-48l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96zm64 16l0 64 64 0 0-64-64 0zM304 32l96 0c26.5 0 48 21.5 48 48l0 96c0 26.5-21.5 48-48 48l-96 0c-26.5 0-48-21.5-48-48l0-96c0-26.5 21.5-48 48-48zm80 64l-64 0 0 64 64 0 0-64zM256 304c0-8.8 7.2-16 16-16l64 0c8.8 0 16 7.2 16 16s7.2 16 16 16l32 0c8.8 0 16-7.2 16-16s7.2-16 16-16s16 7.2 16 16l0 96c0 8.8-7.2 16-16 16l-64 0c-8.8 0-16-7.2-16-16s-7.2-16-16-16s-16 7.2-16 16l0 64c0 8.8-7.2 16-16 16l-32 0c-8.8 0-16-7.2-16-16l0-160zM368 480a16 16 0 1 1 0-32 16 16 0 1 1 0 32zm64 0a16 16 0 1 1 0-32 16 16 0 1 1 0 32z" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Modal pour QR Code */}
-      <Modal
-    isOpen={isOpenQrModal}
-    onOpenChange={(isOpen) => {
-        if (!isOpen) {
-            onCloseQrModal();
-        }
-    }}
-    motionpreset="slideInBottom"
->
-    <ModalContent className="bg-white p-6 rounded-lg text-black">
-        <ModalHeader className="text-xl font-bold">QR Code</ModalHeader>
-        <ModalBody className="text-base">
-            <Qrcode />
-        </ModalBody>
-        <ModalFooter>
-            <Button
-                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                color="primary"
-                onPress={onCloseQrModal}
-            >
-                Fermer
-            </Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>
-
-=======
       <Button
         onPress={onscanQcode}
         className="bg-white text-vibrantPlum w-16 h-16 flex items-center justify-center p-4 rounded-full shadow-lg hover:bg-gray-200 transition"
@@ -223,7 +193,6 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
       </Button>
       </div>
       </section >
->>>>>>> 9eb0241a9586e4c30d4fad6f8090d60e94b37f15
     </div>
 
   );
