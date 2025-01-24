@@ -1,7 +1,7 @@
 import React from 'react';
 import { useEffect } from 'react';
 import clsx from 'clsx';
-const TeamProgressContainer = ({ hunt ,trouve, setTrouve}) => {
+const TeamProgressContainer = ({ hunt ,find, setFind}) => {
   useEffect(() => {
     if (hunt && hunt.teams && hunt.markers) {
       // Nombre total d'indices dans la partie
@@ -17,15 +17,15 @@ const TeamProgressContainer = ({ hunt ,trouve, setTrouve}) => {
         };
       });
       console.log("Progression des équipes:", progress);
-      setTrouve(progress);
+      setFind(progress);
     }
-    }, [hunt, setTrouve]);
+    }, [hunt, setFind]);
 
   return (
     <div className="text-gray-700">
       <h2 className="text-gray-700">Classement des équipes par progression :</h2>
       <ol className="list-decimal list-inside">
-        {trouve.map((team, index) => (
+        {find.map((team, index) => (
           <li key={index} className="text-gray-700">
             <strong>Equipe {team.teamId} :</strong>
             <p

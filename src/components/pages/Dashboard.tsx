@@ -20,7 +20,7 @@ export default function Dashboard({hunt, setHunt}: SecondComponentProps) {
 
   const [startTime, setStartTime] = useState('00:00:00');
   const [start, setStart] = useState(false);
-  const[trouve,setTrouve] = useState([]);
+  const[find,setFind] = useState([]);
 
   useEffect(() => {
     if (start === true) {
@@ -147,7 +147,7 @@ export default function Dashboard({hunt, setHunt}: SecondComponentProps) {
           {/* Classement */}
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-bold text-gray-700 mb-4">Classement</h2>
-            <TeamProgressContainer hunt={hunt} trouve={trouve} setTrouve={setTrouve} />
+            <TeamProgressContainer hunt={hunt} find={find} setFind={setFind} />
           </div>
 
           {/* Pourcentage */}
