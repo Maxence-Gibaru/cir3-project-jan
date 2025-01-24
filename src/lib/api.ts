@@ -14,7 +14,8 @@ export async function fetchApi(
         ...options.headers,                 // Merge with custom headers
     };
 
-    const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Ensure you have a base URL
+    /* const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Ensure you have a base URL */
+    const baseUrl = 'https://onepisen.vercel.app/';
     let url = `${baseUrl}/api/${endpoint}`;  // Full URL combining baseUrl and endpoint
 
     if (options.params) {
