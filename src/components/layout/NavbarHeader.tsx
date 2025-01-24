@@ -60,27 +60,9 @@ export default function NavbarHeader({ status, onOpen }) {
             {/* Centrer le contenu dans la Navbar */}
             <NavbarContent justify='center' className="hidden sm:flex gap-4">
                 <NavbarItem>
-                    <Link href="/about" className="text-gray-700 text-lg">
-                        About Us
-                    </Link>
-                </NavbarItem>
-
-                <NavbarItem>
-                    <Link href="/services" className="text-gray-700 text-lg">
-                        Services
-                    </Link>
-                </NavbarItem>
-
-                <NavbarItem>
-                    <Link href="/contact" className="text-gray-700 text-lg">
-                        Contact
-                    </Link>
-                </NavbarItem>
-
-                <NavbarItem>
-                    <Link href="/blog" className="text-gray-700 text-lg">
-                        Blog
-                    </Link>
+                    <div className="text-gray-700 text-2xl font-bold">
+                        ONEPISEN
+                    </div>
                 </NavbarItem>
             </NavbarContent>
 
