@@ -3,7 +3,8 @@
 import Qr_code from "@/components/ui/scan_qr_code";
 import { fetchApi } from "@/lib/api";
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
-import { memo } from 'react';
+import { useState } from "react";
+import { useEffect } from "react";
 interface QrcodeProps {
   isOpen: boolean;
   onOpenChange: () => void;
@@ -12,30 +13,38 @@ interface QrcodeProps {
 
 
 function  Qrcode({ isOpen, onOpenChange,lobbyCode}: QrcodeProps) {
-  let processing = false;
-  const onNewScanResult = async (decodedText: string) => {
-    console.log("decodedText", decodedText, processing)
-    if (processing) return;
-    processing = true; 
+  const [data, setData] = useState("No result");
+
+  const onNewScanResult = async (decodedData: string) => {
+    console.log("decodedText", decodedData);
 
     // Requête API avec le QR code
-    fetchApi('guest/qr_code', { 
-      method: 'GET', 
-      params: { lobby_code : lobbyCode, qr_code : decodedText }, 
-    }).then((response) => {
-      console.log("response", response)
+    try {
+      const response = await fetchApi("guest/qr_code", {
+        method: "GET",
+        params: { lobby_code: lobbyCode, qr_code: decodedData },
+      });
+      console.log("response", response);
+
       if (response.isCorrect) {
-        onOpenChange()
+        onOpenChange();
       } else {
         alert("Mauvais QR-code");
       }
-    }).catch((error) => {
+    } catch (error) {
       alert("Mauvais QR-code");
-    }).finally(() => {
-      processing = false;
-    });
+    } finally {
+      console.log("finally");
+    }
   };
-  
+
+  // Appelle la fonction onNewScanResult lorsqu'il y a un changement dans `data`
+  useEffect(() => {
+    if (data && data !== "No result") {
+      console.log(data[0].rawValue);
+      onNewScanResult(data[0].rawValue);
+    }
+  }, [data]);
 
   return (
     <>
@@ -53,10 +62,8 @@ function  Qrcode({ isOpen, onOpenChange,lobbyCode}: QrcodeProps) {
                 <h1 className="text-2xl"></h1>
                 <div className="w-full h-auto rounded-md border-2 border-black-300">
                   <Qr_code
-                    fps={10}
-                    qrbox={250}
-                    disableFlip={false}
-                    qrCodeSuccessCallback={onNewScanResult}
+                    data={data}
+                    setData={setData}
                   />
                 </div>
                 </ModalBody>
@@ -76,4 +83,4 @@ function  Qrcode({ isOpen, onOpenChange,lobbyCode}: QrcodeProps) {
     </>
   );
 }
-export default memo(Qrcode);
+export default Qrcode;
