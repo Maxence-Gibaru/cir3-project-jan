@@ -1,18 +1,10 @@
 "use client";
-import { Position } from "@/definitions";
-import Link from "next/link";
+import { LeaderBoard, Position } from "@/definitions";
 import Image from "next/image";
+import Link from "next/link";
 import "./wait.css";
 
-export default function WinScreen({ teamTime, treasurePosition, team, isWin, leaderBoard }: { teamTime: number, treasurePosition: Position, team: string[], isWin: boolean, leaderBoard: LeaderBoard }) {
-    const podium = [
-        { teamName: "Équipe Alpha", time: 95 },
-        { teamName: "Équipe Beta", time: 105 },
-        { teamName: "Équipe Gamma", time: 120 },
-        { teamName: "Équipe 4", time: 130 },
-        { teamName: "Équipe 5", time: 140 },
-    ];
-
+export default function WinScreen({ teamTime, treasurePosition, team, isWin, leaderBoard }: { teamTime: number, treasurePosition: Position, team: string[], isWin: boolean, leaderBoard: LeaderBoard[] }) {
     return (
         <div className="h-screen bg-greyBg text-gray-700 flex flex-col">
             {/* Header */}
@@ -51,6 +43,56 @@ export default function WinScreen({ teamTime, treasurePosition, team, isWin, lea
                         <span className="text-gray-700">{team.join(", ")}</span>
                     </p>
                 </div>
+
+                {leaderBoard.length > 0 && (
+                <div className="mt-10">
+                    <h2 className="text-2xl">leaderBoard :</h2>
+                    <div className="flex justify-center items-end mt-5">
+                        {/* Deuxième place */}
+                        {leaderBoard[1] && (
+                            <div className="flex flex-col items-center mx-2">
+                                <div className="w-14 h-20 md:w-20 md:h-32 bg-gray-400 flex justify-center items-center text-black">
+                                    2
+                                </div>
+                                <p className="mt-2 text-sm md:text-base">{leaderBoard[1].teamIndex}</p>
+                                <p className="text-sm md:text-base">{leaderBoard[1].teamTime} sec</p>
+                            </div>
+                        )}
+
+                        {/* Première place */}
+                        {leaderBoard[0] && (
+                            <div className="flex flex-col items-center mx-2">
+                                <div className="w-16 h-24 md:w-24 md:h-40 bg-yellow flex justify-center items-center text-black">
+                                    1
+                                </div>
+                                <p className="mt-2 text-sm md:text-base">{leaderBoard[0].teamIndex}</p>
+                                <p className="text-sm md:text-base">{leaderBoard[0].teamTime} sec</p>
+                            </div>
+                        )}
+
+                        {/* Troisième place */}
+                        {leaderBoard[2] && (
+                            <div className="flex flex-col items-center mx-2">
+                                <div className="w-12 h-16 md:w-20 md:h-28 bg-orange-500 flex justify-center items-center text-black">
+                                    3
+                                </div>
+                                <p className="mt-2 text-sm md:text-base">{leaderBoard[2].teamIndex}</p>
+                                <p className="text-sm md:text-base">{leaderBoard[2].teamTime} sec</p>
+                            </div>
+                        )}
+                    </div>
+                    <div className="mt-10 w-full text-center">
+
+                        <ul className="list-decimal mt-4 mx-auto text-sm md:text-base">
+                            {leaderBoard.slice(3).map((entry, index) => (
+                                <li key={index} className="mt-1">
+                                    {index + 4} : {entry.teamIndex} - {entry.teamTime} sec
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            )}
             </main>
 
             {/* Footer */}
