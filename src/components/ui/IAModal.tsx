@@ -10,36 +10,68 @@ import {
   useDisclosure,
 } from "@heroui/react";
 import { useState } from "react";
+import Image from "next/image";
 
-export default function IAModalApp({ chapters, onIaRespons}) {
+export default function IAModalApp({ title, chapters, onIaResponse}) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [userPrompt, setUserPrompt] = useState(""); // Stocke le prompt
   const [targetSection, setTargetSection] = useState("title"); // Section ciblée
   const [output, setOutput] = useState("");
 
-
-  const options = {
-    method: "POST",
-    body: userPrompt
-  }
-
   const handleSendPrompt = async () => {
-    options.body = options.body.concat(" En francais. Réponse de maximum 100 mots");
+    // Construire le contenu complet à inclure dans le prompt
+    let fullPrompt = "Tu es un scénariste pour des chasses au trésor";
 
-    console.log(options.body);
+    if (targetSection === "title") {
+      fullPrompt += `\nJ'aimerai que tu m'aides pour trouver un titre et donne moi que le titre`;
+    } else if (targetSection === "intro") {
+      fullPrompt += `\nJ'aimerai que tu m'aides pour trouver une intro  et donne moi que l'intro`;
+    } else if (targetSection.startsWith("chapter")) {
+      const chapterIndex = parseInt(targetSection.split("-")[1], 10);
+      fullPrompt += `\nJ'aimerai que tu m'aides pour écrire le chapitre ${chapterIndex} et donne moi que le texte`;
+    }
+  
+    if (title) {
+      fullPrompt += `\n Voici le titre actuel : ${title}`;
+    }
     
-    const response = await fetchApi('generate', options)
+    if (chapters[0]) {
+      fullPrompt += `\n Voici l'introduction actuelle : ${chapters[0]}`;
+    }
     
+    chapters.slice(1).forEach((chapter, index) => {
+      if (chapter) {
+        fullPrompt += `\n Voici le chapitre ${index+1} : ${chapter}`;
+      }
+    });
+    
+    
+  
+    // Ajouter une demande contextuelle pour l'IA
+    fullPrompt += " En français. Réponse de maximum 100 mots.\n";
+
+    fullPrompt += userPrompt;
+  
+    console.log("Prompt envoyé :", fullPrompt);
+  
+    const options = {
+      method: "POST",
+      body: fullPrompt,
+    };
+  
+    // Appeler l'API
+    const response = await fetchApi("generate", options);
     const data = await response.output;
-
+  
     setOutput(data);
-
-    console.log("Ia response", output);
-
-    onIaResponse(targetSection, data); // Envoie la réponse à la section sélectionnée
-    setUserPrompt(""); // Réinitialise la saisie
-    onOpenChange(); // Ferme le modal
+  
+    console.log("Réponse de l'IA :", data);
+  
+    onIaResponse(targetSection, data); // Mettre à jour la section cible avec la réponse
+    setUserPrompt(""); // Réinitialiser l'entrée utilisateur
+    onOpenChange(); // Fermer le modal
   };
+  
 
   return (
     <>
@@ -48,7 +80,13 @@ export default function IAModalApp({ chapters, onIaRespons}) {
         className="text-white rounded-xl bg-darkBlueBg hover:bg-darkBlueHoverBg"
         
       >
-        Aide IA
+          <Image
+    src="/IA.png"
+    alt="Aide IA"
+    width={50} 
+    height={30}
+    className="mx-auto"
+  />
       </Button>
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -75,9 +113,9 @@ export default function IAModalApp({ chapters, onIaRespons}) {
                   >
                     <option value="title">Titre</option>
                     <option value="intro">Introduction</option>
-                    {chapters.map((_, index) => (
-                      <option key={index} value={`chapter-${index}`}>
-                      Chapitre {index + 1}
+                    {chapters.slice(1).map((_, index) => (
+                      <option key={index} value={`chapter-${index+1}`}>
+                      Chapitre {index+1}
                       </option>
                     ))}
                   </select>
@@ -86,7 +124,7 @@ export default function IAModalApp({ chapters, onIaRespons}) {
                 {/* Zone de saisie pour le prompt */}
                 <div className="mb-4 bg-gray-100 rounded-2xl border border-gray-400 shadow-xl">
                   <Input
-                    placeholder="Entrez votre demande ou sujet..."
+                    placeholder="Entrez des mots clés ou thème...."
                     value={userPrompt}
                     onChange={(e) => setUserPrompt(e.target.value)}
                   />

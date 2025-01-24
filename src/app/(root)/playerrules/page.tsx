@@ -16,7 +16,7 @@ export default function CenteredTextPage() {
           </DropdownTrigger>
           <DropdownMenu className="text-black bg-white rounded-md" aria-label="Example with disabled actions" disabledKeys={["edit", "delete"]}>
             <DropdownItem key="new"><Link href="/ressources">Récapitulatif histoire</Link></DropdownItem>
-            <DropdownItem key="copy"><Link href="/map">Carte</Link></DropdownItem>
+            <DropdownItem key="copy"><Link href="/hunt/">Carte</Link></DropdownItem>
             <DropdownItem key="HomePage"><Link href="/" className="text-red-500 underline">Déconnexion</Link></DropdownItem>
           </DropdownMenu>
         </Dropdown>

@@ -1,23 +1,24 @@
 "use client";
-import Image from "next/image";
 
 import { fetchApi } from "@/lib/api";
-import { Button, Textarea, Card, CardHeader, CardBody, CardFooter, Divider, } from "@heroui/react";
+import { Input } from "@heroui/input";
+import { Button, Card, CardBody } from "@heroui/react";
+import { useDisclosure } from "@nextui-org/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Input } from "@heroui/input";
 import Footer from "../layout/Footer";
 import NavbarHeader from "../layout/NavbarHeader";
-import { useSession } from "next-auth/react";
 import LoginModal from "../ui/LoginModal";
-import { useDisclosure } from "@nextui-org/react";
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/react";
+import Link from "next/link";
 
 export default function LandingPage() {
-    const [text, setText] = useState("");
+    const [lobbyCode, setLobbyCode] = useState("");
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     const handleChange = (e: any) => {
-        setText(e.target.value);
+        setLobbyCode(e.target.value);
     };
 
     const router = useRouter();
@@ -41,22 +42,13 @@ export default function LandingPage() {
         }
     }, [session])
 
-    console.log(session);
-
     const handleJoin = async () => {
-        console.log("join", text);
-        const response = await fetchApi("guest/join_lobby", { method: "POST", body: { lobby_code: text } });
+        const response = await fetchApi("guest/join_lobby", { method: "GET", params: { lobby_code: lobbyCode } });
 
-        console.log("response : ", response);
         if (response) {
+            if (response.isValid) router.push(`/hunt/${lobbyCode}`);
 
-            const huntId = response.hunt._id;
-
-            console.log("ID :", huntId);
-
-            const updateSession = await update({ ...user, huntId: huntId })
-
-            router.push(`/team`);
+            // TODO : Gérer les erreurs
         }
     };
 
@@ -74,19 +66,13 @@ export default function LandingPage() {
                     <div className="flex flex-col items-center justify-evenly flex-grow mx-6">
                         {/* Section avec titre et logo */}
 
-
                         {/* Section centrale pour le code d'accès */}
                         <div className="flex flex-col items-center text-center justify-center items-center gap-20 py-20">
-
-
-
                             <div className="bg-greyBg border border-gray-300 flex flex-row gap-5 bg-white rounded-full justfiy-center items-center shadow-md">
                                 <Input
-
                                     validationBehavior="native"
                                     className=" rounded-full"
-                                    value={text}
-
+                                    value={lobbyCode}
                                     onChange={handleChange}
                                     placeholder="Enter code"
                                 />
@@ -101,10 +87,8 @@ export default function LandingPage() {
                                 <h2 className="text-xl md:text-4xl text-center  uppercase tracking-[0.2rem] font-bold">
                                     Jouez à la chasse au trésor
                                 </h2>
-
                             </div>
                         </div>
-
 
                         {/* Texte descriptif */}
                         {/* <div className="mt-4 text-sm md:text-base px-4 max-w-3xl"> */}
@@ -113,8 +97,6 @@ export default function LandingPage() {
                                 <p className="font-bold text-xl">
                                     Bienvenue dans cette chasse au trésor.
                                 </p>
-
-
 
                                 <p>
                                     L'objectif est de trouver le trésor caché dans la ville. Pour cela, aide toi des différents indices disposés tout au long du parcours.
@@ -127,19 +109,14 @@ export default function LandingPage() {
                                     afin d'indiquer l'emplacement du trésor. Rentrez le code d'accès fourni par votre organisateur afin
                                     de rejoindre la partie et <span className="font-bold">amusez-vous bien !</span>
                                 </p>
-
                             </CardBody>
                         </Card>
                         {/* </div> */}
                     </div>
-
-
-
                 </div>
                 < Footer />
             </section >
             {/* Footer */}
-
         </>
     );
 }

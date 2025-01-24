@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 
-export default function LoginForm() {
+export default function LoginForm({ onClose }) {
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
@@ -81,15 +81,17 @@ export default function LoginForm() {
 
         handleLogin();
 
+        onClose();
+
 
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-dark">
-            <button onClick={() => {
+        <div className="flex items-center justify-center ">
+            {/* <button onClick={() => {
                 signOut({ redirect: false, callbackUrl: '/' })
-            }}>Logout</button>
-            <div className="w-full max-w-md bg-white shadow-md rounded-lg p-6">
+            }}>Logout</button> */}
+            <div className="w-full max-w-md bg-white rounded-lg p-6">
                 <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">
                     Connectez vous à votre compte
                 </h1>
@@ -137,9 +139,9 @@ export default function LoginForm() {
                     )}
                     <button
                         type="submit"
-                        className="w-full bg-blue-500 text-gray-700 py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                        className="w-full bg-darkBlueBg text-white text-gray-700 py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                     >
-                        S'inscrire
+                        Se connecter
 
                     </button>
                 </form>

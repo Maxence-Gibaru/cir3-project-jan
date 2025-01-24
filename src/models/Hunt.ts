@@ -11,7 +11,7 @@ export const HuntZodSchema = z.object({
     stories: z.array(z.string()),
     organizer_id: z.string(),
     code: z.string(),
-    status: z.enum(['closed', 'opened', 'started']).default('closed'),
+    status: z.enum(['closed', 'opened', 'started', 'ended']).default('closed'),
     max_guests: z.number(),
     max_teams: z.number(),
     map: z.object({
@@ -54,7 +54,7 @@ const HuntSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['closed', 'opened', 'started'],
+        enum: ['closed', 'opened', 'started', 'ended'],
         default: 'closed'
     },
     max_guests: {
