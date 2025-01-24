@@ -75,51 +75,12 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
   const { isOpen: isscanQcode, onOpen: onscanQcode, onOpenChange: scanQcodeChange } = useDisclosure();
   const { isOpen: isRules, onOpen: onRules, onOpenChange: scanRules } = useDisclosure();
   const { isOpen: isStoryOpen, onOpen: onStoryOpen, onOpenChange: onStoryOpenChange } = useDisclosure();
-  /* const [qrCode, setQrCode] = useState("") */
-
-  /* console.log("rerender"); */
-
-
-  /* const {
-    isOpen: isOpenSecond,
-    onOpen: onOpenSecond,
-    onOpenChange: onOpenChange
-  } = useDisclosure(); */
-  /* const {
-    isOpen: isOpenthird,
-    onOpen: onOpenthird,
-    onClose: onClosethird,
-  } = useDisclosure(); */
 
   const [selectedMarker, setSelectedMarker] = useState(null);
 
   useEffect(() => {
     onWelcomeOpen();
   }, [onWelcomeOpen])
-
-/*   useEffect(() => {
-    console.log("hintsRevealed", hintsRevealed)
-    console.log(markers)
-  }, [markers, hintsRevealed]) */
-
-  /* const { data: session } = useSession(); */
-
-/*   const handleMarkerClick = ({ markerData }: any) => {
-    console.log("markerData :", markerData);
-    setSelectedMarker(markerData);
-    onDetailsOpen();
-  }; */
-
-
-  // const handleQrCode = async () => {
-  //   await fetchApi("guest/qr_code", { method: "GET", params: { lobby_code: lobbyCode, qr_code: qrCode } })
-  // }
-
-
-  // const handleChange = (e: any) => {
-  //   setQrCode(e.target.value);
-  // }
-
 
   const { isOpen: isOpenQrModal, onOpen: onOpenQrModal, onClose: onCloseQrModal } = useDisclosure();
 

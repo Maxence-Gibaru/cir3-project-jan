@@ -101,7 +101,13 @@ export default function HuntPage({
 
         case "win":
         case "lose":
-            return <WinScreen teamTime={huntData.teamTime} treasurePosition={huntData.treasurePosition} team={huntData.team} isWin={pageStatus == "win"} />;
+            return <WinScreen
+                teamTime={huntData.teamTime}
+                treasurePosition={huntData.treasurePosition}
+                team={huntData.team}
+                isWin={pageStatus == "win"}
+                leaderBoard={huntData.leaderBoard}
+            />;
 
         default:
             return <div className="h-screen flex flex-col justify-center items-center">Erreur</div>;
