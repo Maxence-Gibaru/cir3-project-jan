@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Marker } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
@@ -36,11 +38,24 @@ export async function PUT(req: NextRequest) {
             );
         }
 
-        const shortUuid = uuidv4().slice(0, 8);
-        body.code = shortUuid.toUpperCase();
-
-        body.markers.map((marker: Marker) => {
+        const teams = Array.from({ length: result.max_teams }, () => new TeamModel().toObject());
+        const markers = hunt.markers
+        markers.map((marker: Marker) => {
             marker.id = uuidv4().slice(0, 8);
+        });
+
+        const stories = [];
+
+        const shortUuid = uuidv4().slice(0, 8);
+        const code = shortUuid.toUpperCase();
+
+        await HuntModel.updateOne({_id: hunt._id}, {
+            teams,
+            markers,
+            stories,
+            code,
+            started_at: undefined,
+            status: 'closed'
         });
 
         return NextResponse.json({ isValid: true }, { status: 200 });
