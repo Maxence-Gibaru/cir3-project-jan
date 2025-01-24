@@ -15,7 +15,7 @@ export async function fetchApi(
     };
 
     /* const baseUrl = process.env.BASE_URL || 'http://localhost:3000'; // Ensure you have a base URL */
-    const baseUrl = 'https://onepisen.vercel.app/';
+    const baseUrl = 'https://onepisen.vercel.app';
     let url = `${baseUrl}/api/${endpoint}`;  // Full URL combining baseUrl and endpoint
 
     if (options.params) {
