@@ -74,10 +74,10 @@ QR codes, generated from a unique ID, unlock the steps and associated resources.
 
 
 ### Dashboard
-![Dashboard](Capture_dashboard.PNG)
+![Dashboard](capture_dashboard.PNG)
 
 ### Homepage
-![Homepage](Capture_homepage.jpeg)
+![Homepage](capture_homepage.jpeg)
 
 ### Map
 ![Map](capture_map.jpeg)
