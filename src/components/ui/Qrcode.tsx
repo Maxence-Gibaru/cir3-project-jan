@@ -12,15 +12,17 @@ interface QrcodeProps {
 
 
 function  Qrcode({ isOpen, onOpenChange,lobbyCode}: QrcodeProps) {
-
+  let processing = false;
   const onNewScanResult = async (decodedText: string) => {
-   
+    console.log("decodedText", decodedText, processing)
+    if (processing) return;
+    processing = true; 
+
     // Requête API avec le QR code
     fetchApi('guest/qr_code', { 
       method: 'GET', 
       params: { lobby_code : lobbyCode, qr_code : decodedText }, 
     }).then((response) => {
-
       console.log("response", response)
       if (response.isCorrect) {
         onOpenChange()
@@ -29,6 +31,8 @@ function  Qrcode({ isOpen, onOpenChange,lobbyCode}: QrcodeProps) {
       }
     }).catch((error) => {
       alert("Mauvais QR-code");
+    }).finally(() => {
+      processing = false;
     });
   };
   
