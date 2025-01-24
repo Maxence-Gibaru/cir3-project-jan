@@ -27,10 +27,12 @@ export async function PUT(req: NextRequest) {
             );
         }
 
+        const closed_at = new Date();
+
         const guestId = session.user.id;
         const hunt = await HuntModel.findOneAndUpdate({ _id: result.huntId, organizer_id: guestId, status: 'started' }, {
             status: "ended",
-            closed_at: new Date()
+            closed_at
         });
         if (!hunt) {
             return NextResponse.json(
