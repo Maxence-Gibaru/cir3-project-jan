@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { useEffect } from 'react';
 
@@ -34,29 +35,42 @@ const createConfig = (props) => {
 
 const Html5QrcodePlugin = (props/* : Html5QrcodePluginProps */) => {
     useEffect(() => {
-        // Créer la configuration et initialiser le scanner
+
+        if(html5QrcodeScanner.getState()===3){
+            html5QrcodeScanner.resume();
+        }
+        
+        else
+        {
         const config = createConfig(props);
         const verbose = props.verbose === true;
-
-        // Vérification de la présence du callback pour le succès
+    
         if (!props.qrCodeSuccessCallback) {
             throw new Error("qrCodeSuccessCallback is required.");
         }
-
+    
         const html5QrcodeScanner = new Html5QrcodeScanner(qrcodeRegionId, config, verbose);
         html5QrcodeScanner.render(props.qrCodeSuccessCallback, props.qrCodeErrorCallback);
-
-        // Nettoyage lors du démontage du composant
+        }
+        // Nettoyage lors du démontage ou réinitialisation
         return () => {
-            html5QrcodeScanner.clear().catch(error => {
-                console.error("Failed to clear html5QrcodeScanner. ", error);
+            html5QrcodeScanner.clear().catch((error) => {
+            console.error("Failed to clear html5QrcodeScanner. ", error);
             });
         };
-    }, [props.qrCodeSuccessCallback]);
+        }, [props]); // Ajout des dépendances pertinentes
+=======
+import React, { useState } from 'react';
+import { Scanner } from '@yudiel/react-qr-scanner';
+>>>>>>> 9eb0241a9586e4c30d4fad6f8090d60e94b37f15
 
+function scan_qr_code({ data, setData }) {
     return (
-        <div id={qrcodeRegionId} />
+      <>
+        <Scanner onScan={(result) => { setData(result)}} />
+      </>
     );
-};
-
-export default Html5QrcodePlugin;
+  }
+  
+  export default scan_qr_code;
+  

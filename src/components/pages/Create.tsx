@@ -1,3 +1,6 @@
+
+// @ts-nocheck
+
 "use client";
 
 import HuntModal from "@/components/ui/HuntModal";

@@ -1,8 +1,9 @@
+// @ts-nocheck
 "use client";
 
 
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from "@heroui/react";
-import { useEffect } from "react";
+
 
 
 export default function HuntDetails({ isOpen, onOpenChange, hintsRevealed, selectedMarker }) {

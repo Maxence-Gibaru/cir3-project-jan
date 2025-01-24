@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { fetchApi } from "@/lib/api";
 import {
   Modal,
