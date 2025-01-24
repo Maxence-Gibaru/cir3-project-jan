@@ -77,5 +77,5 @@ export const authOptions = {
         },
     },
 
-    secret: process.env.NEXT_PUBLIC_SECRET,
+    secret: 'INp8IvdIyeMcoGAgFGoA61DdBglwwSqnXJZkgz8PSnw',
 };
