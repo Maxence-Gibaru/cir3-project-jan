@@ -93,8 +93,8 @@ export default function NavbarHeader({ status, onOpen }) {
                             </DropdownTrigger>
                             <DropdownMenu aria-label="Profile Actions" variant="flat">
                                 <DropdownItem key="profile" className="h-14 gap-2">
-                                    <p className="font-semibold">Signed in as</p>
-                                    <p className="font-semibold">{user?.name}</p>
+                                    <p className="font-semibold">Connecté en tant que</p>
+                                    <p className="font-semibold">{user?.name || "organisateur"}</p>
                                 </DropdownItem>
                                 <DropdownItem key="divider" />
                                 {session?.user?.role === "organizer" ? (

@@ -16,7 +16,7 @@ const ReqZodSchema = z.object({
 
 export async function PUT(req: NextRequest) {
     const session: any = await getServerSession(authOptions as any);
-    if (!session) return NextResponse.next({ status: 401 });
+    if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
 
     try {
         await dbConnect();

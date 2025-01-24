@@ -77,10 +77,10 @@ export default function LandingPage() {
                                     placeholder="Enter code"
                                 />
                                 <Button
-                                    className="rounded-full bg-darkBlueBg text-white uppercase font-bold tracking-[0.1rem]"
+                                    className="rounded-full bg-darkBlueBg px-12 text-white uppercase font-bold tracking-[0.1rem]"
                                     onPress={handleJoin}
                                 >
-                                    Join
+                                    Rejoindre
                                 </Button>
                             </div>
                             <div className="bg-white rounded-full p-2 flex flex-col md:flex-row items-center justify-start w-full max-w-4xl">
