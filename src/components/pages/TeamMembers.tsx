@@ -5,7 +5,7 @@ import HuntButtons from './Create';
 const TeamMembers = ({ teams, maxGuests  }) => {
   return (
     <div className="text-gray-700">
-      <h2 className="text-gray-700">Tableau de pourcentage d&apos;avancement par équipe :</h2>
+      <h2 className="text-gray-700">Tableau des équipes :</h2>
       <ul className="list-disc list-inside">
         {teams.map((team: Team, index) => (
           <li key={index} className="text-gray-700">

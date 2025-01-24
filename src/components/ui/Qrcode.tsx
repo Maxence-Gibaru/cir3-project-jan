@@ -69,7 +69,7 @@ function  Qrcode({ isOpen, onOpenChange,lobbyCode}: QrcodeProps) {
                 </ModalBody>
                 <ModalFooter>
                     <Button
-                        className="bg-blue text-white px-4 py-2 rounded hover:bg-red-600"
+                        className="bg-darkBlueBg text-white px-4 py-2 rounded hover:bg-red-600"
                         color="primary"
                         onPress={onClose}
                     >
