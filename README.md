@@ -80,5 +80,5 @@ QR codes, generated from a unique ID, unlock the steps and associated resources.
 ![Homepage](Capture_homepage.jpeg)
 
 ### Map
-![Map](capture-map.jpeg)
+![Map](capture_map.jpeg)
 
