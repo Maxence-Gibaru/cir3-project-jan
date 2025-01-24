@@ -22,3 +22,8 @@ export type Marker = {
     };
     hint: string;
 }
+
+export type LeaderBoard = {
+    teamIndex: string[],
+    teamTime: number,
+}
