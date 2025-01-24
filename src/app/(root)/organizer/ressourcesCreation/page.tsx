@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 "use client";
 
 import RessourcesCreationPage from "@/components/pages/RessourcesCreation";

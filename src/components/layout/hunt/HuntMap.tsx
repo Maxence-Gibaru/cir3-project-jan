@@ -1,17 +1,16 @@
 "use client";
 
+
 import HuntDetails from "@/components/ui/HuntDetails";
 import HuntWelcome from "@/components/ui/HuntWelcome";
 import Qrcode from "@/components/ui/Qrcode";
 import { Position } from "@/definitions";
-import { fetchApi } from "@/lib/api";
 import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, useDisclosure } from "@heroui/react";
-import L, { marker } from "leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { signOut} from "next-auth/react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { Input } from "@heroui/react"
 import { useEffect, useState } from "react";
 import HuntStory from "@/components/ui/HuntStory";
 
@@ -165,7 +164,7 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
           stories={stories}
         />
 
-        <HuntStory isOpen={isStoryOpen} onOpenChange={onStoryOpenChange} hintsRevealed={hintsRevealed} selectedMarker={selectedMarker} stories={stories} />
+        <HuntStory isOpen={isStoryOpen} onOpenChange={onStoryOpenChange} stories={stories} />
 
         <Qrcode isOpen={isscanQcode} onOpenChange={scanQcodeChange} lobbyCode={lobbyCode} />
 
