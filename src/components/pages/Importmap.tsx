@@ -91,6 +91,16 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
         setMarkerText(response);
     };
 
+    const veriftresore = () => { 
+    const hasTreasure = markers.some(marker => marker.istreasure === true);
+
+    if (hasTreasure) {
+        onNext();
+    } else {
+        alert("Vous devez indiquer la position du trésor");
+    }
+};
+
     return (
         <div className="flex flex-col bg-greyBg min-h-screen">
             {markers.length == 0 && (
@@ -115,7 +125,7 @@ export default function Importmap({ chapters, markers, setMarkers, onNext }: Imp
                 {markers.length > 0 && (
                     <Button
                         color="primary"
-                        onPress={onNext}
+                        onPress={veriftresore}
                         className="rounded-lg shadow-lg hover:bg-secondary text-white"
                     >
                         Enregistrer les indices ({markers.length})
