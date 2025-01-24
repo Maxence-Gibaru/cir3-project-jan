@@ -1,11 +1,11 @@
 "use client";
 
-import RessourcesCreationPage from "@/components/pages/RessourcesCreation";
 import Importmap from "@/components/pages/Importmap";
+import RessourcesCreationPage from "@/components/pages/RessourcesCreation";
 import Teamnumber from "@/components/pages/Teamnumber";
-import { useState } from "react";
-import { useRouter } from 'next/navigation'
 import { fetchApi } from "@/lib/api";
+import { useRouter } from 'next/navigation';
+import { useState } from "react";
 /* import { map } from "zod";
 import { send } from "process"; */
 
@@ -19,8 +19,8 @@ export default function HomePage() {
 
 
     // Page teamnumber.tsx
-    const [numTeams, setNumTeams] = useState(1);
-    const [playersPerTeam, setPlayersPerTeam] = useState(1);
+    const [numTeams, setNumTeams] = useState(2);
+    const [playersPerTeam, setPlayersPerTeam] = useState(5);
     const [index, setIndex] = useState<number>(0); // Index du chapitre actuel
     const [error, setError] = useState("");
     // Créer l'objet JSON avec toutes les données

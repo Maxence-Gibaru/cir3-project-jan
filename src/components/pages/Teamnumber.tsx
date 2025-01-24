@@ -1,7 +1,7 @@
 "use client";
 
-import { Dispatch, SetStateAction } from "react";
 import { Button, Input } from "@heroui/react";
+import { Dispatch, SetStateAction } from "react";
 interface TeamnumberProps {
   Numberindice:number;
   numTeams:number;
@@ -33,8 +33,8 @@ export default function Teamnumber({Numberindice,numTeams, setNumTeams,playersPe
     <Input
       id="numTeams"
       type="number"
-      min="1"
-      defaultValue="1"
+      min="2"
+      value={numTeams.toString()}
       onChange={(e) => setNumTeams(Number(e.target.value))}
       className=" text-center py-3 border border-gray-300 flex flex-row gap-5 bg-white rounded-full justify-center items-center shadow-md w-full"
     />
@@ -49,8 +49,8 @@ export default function Teamnumber({Numberindice,numTeams, setNumTeams,playersPe
     <Input
       id="playersPerTeam"
       type="number"
-      min="0"
-      defaultValue="5"
+      min="1"
+      value={playersPerTeam.toString()}
       onChange={(e) => setPlayersPerTeam(Number(e.target.value))}
       className=" text-center py-3 border border-gray-300 flex flex-row gap-5 bg-white rounded-full justify-center items-center shadow-md w-full"
     />

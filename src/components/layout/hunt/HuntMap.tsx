@@ -14,6 +14,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { Input } from "@heroui/react"
 import { useEffect, useState } from "react";
+import HuntStory from "@/components/ui/HuntStory";
 
 const icon = L.icon({
   iconUrl: '/marker-icon.png',
@@ -51,7 +52,8 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
   const { isOpen: isDetailsOpen, onOpen: onDetailsOpen, onOpenChange: onDetailsOpenChange } = useDisclosure();
   const { isOpen: isscanQcode, onOpen: onscanQcode, onOpenChange: scanQcodeChange } = useDisclosure();
   const { isOpen: isRules, onOpen: onRules, onOpenChange: scanRules } = useDisclosure();
-  const [qrCode, setQrCode] = useState("")
+  const { isOpen: isStoryOpen, onOpen: onStoryOpen, onOpenChange: onStoryOpenChange } = useDisclosure();
+  /* const [qrCode, setQrCode] = useState("") */
 
   /* console.log("rerender"); */
 
@@ -112,6 +114,8 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
               className="text-black bg-white rounded-md">Règles
               </Button>
               </DropdownItem>
+            <DropdownItem key="new" onPress={onStoryOpen}>Histoire</DropdownItem>
+            <DropdownItem key="copy"><Link href="/playerrules">Régles</Link></DropdownItem>
             <DropdownItem key="HomePage" onPress={() => {
               signOut()
             }}>Déconnexion</DropdownItem>
@@ -173,6 +177,9 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
         isOpen={isRules}
         onOpenChange={scanRules}
         />
+
+        <HuntStory isOpen={isStoryOpen} onOpenChange={onStoryOpenChange} hintsRevealed={hintsRevealed} selectedMarker={selectedMarker} stories={stories} />
+
         <Qrcode isOpen={isscanQcode} onOpenChange={scanQcodeChange} lobbyCode={lobbyCode} />
 
      

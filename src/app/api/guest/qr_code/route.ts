@@ -45,11 +45,19 @@ export async function GET(req: NextRequest) {
             );
         }
 
-        const attendingCode = hunt.markers[team.hints_order[team.current_hint_index]].id;
+        const currentHintIndex = team.current_hint_index;
+        const isTreasureAttending = currentHintIndex === hunt.markers.length - 1;
+        const attendingCode = isTreasureAttending
+        ? hunt.markers[0].id
+        : hunt.markers[team.hints_order[currentHintIndex]].id;
+
         const isCorrect = attendingCode === qrCode;
         if (isCorrect) {
             const teams = hunt.teams;
             ++teams[teamIndex].current_hint_index;
+            if (isTreasureAttending) {
+                teams[teamIndex].win_at = new Date();
+            }
             await HuntModel.findByIdAndUpdate(hunt._id, {
                 teams
             });

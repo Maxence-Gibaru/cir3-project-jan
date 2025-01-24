@@ -30,7 +30,7 @@ export async function PUT(req: NextRequest) {
         const huntId = result.huntId;
         const teamIndex = result.teamIndex;       
 
-        const hunt = await HuntModel.findById(huntId);
+        const hunt = await HuntModel.findOne({ _id: huntId, status: "opened" });
         if (!hunt) {
             return NextResponse.json(
                 { error: "Aucune chasse au trésor trouvée avec ce code." },
@@ -57,10 +57,11 @@ export async function PUT(req: NextRequest) {
                 { status: 400 }
             );
         }
-        hunt.teams[teamIndex].guests.push(newGuest);
-
-        await HuntModel.findOneAndUpdate({ _id: huntId, status: "opened" }, {
-            ...hunt,
+        
+        const teams = hunt.teams;
+        teams[teamIndex].guests.push(newGuest);
+        await HuntModel.findByIdAndUpdate(hunt._id, {
+            teams
         });
 
 

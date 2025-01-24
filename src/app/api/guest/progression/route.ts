@@ -5,9 +5,6 @@ import { Hunt, HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-
-
-
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.next({ status: 401 });
@@ -19,7 +16,7 @@ export async function GET(req: NextRequest) {
         const lobbyCode = urlSearch.get("lobby_code");
 
         let progression = "not_started";
-        let data: data = {};
+        let data: any = {};
         if (lobbyCode) {
             const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: { $ne: "closed" } });
             if (hunt) {
@@ -39,15 +36,17 @@ export async function GET(req: NextRequest) {
                 } else if (team) {
                     data = getInitData(hunt);
                     const current_hint_index = team.current_hint_index;
+                    const hintsOrder = team.hints_order;
                     for (let i = 0; i <= current_hint_index; i++) {
                         data.stories.push(hunt.stories[i]);
 
-                        const position = (i == 0) ? {} : hunt.markers[team.hints_order[i - 1]].position;
+                        const position = (i == 0) ? {} : hunt.markers[hintsOrder[i - 1]].position;
                         data.markers.push(position);
 
+                        const hintOrder = hintsOrder[i];
                         const markerHint = (current_hint_index === hunt.markers.length - 1)
                             ? hunt.markers[0].hint
-                            : hunt.markers[team.hints_order[i ]].hint;
+                            : hunt.markers[hintOrder].hint;
                         data.hintsRevealed.push(markerHint);
                     }
 
@@ -69,8 +68,6 @@ export async function GET(req: NextRequest) {
                 }
             }
         }
-
-        /* console.log("data :", data) */
 
         return NextResponse.json({ progression, data }, { status: 200 });
     } catch (error) {
