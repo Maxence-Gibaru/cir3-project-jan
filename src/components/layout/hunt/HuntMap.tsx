@@ -73,7 +73,7 @@ export default function HuntMap({ map, stories, hintsRevealed, markers, lobbyCod
           </DropdownTrigger>
           <DropdownMenu className="text-black bg-white rounded-md" aria-label="Example with disabled actions" disabledKeys={["edit", "delete"]}>
             <DropdownItem key="copy"onPress={onRules}> Régles</DropdownItem>
-            <DropdownItem key="new" onPress={onStoryOpen}>Histoire</DropdownItem>
+            {/* <DropdownItem key="new" onPress={onStoryOpen}>Histoire</DropdownItem> */}
             <DropdownItem key="HomePage" onPress={() => {
               signOut()
             }}>Déconnexion</DropdownItem>
