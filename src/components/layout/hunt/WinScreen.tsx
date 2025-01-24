@@ -1,7 +1,8 @@
 "use client";
 import { Position } from "@/definitions";
+import Link from "next/link";
+import Image from "next/image";
 import "./wait.css";
-
 
 export default function WinScreen({ teamTime, treasurePosition, team, isWin, leaderBoard }: { teamTime: number, treasurePosition: Position, team: string[], isWin: boolean, leaderBoard: LeaderBoard }) {
     const podium = [
@@ -13,65 +14,49 @@ export default function WinScreen({ teamTime, treasurePosition, team, isWin, lea
     ];
 
     return (
-        <div className="h-screen flex flex-col justify-center items-center uppercase text-xl font-bold tracking-[0.5rem]">
-            <p>{isWin ? "Bravo !" : "Dommage !"}</p>
+        <div className="h-screen bg-greyBg text-gray-700 flex flex-col">
+            {/* Header */}
+            <header className="bg-white p-4 flex items-center shadow-md">
+                <Link href="/" className="hover:opacity-80 transition-opacity flex items-center">
+                    <Image
+                        src="/logoO.png"
+                        alt="Logo de One P'ISEN"
+                        width={50}
+                        height={50}
+                        className="rounded-full"
+                    />
+                    <span className="ml-3 font-bold text-xl text-gray-800">One Pisen</span>
+                </Link>
+            </header>
 
-            <p>Temps : {teamTime} secondes</p>
-            <p>
-                Trésor : {treasurePosition.lat} {treasurePosition.lng}
-            </p>
-            
-            <p>Équipe : {team.join(", ")}</p>
+            {/* Main Content */}
+            <main className="flex-1 flex flex-col justify-center items-center uppercase text-center px-4">
+                {/* Bravo/Dommage */}
+                <h1 className={`text-6xl font-extrabold mb-8 transition-transform transform ${isWin ? "text-green-500" : "text-red-500"} animate-bounce`}>
+                    {isWin ? "Bravo !" : "Dommage !"}
+                </h1>
 
-            {podium?.length > 0 && (
-                <div className="mt-10">
-                    <h2 className="text-2xl">Podium :</h2>
-                    <div className="flex justify-center items-end mt-5">
-                        {/* Deuxième place */}
-                        {podium[1] && (
-                            <div className="flex flex-col items-center mx-2">
-                                <div className="w-14 h-20 md:w-20 md:h-32 bg-gray-400 flex justify-center items-center text-black">
-                                    2
-                                </div>
-                                <p className="mt-2 text-sm md:text-base">{podium[1].teamName}</p>
-                                <p className="text-sm md:text-base">{podium[1].time} sec</p>
-                            </div>
-                        )}
-
-                        {/* Première place */}
-                        {podium[0] && (
-                            <div className="flex flex-col items-center mx-2">
-                                <div className="w-16 h-24 md:w-24 md:h-40 bg-yellow flex justify-center items-center text-black">
-                                    1
-                                </div>
-                                <p className="mt-2 text-sm md:text-base">{podium[0].teamName}</p>
-                                <p className="text-sm md:text-base">{podium[0].time} sec</p>
-                            </div>
-                        )}
-
-                        {/* Troisième place */}
-                        {podium[2] && (
-                            <div className="flex flex-col items-center mx-2">
-                                <div className="w-12 h-16 md:w-20 md:h-28 bg-orange-500 flex justify-center items-center text-black">
-                                    3
-                                </div>
-                                <p className="mt-2 text-sm md:text-base">{podium[2].teamName}</p>
-                                <p className="text-sm md:text-base">{podium[2].time} sec</p>
-                            </div>
-                        )}
-                    </div>
-                    <div className="mt-10 w-full text-center">
-
-                        <ul className="list-decimal mt-4 mx-auto text-sm md:text-base">
-                            {podium.slice(3).map((entry, index) => (
-                                <li key={index} className="mt-1">
-                                    {index + 4} : {entry.teamName} - {entry.time} sec
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                {/* Card for details */}
+                <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md transform transition-transform hover:scale-105">
+                    <p className="text-lg font-semibold mb-4">
+                        <span className="block text-sm text-gray-500 uppercase tracking-wider">Durée de la partie :</span>
+                        <span className="text-gray-700">{teamTime} secondes</span>
+                    </p>
+                    <p className="text-lg font-semibold mb-4">
+                        <span className="block text-sm text-gray-500 uppercase tracking-wider">Coordonnées du trésor :</span>
+                        <span className="text-gray-700">{treasurePosition.lat}, {treasurePosition.lng}</span>
+                    </p>
+                    <p className="text-lg font-semibold">
+                        <span className="block text-sm text-gray-500 uppercase tracking-wider">Nom de l'équipe :</span>
+                        <span className="text-gray-700">{team.join(", ")}</span>
+                    </p>
                 </div>
-            )}
+            </main>
+
+            {/* Footer */}
+            <footer className="bg-white text-gray-700 text-sm text-center py-4 mt-8">
+                <p>🎉 Hâte de vous retrouver pour une nouvelle partie! 🎉</p>
+            </footer>
         </div>
     );
 }

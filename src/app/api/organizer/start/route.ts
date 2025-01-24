@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { HuntModel } from "@/models/Hunt";
@@ -67,7 +69,6 @@ export async function PUT(req: NextRequest) {
 
         // Find by id and update the started_at property and status at started
         const newHunt = await HuntModel.findByIdAndUpdate(result.huntId, hunt);
-
 
         return NextResponse.json({ hunt: newHunt }, { status: 200 });
     } catch (error) {

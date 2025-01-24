@@ -26,6 +26,19 @@ export default function WaitStart({ huntId, name, introduction_story, goNext }: 
         return () => clearInterval(interval);
     }, []);
 
+<<<<<<< HEAD:src/app/(root)/wait_start/page.tsx
+
+    const ckeck_start = async () => {
+
+        await fetchApi("guest/check_is_started", {
+            method: "GET",
+            
+        }).then((data) => {
+
+            if (data.isStarted) {
+                alert("La chasse au trésor a commencé !");
+                router.push('map');
+=======
     /*     const ckeck_start = async () => {
             await fetchApi("guest/check_is_started", {
                 method: "GET",
@@ -34,6 +47,7 @@ export default function WaitStart({ huntId, name, introduction_story, goNext }: 
                 if (data.isStarted) {
                     goNext(data.firstHint);
                 }
+>>>>>>> f768cd8c1131b92f195515f4a0284bb25a46b2eb:src/components/layout/hunt/WaitStart.tsx
             }
             ).catch((errorMessage: string) => {
                 setError(errorMessage);

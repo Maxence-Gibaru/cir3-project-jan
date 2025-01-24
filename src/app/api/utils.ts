@@ -1,6 +1,6 @@
 import { ZodObject, ZodRawShape } from "zod";
 
-export function getparsedBody<T extends ZodRawShape>(ZodSchema: ZodObject<T>, body: unknown) {
+export function getparsedBody<T extends ZodRawShape>(ZodSchema: ZodObject<T>, body: unknown): any {
     const parsedBody = ZodSchema.safeParse(body);
     if (!parsedBody.success) {
         let details = "";

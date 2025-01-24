@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 // MapPage.jsx
 "use client"
 import React, { useState } from 'react'
