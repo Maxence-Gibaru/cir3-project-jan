@@ -50,7 +50,7 @@ export default function IAModalApp({ title, chapters, onIaResponse }) {
 
 
     // Ajouter une demande contextuelle pour l'IA
-    fullPrompt += " En français. Réponse de maximum 100 mots.\n";
+    fullPrompt += " En français. Réponse de maximum 100 mots. et évite de mettre les ** dans ta réponse\n";
 
     fullPrompt += userPrompt;
 

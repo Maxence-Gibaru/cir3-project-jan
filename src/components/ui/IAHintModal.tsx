@@ -23,7 +23,7 @@ export default function IAModalHintApp({ onIaResponse }) {
   const handleSendPrompt = async () => {
     let fullPrompt = `Tu es un scénariste pour des chasses au trésor et j'aimerais que tu m'aides pour un indice pour ce rendre a cette endroit.`;
     fullPrompt += `\n${userPrompt}`;
-    fullPrompt += "\nEn français. Réponse avec une phrase courte.";
+    fullPrompt += "\nEn français. Réponse avec une phrase courte. Et évite de mettre les ** dans ta réponse";
 
     /* console.log("Prompt envoyé :", fullPrompt); */
 
