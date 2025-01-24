@@ -38,7 +38,7 @@ export async function PUT(req: NextRequest) {
             );
         }
 
-        const teams = Array.from({ length: result.max_teams }, () => new TeamModel().toObject());
+        const teams = Array.from({ length: hunt.max_teams }, () => new TeamModel().toObject());
         const markers = hunt.markers
         markers.map((marker: Marker) => {
             marker.id = uuidv4().slice(0, 8);
