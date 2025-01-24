@@ -1,3 +1,4 @@
+
 "use client";
 
 
@@ -6,7 +7,7 @@ import { useEffect } from "react";
 
 
 
-export default function HuntStory({ isOpen, onOpenChange, hintsRevealed, selectedMarker, stories }) {
+export default function HuntStory({ isOpen, onOpenChange, stories }) {
 
 
     useEffect(() => {

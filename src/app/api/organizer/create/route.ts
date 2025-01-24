@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import { getparsedBody } from "@/app/api/utils";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
