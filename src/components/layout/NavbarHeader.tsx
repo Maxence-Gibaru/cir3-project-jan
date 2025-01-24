@@ -4,24 +4,24 @@
 
 import {
     Avatar,
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownTrigger,
     Navbar,
     NavbarBrand,
     NavbarContent,
-    NavbarItem,
-    Dropdown,
-    DropdownTrigger,
-    DropdownMenu,
-    DropdownItem,
-    Button
+    NavbarItem
 } from "@nextui-org/react";
 
 import { Skeleton } from "@heroui/react";
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
-import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function NavbarHeader({ status, onOpen }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -115,7 +115,7 @@ export default function NavbarHeader({ status, onOpen }) {
                                     key="logout"
                                     color="danger"
                                 >
-                                    Log Out
+                                    Déconnexion
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
