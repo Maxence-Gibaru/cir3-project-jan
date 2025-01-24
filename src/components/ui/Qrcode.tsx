@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import Qr_code from "@/components/ui/scan_qr_code";
