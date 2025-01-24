@@ -56,14 +56,26 @@ export async function GET(req: NextRequest) {
                             progression = "hunting";
                         } else {
                             // Chasse gagnée
+                            const startedAt = hunt.started_at;
+                            if (!startedAt) {
+                                throw new Error("La chasse au trésor a été commencée mais la date de début est manquante.");
+                            }
                             progression = "win";
-                            data.position = hunt.markers[0].position
-                            data.win_at = team.win_at;
+                            data.treasurePosition = hunt.markers[0].position;
+                            data.teamTime = team.win_at.getTime() - startedAt.getTime();
+                            data.team = team.guests.map((guest) => guest.name);
                         }
                     } else if (hunt.status === "ended") {
                         // Chasse perdue
+                        const startedAt = hunt.started_at;
+                        if (!startedAt) {
+                            throw new Error("La chasse au trésor a été commencée mais la date de début est manquante.");
+                        }
                         progression = "lose";
-                        data.position = hunt.markers[0].position
+                        data.treasurePosition = hunt.markers[0].position;
+                        data.team = team.guests.map((guest) => guest.name);
+                        const currentDate = new Date();
+                        data.teamTime = currentDate.getTime() - startedAt.getTime();
                     }
                 }
             }
