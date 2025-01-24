@@ -53,7 +53,6 @@ export async function GET(req: NextRequest) {
                         }
                     }
 
-
                     if (hunt.status === "started") {
                         // Chasse en cours
                         if (!team.win_at) {

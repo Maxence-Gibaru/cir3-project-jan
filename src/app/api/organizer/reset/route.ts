@@ -1,8 +1,10 @@
+import { Marker } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { v4 as uuidv4 } from 'uuid';
 import { z } from "zod";
 import { getparsedBody } from "../../utils";
 
@@ -26,15 +28,20 @@ export async function PUT(req: NextRequest) {
         }
         
         const guestId = session.user.id;
-        const hunt = await HuntModel.findOneAndUpdate({ _id: result.huntId, organizer_id: guestId, status: 'ended' }, {
-            status: "closed",
-        });
+        const hunt = await HuntModel.findById({ _id: result.huntId, organizer_id: guestId, status: 'ended' });
         if (!hunt) {
             return NextResponse.json(
                 { error: "Hunt not found" },
                 { status: 404 }
             );
         }
+
+        const shortUuid = uuidv4().slice(0, 8);
+        body.code = shortUuid.toUpperCase();
+
+        body.markers.map((marker: Marker) => {
+            marker.id = uuidv4().slice(0, 8);
+        });
 
         return NextResponse.json({ isValid: true }, { status: 200 });
     } catch (error) {

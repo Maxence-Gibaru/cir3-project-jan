@@ -1,4 +1,5 @@
 import { getparsedBody } from "@/app/api/utils";
+import { Marker } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel, HuntZodSchema } from "@/models/Hunt";
@@ -11,15 +12,6 @@ export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.next({ status: 401 });
 
-    type Marker = {
-        id?: string; // Identifiant unique pour le qr_code
-        position: {
-            lat: number;
-            lng: number;
-        };
-        hint: string;
-    }
-
     try {
         await dbConnect();
         const body = await req.json();
@@ -31,8 +23,6 @@ export async function POST(req: NextRequest) {
         body.markers.map((marker: Marker) => {
             marker.id = uuidv4().slice(0, 8);
         });
-
-
 
         const result = getparsedBody(HuntZodSchema, body);
         if (typeof result === "string") {
