@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import { useEffect } from 'react';
 
@@ -58,10 +59,18 @@ const Html5QrcodePlugin = (props/* : Html5QrcodePluginProps */) => {
             });
         };
         }, [props]); // Ajout des dépendances pertinentes
+=======
+import React, { useState } from 'react';
+import { Scanner } from '@yudiel/react-qr-scanner';
+>>>>>>> 9eb0241a9586e4c30d4fad6f8090d60e94b37f15
 
+function scan_qr_code({ data, setData }) {
     return (
-        <div id={qrcodeRegionId} />
+      <>
+        <Scanner onScan={(result) => { setData(result)}} />
+      </>
     );
-};
-
-export default Html5QrcodePlugin;
+  }
+  
+  export default scan_qr_code;
+  

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { HuntInit } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
@@ -34,28 +36,46 @@ export async function GET(req: NextRequest) {
                         progression = "waiting";
                     }
                     data = getInitData(hunt);
-                } else if (hunt.status === "started" && team) {
-                    // Chasse en cours
-                    if (!team.win_at) {
-                        progression = "hunting";
-                        data = getHuntingData(hunt, team as Team);
-                    } else {
-                        // Chasse gagnée
-                        progression = "win";
-                        data = getInitData(hunt);
-                        data.position = hunt.markers[0].position
-                        data.win_at = team.win_at;
-                    }
-                } else if (hunt.status === "ended" && team) {
-                    // Chasse perdue
-                    progression = "lose";
+                } else if (team) {
                     data = getInitData(hunt);
-                    data.position = hunt.markers[0].position
+                    if (!team.win_at) {
+                        const current_hint_index = team.current_hint_index;
+                        const hintsOrder = team.hints_order;
+                        for (let i = 0; i <= current_hint_index; i++) {
+                            data.stories.push(hunt.stories[i]);
+
+                            const position = (i == 0) ? {} : hunt.markers[hintsOrder[i - 1]].position;
+                            data.markers.push(position);
+
+                            const hintOrder = hintsOrder[i];
+                            const markerHint = (current_hint_index === hunt.markers.length - 1)
+                                ? hunt.markers[0].hint
+                                : hunt.markers[hintOrder].hint;
+                            data.hintsRevealed.push(markerHint);
+                        }
+                    }
+
+                    if (hunt.status === "started") {
+                        // Chasse en cours
+                        if (!team.win_at) {
+                            progression = "hunting";
+                        } else {
+                            // Chasse gagnée
+                            const startedAt = hunt.started_at;
+                            if (!startedAt) {
+                                throw new Error("La chasse au trésor a été commencée mais la date de début est manquante.");
+                            }
+                            progression = "win";
+                            updateEndData(data, hunt, team as Team);
+                        }
+                    } else if (hunt.status === "ended") {
+                        // Chasse perdue
+                        progression = (team.win_at) ? "win" : "lose";
+                        updateEndData(data, hunt, team as Team);
+                    }
                 }
             }
         }
-
-        console.log("data : ", data);
 
         return NextResponse.json({ progression, data }, { status: 200 });
     } catch (error) {
@@ -66,6 +86,19 @@ export async function GET(req: NextRequest) {
         );
     }
 }
+
+function updateEndData(data: any, hunt: Hunt, team: Team) {
+    const startedAt = hunt.started_at;
+    if (!startedAt) {
+        throw new Error("La chasse au trésor a été commencée mais la date de début est manquante.");
+    }
+
+    data.treasurePosition = hunt.markers[0].position;
+    data.team = team.guests.map((guest) => guest.name);
+    const currentDate = new Date();
+    data.teamTime = currentDate.getTime() - startedAt.getTime();
+}
+
 function getInitData(hunt: Hunt): HuntInit {
     const teams: string[][] = hunt.teams.map((team) => team.guests.map((guest) => guest.name));
 
@@ -73,34 +106,10 @@ function getInitData(hunt: Hunt): HuntInit {
         id: hunt._id as string,
         name: hunt.name,
         teams,
-        introduction_story: hunt.stories[0],
-        max_guests: hunt.max_guests,
-        max_teams: hunt.max_teams,
+        stories: [],
+        markers: [],
+        hintsRevealed: [],
+        maxGuests: hunt.max_guests,
         map: hunt.map,
     };
-}
-
-function getHuntingData(hunt: Hunt, team: Team) {
-    const data: any = getInitData(hunt);
-    data.first_hint = hunt.markers[0].hint;
-
-    const markers = [];
-    const current_hint_index = team.current_hint_index;
-    for (let i = 0; i <= current_hint_index; i++) {
-        const marker = hunt.markers[team.hints_order[i]];
-        console.log("marker :", team)
-        const position = marker.position;
-        const hint = (current_hint_index === hunt.markers.length - 1)
-            ? hunt.markers[0].hint
-            : hunt.markers[team.hints_order[i + 1]].hint;
-
-        markers.push({
-            position,
-            hint,
-            story: hunt.stories[i + 1] // Décalé d'un car il y a l'intro
-        });
-    }
-
-    data.markers = markers;
-    return data;
 }

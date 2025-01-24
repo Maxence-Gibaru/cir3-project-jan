@@ -10,8 +10,8 @@ import { useEffect, useState } from "react";
 import Footer from "../layout/Footer";
 import NavbarHeader from "../layout/NavbarHeader";
 import LoginModal from "../ui/LoginModal";
-import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/react";
-import Link from "next/link";
+
+
 
 export default function LandingPage() {
     const [lobbyCode, setLobbyCode] = useState("");
@@ -23,16 +23,16 @@ export default function LandingPage() {
 
     const router = useRouter();
 
-    const { data: session, update, status } = useSession();
+    const { data: session, status } = useSession();
 
 
-    const [user, setUser] = useState({})
-    useEffect(() => {
+    /* const [user, setUser] = useState({}) */
+    /* useEffect(() => {
         if (session && session.user) {
             setUser(session.user)
             console.log(session.user)
         }
-    }, [session])
+    }, [session]) */
 
 
     useEffect(() => {
@@ -40,7 +40,7 @@ export default function LandingPage() {
 
             onOpen();
         }
-    }, [session])
+    }, [session, status, onOpen])
 
     const handleJoin = async () => {
         const response = await fetchApi("guest/join_lobby", { method: "GET", params: { lobby_code: lobbyCode } });
@@ -99,16 +99,16 @@ export default function LandingPage() {
                                 </p>
 
                                 <p>
-                                    L'objectif est de trouver le trésor caché dans la ville. Pour cela, aide toi des différents indices disposés tout au long du parcours.
-                                    Chaque indice indique la position de l'indice suivant, ils devront alors être trouvés dans l'ordre établi en scannant les
+                                    L&apos;objectif est de trouver le trésor caché dans la ville. Pour cela, aide toi des différents indices disposés tout au long du parcours.
+                                    Chaque indice indique la position de l&apos;indice suivant, ils devront alors être trouvés dans l&apos;ordre établi en scannant les
                                     QRCode correspondants.
                                 </p>
 
-                                <p>
-                                    Une fois tous les indices obtenus dans l'ordre, un indice final vous sera donné
-                                    afin d'indiquer l'emplacement du trésor. Rentrez le code d'accès fourni par votre organisateur afin
+                               {/*  <p>
+                                    Une fois tous les indices obtenus dans l&apos;ordre, un indice final vous sera donné
+                                    afin d&apos;indiquer l&apos;emplacement du trésor. Rentrez le code d&apos;accès fourni par votre organisateur afin
                                     de rejoindre la partie et <span className="font-bold">amusez-vous bien !</span>
-                                </p>
+                                </p> */}
                             </CardBody>
                         </Card>
                         {/* </div> */}

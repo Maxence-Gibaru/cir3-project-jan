@@ -1,9 +1,9 @@
 "use client"
-import { fetchApi, FetchOptions } from "@/lib/api";
-import { useEffect, useState } from "react";
+
+import { useState } from "react";
 import { useRouter } from "next/navigation"
-import { signIn, signOut, useSession } from "next-auth/react";
-import Link from "next/link";
+import { signIn, useSession } from "next-auth/react";
+
 
 export default function LoginForm({ onClose }) {
     const [loginData, setLoginData] = useState({
@@ -35,7 +35,7 @@ export default function LoginForm({ onClose }) {
                 password: loginData.password,
                 callbackUrl: "/",
             });
-            router.push(result.url);
+            router.push(result?.url);
             /*  if (result?.error) {
                  setError("Échec de la connexion. Veuillez vérifier vos identifiants.");
              } else {

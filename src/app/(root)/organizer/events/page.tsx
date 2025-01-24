@@ -25,19 +25,23 @@ const [hunt, setHunt] = useState<Hunt>();
   }, []);
 
 
+  if (!hunt && currentComponent == 2) {
+    return <div>Loading...</div>;
+  }
+
   const renderComponent = () => {
     switch(currentComponent) {
       case 1:
         return <Create hunts={hunts} setHunts={setHunts} hunt={hunt} setHunt={setHunt} onNext={() => setCurrentComponent(2)} />;
       case 2:
-        return <Dashboard hunts={hunts} setHunts={setHunts} hunt={hunt} setHunt={setHunt} onNext={() => setCurrentComponent(1)} />;
+        return <Dashboard hunt={hunt} setHunt={setHunt} />;
       default:
         return <Create hunts={hunts} setHunts={setHunts} hunt={hunt} setHunt={setHunt} onNext={() => setCurrentComponent(2)} />;
     }
   };
 
   return (
-    <div className="container mx-auto ">
+    <div>
       {renderComponent()}
     </div>
   );

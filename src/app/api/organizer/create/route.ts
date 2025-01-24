@@ -1,25 +1,19 @@
+// @ts-nocheck
+
+
 import { getparsedBody } from "@/app/api/utils";
+import { Marker } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel, HuntZodSchema } from "@/models/Hunt";
 import { TeamModel } from "@/models/Team";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { Marker } from "react-leaflet";
 import { v4 as uuidv4 } from 'uuid';
 
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.next({ status: 401 });
-
-    type Marker = {
-        id?: string; // Identifiant unique pour le qr_code
-        position: {
-            lat: number;
-            lng: number;
-        };
-        hint: string;
-    }
 
     try {
         await dbConnect();
@@ -33,8 +27,6 @@ export async function POST(req: NextRequest) {
             marker.id = uuidv4().slice(0, 8);
         });
 
-
-
         const result = getparsedBody(HuntZodSchema, body);
         if (typeof result === "string") {
             return NextResponse.json(
@@ -43,8 +35,13 @@ export async function POST(req: NextRequest) {
             );
         }
 
+        if (!result.max_teams) {
+            return NextResponse.json(
+                { error: "max_teams is required" },
+                { status: 400 }
+            );
+        }
         result.teams = Array.from({ length: result.max_teams }, () => new TeamModel().toObject());
-
 
         const newHunt: Hunt = await HuntModel.create(result);
         return NextResponse.json(newHunt, { status: 201 });

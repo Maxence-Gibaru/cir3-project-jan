@@ -1,3 +1,6 @@
+// @ts-nocheck
+
+
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel } from "@/models/Hunt";
@@ -36,7 +39,8 @@ export async function GET(req: NextRequest) {
         }
 
         const guestId = await session.user.id;
-        const team = hunt.teams.find((team) => team.guests.find((guest) => guest.id === guestId));
+        const teamIndex = hunt.teams.findIndex((team) => team.guests.find((guest) => guest.id === guestId));
+        const team = hunt.teams[teamIndex];
         if (!team) {
             return NextResponse.json(
                 { error: "Team not found" },
@@ -44,8 +48,25 @@ export async function GET(req: NextRequest) {
             );
         }
 
-        const attendingCode = hunt.markers[team.hints_order[team.current_hint_index]].id;
-        return NextResponse.json({isCorrect: attendingCode === qrCode}, { status: 201 });
+        const currentHintIndex = team.current_hint_index;
+        const isTreasureAttending = currentHintIndex === hunt.markers.length - 1;
+        const attendingCode = isTreasureAttending
+        ? hunt.markers[0].id
+        : hunt.markers[team.hints_order[currentHintIndex]].id;
+
+        const isCorrect = attendingCode === qrCode;
+        if (isCorrect) {
+            const teams = hunt.teams;
+            ++teams[teamIndex].current_hint_index;
+            if (isTreasureAttending) {
+                teams[teamIndex].win_at = new Date();
+            }
+            await HuntModel.findByIdAndUpdate(hunt._id, {
+                teams
+            });
+        }
+        
+        return NextResponse.json({ isCorrect }, { status: 201 });
     } catch (error) {
         console.error(error);
         return NextResponse.json(

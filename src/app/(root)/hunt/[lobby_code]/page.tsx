@@ -4,7 +4,6 @@ import HuntMap from "@/components/layout/hunt/HuntMap";
 import SelectTeam from "@/components/layout/hunt/SelectTeam";
 import WaitStart from "@/components/layout/hunt/WaitStart";
 import WinScreen from "@/components/layout/hunt/WinScreen";
-import { HuntInit } from "@/definitions";
 import { fetchApi } from "@/lib/api";
 import { useEffect, useState } from "react";
 
@@ -26,28 +25,40 @@ export default function HuntPage({
         });
     }, [params]);
 
+    const fetchProgression = async (lobby_code: string | null) => {
+        if (!lobby_code) return;
+        const response = await fetchApi("guest/progression", {
+            method: "GET", params: {
+                lobby_code
+            }
+        });
+        // Vérifier si le contenu des données a changé avant de mettre à jour
+        if (JSON.stringify(response.data) !== JSON.stringify(huntData)) {
+            console.log("Ancienne donnée : ", huntData)
+            console.log("Données mises à jour :", response.data);
+            setHuntData(response.data); // Met à jour uniquement si les données sont différentes
+        }
 
-
-    const fetchProgression = async () => {
-        const response = await fetchApi("guest/progression", { method: "GET", params: { lobby_code: lobbyCode } })
-        setPageStatus(response.progression)
-        setHuntData(response.data);
+        // Met à jour le statut de la page indépendamment de huntData
+        if (response.progression !== pageStatus) {
+            setPageStatus(response.progression);
+        }
     }
+
+    useEffect(() => {
+        if (lobbyCode) {
+            const interval = setInterval(() => {
+                fetchProgression(lobbyCode)
+            }, 2000)
+
+            return () => clearInterval(interval);
+        }
+    }, [lobbyCode, fetchProgression])
 
 
     useEffect(() => {
-
-        const interval = setInterval(() => {
-            fetchProgression()
-
-        }, 2000)
-
-        return () => clearInterval(interval);
-
-    }, [lobbyCode])
-
-
-
+        console.log("huntData a été mis à jour :", huntData);
+    }, [huntData]);
 
 
     if (!huntData) {
@@ -62,10 +73,10 @@ export default function HuntPage({
             return <SelectTeam
                 huntId={huntData.id}
                 name={huntData.name}
-                maxGuests={huntData.max_guests}
+                maxGuests={huntData.maxGuests}
                 teams={huntData.teams}
                 goNext={() =>
-                    fetchProgression()
+                    fetchProgression(lobbyCode)
                 }
             />;
 
@@ -73,26 +84,24 @@ export default function HuntPage({
             return <WaitStart
                 huntId={huntData.id}
                 name={huntData.name}
-                introduction_story={huntData.introduction_story}
+                introduction_story={huntData.stories[0]}
                 goNext={() => {
-                    fetchProgression()
-
+                    fetchProgression(lobbyCode)
                 }}
             />;
 
         case "hunting":
-
             return <HuntMap
                 map={huntData.map}
-                introduction_story={huntData.introduction_story}
-                firstHint={huntData.first_hint}
+                stories={huntData.stories}
+                hintsRevealed={huntData.hintsRevealed}
                 markers={huntData.markers}
-
+                lobbyCode={lobbyCode || ""}
             />;
 
-
         case "win":
-            return <WinScreen team_time={null} treasure_position={null} team={null} />;
+        case "lose":
+            return <WinScreen teamTime={huntData.teamTime} treasurePosition={huntData.treasurePosition} team={huntData.team} isWin={pageStatus == "win"} />;
 
         default:
             return <div className="h-screen flex flex-col justify-center items-center">Erreur</div>;

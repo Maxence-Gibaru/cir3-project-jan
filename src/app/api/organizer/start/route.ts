@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { HuntModel } from "@/models/Hunt";
@@ -46,7 +48,7 @@ export async function PUT(req: NextRequest) {
 
         // For each team update hints_order
         hunt.teams.forEach((team, index) => {
-            const hints_order = Array.from({ length: hunt.markers.length }, (_, i) => i);
+            const hints_order = Array.from({ length: hunt.markers.length - 1}, (_, i) => i + 1);
             /* team.hints_order = */
             console.log("team", team)
             // Passe de [0, 1, 2] à [1, 2, 0] si index = 1
@@ -67,7 +69,6 @@ export async function PUT(req: NextRequest) {
 
         // Find by id and update the started_at property and status at started
         const newHunt = await HuntModel.findByIdAndUpdate(result.huntId, hunt);
-
 
         return NextResponse.json({ hunt: newHunt }, { status: 200 });
     } catch (error) {
