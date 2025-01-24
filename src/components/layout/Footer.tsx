@@ -7,7 +7,7 @@ export default function Footer() {
         <>
             <section className="h-screen bg-darkBlueBg flex flex-col text-white justify-between items-center px-6">
                 <div className="flex flex-col flex-grow justify-center items-center">
-                    <h1 className="text-9xl uppercase font-bold">Junia</h1>
+                    <h1 className="text-7xl uppercase font-bold">Junia</h1>
                     <p className="text-md font-bold italic uppercase">corporation</p>
                 </div>
                 <div className="flex flex-col flex-grow justify-center items-center gap-10">

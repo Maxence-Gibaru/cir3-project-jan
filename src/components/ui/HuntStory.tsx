@@ -28,10 +28,10 @@ export default function HuntStory({ isOpen, onOpenChange, hintsRevealed, selecte
                             <ModalBody className="text-base">
                             <div className="mb-8 p-4 border border-gray-300 rounded-lg shadow-lg bg-lightBlueBg">
                                     <h2 className="text-xl font-semibold text-black mb-2">Introduction</h2>
-                                   {stories.map((story) => {
+                                   {stories.map((story: string) => {
                                         <>
-                                         <p className="text-black">
-                                            {story}
+                                            <p className="text-black">
+                                                {story}
                                             </p>
                                         </>
                                     }) }
