@@ -29,7 +29,7 @@ const MapClickHandler = ({ onMarkerAdd }) => {
 
 const Map = ({ markers, onMarkerAdd, onMarkerRemove }) => {
   return (
-    <div className="h-[600px] w-full rounded-lg overflow-hidden border border-gray-200">
+    <div className="h-full w-full rounded-lg overflow-hidden border border-gray-200">
       <MapContainer
         center={[46.603354, 1.888334]}
         zoom={6}
