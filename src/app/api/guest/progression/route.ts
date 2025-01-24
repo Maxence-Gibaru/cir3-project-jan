@@ -2,6 +2,7 @@ import { HuntInit } from "@/definitions";
 import { authOptions } from "@/lib/authOptions";
 import dbConnect from "@/lib/dbConnect";
 import { Hunt, HuntModel } from "@/models/Hunt";
+import { Team } from "@/models/Team";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -64,21 +65,12 @@ export async function GET(req: NextRequest) {
                                 throw new Error("La chasse au trésor a été commencée mais la date de début est manquante.");
                             }
                             progression = "win";
-                            data.treasurePosition = hunt.markers[0].position;
-                            data.teamTime = team.win_at.getTime() - startedAt.getTime();
-                            data.team = team.guests.map((guest) => guest.name);
+                            updateEndData(data, hunt, team as Team);
                         }
                     } else if (hunt.status === "ended") {
                         // Chasse perdue
-                        const startedAt = hunt.started_at;
-                        if (!startedAt) {
-                            throw new Error("La chasse au trésor a été commencée mais la date de début est manquante.");
-                        }
-                        progression = "lose";
-                        data.treasurePosition = hunt.markers[0].position;
-                        data.team = team.guests.map((guest) => guest.name);
-                        const currentDate = new Date();
-                        data.teamTime = currentDate.getTime() - startedAt.getTime();
+                        progression = (team.win_at) ? "win" : "lose";
+                        updateEndData(data, hunt, team as Team);
                     }
                 }
             }
@@ -93,6 +85,19 @@ export async function GET(req: NextRequest) {
         );
     }
 }
+
+function updateEndData(data: any, hunt: Hunt, team: Team) {
+    const startedAt = hunt.started_at;
+    if (!startedAt) {
+        throw new Error("La chasse au trésor a été commencée mais la date de début est manquante.");
+    }
+
+    data.treasurePosition = hunt.markers[0].position;
+    data.team = team.guests.map((guest) => guest.name);
+    const currentDate = new Date();
+    data.teamTime = currentDate.getTime() - startedAt.getTime();
+}
+
 function getInitData(hunt: Hunt): HuntInit {
     const teams: string[][] = hunt.teams.map((team) => team.guests.map((guest) => guest.name));
 
