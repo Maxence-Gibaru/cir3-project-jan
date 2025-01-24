@@ -13,7 +13,7 @@ const ReqZodSchema = z.object({
 });
 
 export async function PUT(req: NextRequest) {
-    const session = await getServerSession(authOptions);
+    const session: any = await getServerSession(authOptions as any);
     if (!session) return NextResponse.next({ status: 401 });
 
     try {
@@ -27,8 +27,8 @@ export async function PUT(req: NextRequest) {
             );
         }
         
-        const guestId = session.user.id;
-        const hunt = await HuntModel.findById({ _id: result.huntId, organizer_id: guestId, status: 'ended' });
+        const guestId: string = session.user.id;
+        const hunt = await HuntModel.findById({ _id: result.huntId!, organizer_id: guestId, status: 'ended' });
         if (!hunt) {
             return NextResponse.json(
                 { error: "Hunt not found" },
