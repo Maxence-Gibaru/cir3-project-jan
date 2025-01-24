@@ -55,6 +55,9 @@ export async function GET(req: NextRequest) {
         if (isCorrect) {
             const teams = hunt.teams;
             ++teams[teamIndex].current_hint_index;
+            if (isTreasureAttending) {
+                teams[teamIndex].win_at = new Date();
+            }
             await HuntModel.findByIdAndUpdate(hunt._id, {
                 teams
             });

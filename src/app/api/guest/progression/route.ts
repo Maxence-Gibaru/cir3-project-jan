@@ -5,9 +5,6 @@ import { Hunt, HuntModel } from "@/models/Hunt";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 
-
-
-
 export async function GET(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) return NextResponse.next({ status: 401 });
@@ -19,7 +16,7 @@ export async function GET(req: NextRequest) {
         const lobbyCode = urlSearch.get("lobby_code");
 
         let progression = "not_started";
-        let data = {};
+        let data: any = {};
         if (lobbyCode) {
             const hunt: Hunt | null = await HuntModel.findOne({ code: lobbyCode, status: { $ne: "closed" } });
             if (hunt) {
