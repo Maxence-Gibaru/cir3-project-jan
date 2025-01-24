@@ -1,7 +1,7 @@
 "use client";
 
 import TeamProgressContainer from "@/components/pages/leaderboard";
-import ProgressDashboard from "@/components/pages/pourcent";
+import TeamMembers from "@/components/pages/TeamMembers"
 import { Button } from "@heroui/react";
 import { useEffect, useState } from "react";
 import Image from "next/image";
@@ -12,48 +12,20 @@ import clsx from 'clsx';
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 interface SecondComponentProps {
-  hunts: Hunt[];
-  setHunts: (hunts: Hunt[]) => void;
-  onNext: () => void;
   hunt: Hunt;
   setHunt: (hunts: Hunt) => void;
 }
 
-export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondComponentProps) {
-  const initialTeams = [
-    { equipe: "Equipe A", indicesFaits: 8, totalIndices: 10 },
-    { equipe: "Equipe B", indicesFaits: 5, totalIndices: 10 },
-    { equipe: "Equipe C", indicesFaits: 7, totalIndices: 10 },
-  ];
-
-  const Router = useRouter();
-  const [teamData, setTeamData] = useState(initialTeams);
+export default function Dashboard({hunt, setHunt}: SecondComponentProps) {
 
   const [startTime, setStartTime] = useState('00:00:00');
   const [start, setStart] = useState(false);
   const[trouve,setTrouve] = useState([]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTeamData((prevData) =>
-        prevData.map((team) => ({
-          ...team,
-          indicesFaits: Math.min(
-            team.indicesFaits + Math.floor(Math.random() * 2),
-            team.totalIndices
-          ),
-        }))
-      );
-    }, 5000);
-
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
     if (start === true) {
       const fetchHunts = async () => {
-        await fetchApi("organizer/hunt", { method: "GET", params: { huntId: hunt._id } })
+        await fetchApi("organizer/hunt", { method: "GET", params: { huntId: hunt._id! } })
           .then((data) => {
             setHunt(data);           
           })
@@ -71,13 +43,13 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
   }, [start]); // Dépendance ajoutée pour réagir aux changements de 'start'
 
   useEffect(() => {
-    let interval;
+    let interval: any;
   
     console.log("Status:", hunt.status);
   
     if (hunt.status === 'started') {
       // Convertir le temps de départ en millisecondes depuis le début de la partie
-      const startTimeInMs = new Date(hunt.started_at).getTime();
+      const startTimeInMs = new Date(hunt.started_at!).getTime();
   
       interval = setInterval(() => {
         const now = new Date().getTime();
@@ -113,7 +85,9 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
           body: { huntId: hunt._id },
         }).then(() =>{
          console.log("good_stop");
+         hunt.status = 'ended';
          setStart(false);
+         setHunt(hunt);
          }
       ).catch((err) => console.error(err));
       }
@@ -139,7 +113,7 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
       }).then(() =>{
         console.log("good_reset");
         setHunt(hunt);
-        Router.push('/dashboard');
+        window.location.reload();
         }
     ).catch((err) => console.error(err));
     }
@@ -178,8 +152,8 @@ export default function Dashboard({hunts,setHunts,hunt,setHunt,onNext}: SecondCo
 
           {/* Pourcentage */}
           <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold text-gray-700 mb-4">Pourcentage</h2>
-            <ProgressDashboard data={teamData} trouve={trouve} setTrouve={setTrouve}/>
+            <h2 className="text-xl font-bold text-gray-700 mb-4">Joueurs</h2>
+            <TeamMembers teams={hunt.teams} maxGuests={hunt.max_guests} />
           </div>
         </div>
 
