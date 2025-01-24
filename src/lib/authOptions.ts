@@ -40,7 +40,7 @@ export const authOptions = {
             },
 
         }),
-        /* CredentialsProvider({
+        CredentialsProvider({
             id: "guest-credentials",
             name: "Guest",
             credentials: {},
@@ -56,7 +56,7 @@ export const authOptions = {
                 };
                 return guestUser;
             },
-        }), */
+        }),
     ],
     callbacks: {
         async jwt({ token, user, trigger, session }) {
