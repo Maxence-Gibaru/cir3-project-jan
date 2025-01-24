@@ -65,7 +65,7 @@ export default function NavbarHeader({ status, onOpen }) {
                     </div>
                 </NavbarItem>
             </NavbarContent>
-
+            
             <NavbarContent justify='end'>
                 {isAuthenticated ? (
                     <Dropdown className="bg-white">
